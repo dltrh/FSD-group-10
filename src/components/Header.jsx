@@ -35,7 +35,7 @@ export default function Header() {
             <nav className="nav">
                 <ul>
                     <li>
-                        <Link to="/cerate-event"><button id="btn-create-event">Create Event</button></Link>
+                        <Link to="/create-event"><button id="btn-create-event">Create Event</button></Link>
                     </li>
                     <li>
                         <Link to="/notification">Notification</Link>
