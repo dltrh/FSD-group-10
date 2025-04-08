@@ -109,11 +109,8 @@ hr {
     font-size: 24px;
 }
 
-.why-us-container div {
-    text-align: justify;
-}
-
 .why-us-container p {
+    text-align: justify;
     font-size: 1rem;
 }
 

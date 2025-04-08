@@ -6,7 +6,6 @@ import lowCost from "../assets/low-cost.png";
 import userFriendly from "../assets/user-friendly.png";
 import reliable from "../assets/reliable.png";
 import "../css/welcome.css";
-import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 
 export default function Welcome() {
@@ -27,7 +26,7 @@ export default function Welcome() {
                     </div>
                 </div>
                 <div className="button-container">
-                    <button className="btn-login">LOGIN</button>
+                    <Link to="/login-user"><button className="btn-login">LOGIN</button></Link>
                     <p>Haven't joined our community?</p>
                     <a className="register" href="">
                         Create an account

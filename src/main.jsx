@@ -8,12 +8,21 @@ import {
 } from "react-router-dom";
 
 import "./index.css";
-import App from "./App.jsx";
 import Welcome from "./pages/Welcome.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
+import LoginUser from "./pages/LoginUser.jsx";
 
 const routers = createBrowserRouter([
-    { path: "/", element: <Welcome />, errorElement: <Placeholder /> }
+    {
+        path: "/",
+        element: <Welcome />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/login-user",
+        element: <LoginUser />,
+        errorElement: <Placeholder />,
+    },
 ]);
 
 createRoot(document.getElementById("root")).render(
