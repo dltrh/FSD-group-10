@@ -1,0 +1,148 @@
+
+
+.logo {
+    /* position: relative; */
+    top:0;
+    left: 0;
+    width: 300px; 
+    height: auto; 
+}
+
+.header-container {
+    position: sticky    ;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    height: 148px;
+    margin-left: 0;
+    padding-right: 50px;
+    background-color: #e3e3e3; 
+    z-index: 1000; /* ensures the header stays on top */
+    display: flex;
+    align-items: flex-start;
+    place-items: center;
+    justify-content: space-between;
+    overflow-x: auto;
+}
+
+/* html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+    place-items: top;
+} */
+
+.nav {
+    position: relative
+}
+
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+  
+.nav ul li {
+    margin-left: 20px;
+}
+  
+.nav ul li a {
+    color: #2c2c2c;
+    text-decoration: none;
+}
+  
+.nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    width: 30%
+}
+  
+.search-bar input {
+    padding: 6px 10px;
+    border: 1px solid #2c2c2c;
+    border-radius: 6px 0 0 6px;
+    outline: none;
+    height: 30px;
+    width: 100%;
+}
+  
+.search-bar button {
+    background-color: #e3e3e3;
+    border: 1px solid #2c2c2c;
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    place-items: center;
+    justify-content: center;
+}
+
+.search-icon {
+    width: 10px;
+    
+}
+
+#btn-create-event {
+    background-color: #ae312f;
+    color: white;
+    height: 30px;
+    width: 130px;
+    font-size: 1rem;
+}
+
+.profile-container {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.profile-icon {
+    height: 30px;
+    margin-left: 10px;
+}
+
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    width: 150px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.profile-container:hover .profile-dropdown {
+    display: flex;
+}
+
+
+.profile-dropdown button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    height: 40px;
+    font-size: 1rem;
+    justify-content: left;
+}
+
+.profile-dropdown button:hover {
+    background: #2c2c2c;
+    color: white;
+}
