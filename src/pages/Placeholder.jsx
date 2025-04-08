@@ -1,14 +1,14 @@
 import boredCat from "../assets/bored-cat.gif";
-import "../css/empty-error.css"
+import "../css/placeholder-error.css"
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-export default function Empty() {
+export default function Placeholder() {
     return (
         <div>
             <Header />
-            <div className="empty-page">
+            <div className="placeholder-page">
                 <img className="bored-cat" src={boredCat} alt="Error icon" />
-                <div className="empty-page-message">
+                <div className="placeholder-page-message">
                     <h1>Whoops! Our Developer Is Still Coding... 🧑‍💻</h1>
                     <p>
                         It looks like this page is still under construction. Our

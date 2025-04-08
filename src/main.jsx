@@ -10,10 +10,10 @@ import {
 import "./index.css";
 import App from "./App.jsx";
 import Welcome from "./pages/Welcome.jsx";
-import Empty from "./pages/Empty.jsx";
+import Placeholder from "./pages/Placeholder.jsx";
 
 const routers = createBrowserRouter([
-    { path: "/", element: <Welcome />, errorElement: <Empty /> }
+    { path: "/", element: <Welcome />, errorElement: <Placeholder /> }
 ]);
 
 createRoot(document.getElementById("root")).render(

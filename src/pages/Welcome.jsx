@@ -12,7 +12,6 @@ import Footer from "../components/Footer.jsx";
 export default function Welcome() {
     return (
         <>
-            <Header />
             <div className="welcome-page">
                 <div className="welcome-header">
                     <Link to="/"><img src={logo} alt="App logo" className="logo"/></Link>
