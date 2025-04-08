@@ -123,4 +123,8 @@ hr {
 .icon {
     width: 24px;  /* Adjust the icon size */
     height: 24px; /* Adjust the icon size */
-  }
+}
+
+#link-to-login-admin {
+    margin-left: auto;
+}

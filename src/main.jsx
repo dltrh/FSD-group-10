@@ -11,6 +11,7 @@ import "./index.css";
 import Welcome from "./pages/Welcome.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 import LoginUser from "./pages/LoginUser.jsx";
+import LoginAdmin from "./pages/LoginAdmin.jsx";
 
 const routers = createBrowserRouter([
     {
@@ -21,6 +22,11 @@ const routers = createBrowserRouter([
     {
         path: "/login-user",
         element: <LoginUser />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/login-admin",
+        element: <LoginAdmin />,
         errorElement: <Placeholder />,
     },
 ]);
