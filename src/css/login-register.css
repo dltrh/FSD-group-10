@@ -40,7 +40,7 @@ h1 {
     height: 400px;
 }
 
-input { 
+.login-field input, .register-field input{ 
     border-radius: 10px;
     border: 0.5px solid #2c2c2c;
     height: 40px;
