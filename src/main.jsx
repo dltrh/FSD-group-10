@@ -12,6 +12,7 @@ import Welcome from "./pages/Welcome.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 import LoginUser from "./pages/LoginUser.jsx";
 import LoginAdmin from "./pages/LoginAdmin.jsx";
+import Register from "./pages/Register.jsx";
 
 const routers = createBrowserRouter([
     {
@@ -27,6 +28,11 @@ const routers = createBrowserRouter([
     {
         path: "/login-admin",
         element: <LoginAdmin />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/register",
+        element: <Register />,
         errorElement: <Placeholder />,
     },
 ]);

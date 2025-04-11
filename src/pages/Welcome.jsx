@@ -34,13 +34,13 @@ export default function Welcome() {
                     </div>
                 </div>
                 <div className="button-container">
-                    <Link  to="/login-user">
+                    <Link to="/login-user">
                         <button className="btn-login">LOGIN</button>
                     </Link>
                     <p>Haven't joined our community?</p>
-                    <a className="register" href="">
+                    <Link className="register" to="/register">
                         Create an account
-                    </a>
+                    </Link>
                 </div>
                 <h2 className="why-us-header">WHY US?</h2>
                 <hr />

@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
-import "../css/login.css";
+import "../css/login-register.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ export default function LoginUser() {
 
     const handleInput = (e) => {
         e.preventDefault();
-        alert(`Email: ${email}, Password: ${password}`);
+        alert(`Email: ${email}\nPassword: ${password}`);
         setEmail("");
         setPassword("");
     };
@@ -27,6 +27,7 @@ export default function LoginUser() {
                 <label htmlFor="email-input">Email *</label>
                 <input
                     id="email-input"
+                    className="form-control"
                     type="text"
                     placeholder="Email"
                     required
@@ -37,6 +38,7 @@ export default function LoginUser() {
                 <label htmlFor="password-input">Passsword *</label>
                 <input
                     id="password-input"
+                    className="form-control"
                     type="password"
                     placeholder="Password"
                     required
