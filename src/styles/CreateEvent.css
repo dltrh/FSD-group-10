@@ -1,0 +1,173 @@
+.create-event-wrapper {
+    width: 120%;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+.create-event-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    width: 120%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.event-section {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.image-placeholder {
+    flex: 1;
+    min-width: 300px;
+    height: 300px;
+    background: #f1f1f1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5rem;
+}
+
+.event-details {
+    flex: 1;
+    min-width: 300px;
+}
+
+.price-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.tag {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+
+
+.input-group {
+    display:block;
+    margin: 1rem 0;
+    margin-left : 1rem;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.dropdowns {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding:20px;
+    
+}
+
+.dropdowns label {
+    display: block;
+    margin-bottom: 1rem;
+    /* You can increase this as needed */
+    font-weight: 500;
+}
+.dropdowns select {
+    flex: 1;
+    padding: 0.5rem;
+}
+ 
+
+.request-btn {
+    width: 100%;
+    background-color: #111;
+    color: white;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border: none;
+    border-radius: 4px;
+}
+
+.notes {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.reviews-section {
+    margin-top: 4rem;
+    width:120%;
+    margin: 120px;
+}
+
+.reviews {
+    
+    display:flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.review-card {
+    border: 1px solid #eee;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 200px;
+}
+
+.stars {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.reviewer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.reviewer img {
+    border-radius: 50%;
+}
+
+.subscribe-section {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.subscribe-form {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.subscribe-form input {
+    padding: 0.5rem;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.subscribe-form button {
+    padding: 0.5rem 1rem;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
