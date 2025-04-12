@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 
 import "./index.css";
+
+//pages
 import Welcome from "./pages/Welcome.jsx";
 import Placeholder from "./pages/Placeholder.jsx";
 import LoginUser from "./pages/LoginUser.jsx";
