@@ -15,10 +15,10 @@
 }
 
 .btn-login-admin {
-    font-size: 1rem;
-    width: 180px;
-    height: 35px;
-    border: solid #2c2c2c; 
+    font-size: 15px;
+    width: 160px;
+    height: 30px;
+    border: solid 1px #2c2c2c; 
     margin-left: auto;
     margin-top: 50px;
     margin-right: 50px;
@@ -44,8 +44,8 @@
     font-size: 3rem;
 }
 
-p, a {
-    font-size: 1.2rem;
+.welcome-page p, .welcome-page a {
+    font-size: 1rem;
 }
 
 
@@ -67,6 +67,9 @@ p, a {
     background-color: #2c2c2c;
     color: white;
     margin-bottom: 40px;
+    height: 60px;
+    width: 140px;
+    font-size: 25px;
 }   
 
 .register {
@@ -74,24 +77,20 @@ p, a {
     
 }
 
-button {
-    width: 300px;
-    height: 70px;
-    border-radius: 20px;
+.welcome-page button {
+    border-radius: 6px;
     font-family: Verdana, sans-serif;
-    font-size: 1.7rem;
-    border: none; 
 }
 
-hr {
+.welcome-page hr {
     border: 0;
     height: 4px;  
-    background-color: hsl(0, 0%, 17%);  
+    background-color: #2c2c2c;  
     width: calc(100% - 40px * 2);  /* Full width minus left margin */
     margin-left: 40px;  /* Left margin */
     margin-top: 20px;  /* Top space */
     margin-bottom: 20px;  /* Bottom space */
-    border-radius: 5px; 
+    border-radius: 6px; 
 }
 
 .why-us-container {

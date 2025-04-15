@@ -48,7 +48,7 @@
     text-decoration: underline;
 }
 
-.search-bar {
+.header-search-bar {
     display: flex;
     align-items: center;
     /* place-items: center; */
@@ -58,7 +58,7 @@
     height: 100%;
 }
   
-.search-bar input {
+.header-search-bar input {
     padding: 6px 10px;
     border: 1px solid #2c2c2c;
     border-radius: 6px 0 0 6px;
@@ -67,7 +67,7 @@
     width: 100%;
 }
   
-.search-bar button {
+.header-search-bar button {
     background-color: #e3e3e3;
     border: 1px solid #2c2c2c;
     border-left: none;
@@ -88,6 +88,8 @@
     height: 30px;
     width: 130px;
     font-size: 1rem;
+    border:none;
+    border-radius: 6px;
 }
 
 .profile-container {

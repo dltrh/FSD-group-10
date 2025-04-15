@@ -2,15 +2,17 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 
 import logo from "../assets/logo.png";
-import lowCost from "../assets/low-cost.png";
-import userFriendly from "../assets/user-friendly.png";
-import reliable from "../assets/reliable.png";
+import lowCost from "../assets/welcome-page/low-cost.png";
+import userFriendly from "../assets/welcome-page/user-friendly.png";
+import reliable from "../assets/welcome-page/reliable.png";
 import "../css/welcome.css";
 import Footer from "../components/Footer.jsx";
+import Header from "../components/Header.jsx"
 
 export default function Welcome() {
     return (
         <>
+        <Header></Header>
             <div className="welcome-page">
                 <div className="welcome-header">
                     <Link to="/">

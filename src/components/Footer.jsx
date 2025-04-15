@@ -1,8 +1,8 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import x from "../assets/x.png";
-import facebook from "../assets/facebook.png";
-import instagram from "../assets/instagram.png";
+import x from "../assets/footer/x.png";
+import facebook from "../assets/footer/facebook.png";
+import instagram from "../assets/footer/instagram.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "../css/footer.css";

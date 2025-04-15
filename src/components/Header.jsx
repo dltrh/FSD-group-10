@@ -2,8 +2,8 @@ import React from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import search from "../assets/search.png";
-import profile from "../assets/profile.png";
+import search from "../assets/header/search.png";
+import profile from "../assets/header/profile.png";
 import "../css/header.css";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -17,7 +17,7 @@ export default function Header() {
     return (
         <div className="header-container">
             <Link to="/"><img src={logo} alt="App logo" className="logo"/></Link>
-            <form className="search-bar" onSubmit={handleSearch}>
+            <form className="header-search-bar" onSubmit={handleSearch}>
                 <input
                     type="text"
                     placeholder="Search..."
@@ -35,7 +35,7 @@ export default function Header() {
             <nav className="nav">
                 <ul>
                     <li>
-                        <Link to="/create-event"><button id="btn-create-event">Create Event</button></Link>
+                        <Link to="/create"><button id="btn-create-event">Create Event</button></Link>
                     </li>
                     <li>
                         <Link to="/notification">Notification</Link>

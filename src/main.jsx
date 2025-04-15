@@ -13,7 +13,13 @@ import Placeholder from "./pages/Placeholder.jsx";
 import LoginUser from "./pages/LoginUser.jsx";
 import LoginAdmin from "./pages/LoginAdmin.jsx";
 import Register from "./pages/Register.jsx";
-import Discussion from "./pages/Discussion.jsx";
+import DiscussionCard from "./components/DiscussionCard.jsx";
+import DiscussionDetails from "./components/DiscussionDetails.jsx";
+import Home from "./pages/Home.jsx";
+import CreateEvent from "./pages/CreateEvent.jsx";
+import ManageEvent from "./pages/ManageEvent.jsx";
+import EventDetailsModal from "./pages/EventDetailsModal.jsx";
+import DiscussionList from "./components/DiscussionList.jsx";
 
 const routers = createBrowserRouter([
     {
@@ -37,10 +43,41 @@ const routers = createBrowserRouter([
         errorElement: <Placeholder />,
     },
     {
-        path: "/event/discussion",
-        element: <Discussion />,
+        path: "/discussion-card",
+        element: <DiscussionCard />,
         errorElement: <Placeholder />
-    }
+    },
+    {
+        path: "/discussion-details",
+        element: <DiscussionDetails />,
+        errorElement: <Placeholder />
+    },
+    {
+        path: "/discussion-list",
+        element: <DiscussionList />,
+        errorElement: <Placeholder />
+    },
+    {
+        path: "/home",
+        element: <Home />,
+        errorElement: <Placeholder />
+    },
+    {
+        path: "/create",
+        element: <CreateEvent />,
+        errorElement: <Placeholder />
+    },
+    {
+        path: "/manage",
+        element: <ManageEvent />,
+        errorElement: <Placeholder />
+    },
+    {
+        path: "/manage/details/:id",
+        element: <EventDetailsModal />,
+        errorElement: <Placeholder />
+    },
+    
 ]);
 
 createRoot(document.getElementById("root")).render(
