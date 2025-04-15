@@ -1,9 +1,9 @@
-import logo from "../assets/logo.png";
-import "../css/login-register.css";
+import logo from "../../assets/logo.png";
+import "../../css/login-register.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-export default function LoginUser() {
+export default function LoginAdmin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -21,8 +21,8 @@ export default function LoginUser() {
                 </Link>
             </div>
 
-            <h1>Login</h1>
-             
+            <h1>Admin Login</h1>
+
             <form className="login-field" onSubmit={handleInput}>
                 <label htmlFor="email-input">Email *</label>
                 <input
@@ -64,10 +64,6 @@ export default function LoginUser() {
                         Login →
                     </button>
                 </div>
-                <p>
-                    Haven't had an account yet?{" "}
-                    <Link to="/register">Create account</Link>
-                </p>
             </form>
         </div>
     );

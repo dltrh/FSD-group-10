@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import '../css/create-event.css';
-import Header from "../components/Header.jsx"
-import Footer from "../components/Footer.jsx"
-
+import React, { useState } from "react";
+import "../../css/create-event.css";
+import Header from "../../components/Header.jsx";
+import Footer from "../../components/Footer.jsx";
 
 const CreateEvent = () => {
     const [liked, setLiked] = useState(false);
@@ -15,9 +14,9 @@ const CreateEvent = () => {
                         <div
                             className="heart"
                             onClick={() => setLiked(!liked)}
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: "pointer" }}
                         >
-                            {liked ? '♥' : '♡'}
+                            {liked ? "♥" : "♡"}
                         </div>
                     </div>
                     <div className="event-details">
@@ -29,11 +28,17 @@ const CreateEvent = () => {
                         <div className="form-section">
                             <div className="input-group">
                                 <label htmlFor="people">Number of people</label>
-                                <input id="people" type="text" placeholder="Value" />
+                                <input
+                                    id="people"
+                                    type="text"
+                                    placeholder="Value"
+                                />
                             </div>
                             <div className="dropdowns">
                                 <div>
-                                    <label htmlFor="event-type">Event Type</label>
+                                    <label htmlFor="event-type">
+                                        Event Type
+                                    </label>
                                     <select id="event-type">
                                         <option>Value</option>
                                     </select>
@@ -46,11 +51,15 @@ const CreateEvent = () => {
                                 </div>
                             </div>
                         </div>
-                        <button className="request-btn">Request to host this event</button>
+                        <button className="request-btn">
+                            Request to host this event
+                        </button>
                         <div className="notes">
                             <h4>Notes</h4>
                             <p>
-                                Feel free to ask us any questions here and leave us the note so we can tailor the event to your preference.
+                                Feel free to ask us any questions here and leave
+                                us the note so we can tailor the event to your
+                                preference.
                             </p>
                         </div>
                     </div>

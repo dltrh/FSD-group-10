@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navigate, useParams } from "react-router-dom";
-import "../styles/event-details-modal.css";
+import "../../css/event-details-modal.css";
 
 const dummyEvents = {
     1: {

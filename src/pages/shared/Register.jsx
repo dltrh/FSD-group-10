@@ -1,8 +1,8 @@
-import logo from "../assets/logo.png";
-import "../css/login-register.css";
+import logo from "../../assets/logo.png";
+import "../../css/login-register.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.css";
+
 export default function Register() {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");

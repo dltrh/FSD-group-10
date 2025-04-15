@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Footer from '../components/Footer';
-import '../css/eventResponse.css';
+import Footer from '../../components/Footer';
+import '../../css/eventResponse.css';
 
 export default function EventResponseForm() {
     const [eventId, setEventId] = useState('');

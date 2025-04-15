@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/manage-event.css';
+import '../../css/manage-event.css';
 
 const themes = ['Wedding', 'Birthday', 'Corporate', 'Festival'];
 const statuses = ['Upcoming', 'Completed', 'Cancelled'];

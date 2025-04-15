@@ -1,0 +1,46 @@
+import Home from "../pages/user/Home";
+import CreateEvent from "../pages/user/CreateEvent";
+import DiscussionList from "../components/DiscussionList";
+import DiscussionCard from "../components/DiscussionCard";
+import DiscussionDetails from "../components/DiscussionDetails";
+import Placeholder from "../pages/shared/Placeholder";
+import ManageEvent from "../pages/user/ManageEvent";
+import EventDetailsModal from "../pages/user/EventDetailsModal";
+
+export const UserRoutes = [
+    {
+        path: "/home",
+        element: <Home />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/create",
+        element: <CreateEvent />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/discussion-list",
+        element: <DiscussionList />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/discussion-card",
+        element: <DiscussionCard />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/discussion-details",
+        element: <DiscussionDetails />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/manage",
+        element: <ManageEvent />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/manage/details/:id",
+        element: <EventDetailsModal />,
+        errorElement: <Placeholder />,
+    },
+];
