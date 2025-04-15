@@ -96,12 +96,12 @@ h1 {
 }
 
 
-.login-field a, .login-field p {
+.login-field a, .login-field p, .register-field a, .register-field p {
     color: black;
     font-size: 1rem;
 }
 
-.login-field p {
+.login-field p, .register-field p {
     text-align: center;
 }
 

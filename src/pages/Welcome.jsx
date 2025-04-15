@@ -12,7 +12,6 @@ import Header from "../components/Header.jsx"
 export default function Welcome() {
     return (
         <>
-        <Header></Header>
             <div className="welcome-page">
                 <div className="welcome-header">
                     <Link to="/">

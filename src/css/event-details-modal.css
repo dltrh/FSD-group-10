@@ -212,6 +212,10 @@
     margin-top: 50px;
 }
 
+#discussion-board {
+    scroll-margin-top: 200px; /* to match header height */
+}
+
 @media (max-width: 1024px) {
     .details-grid {
         grid-template-columns: repeat(2, 1fr);
