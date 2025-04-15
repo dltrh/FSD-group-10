@@ -35,13 +35,20 @@
     font-size: 1rem;
 }
 
+.event-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
 .finish-button {
     background: #ba3a2e;
     color: white;
     padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 6px;
-    margin: 1rem auto;
     display: block;
     cursor: pointer;
 }
@@ -51,12 +58,11 @@
 }
 
 .discuss-button {
-    background: #cef7d3;
+    background: #ededed;
     color: black;
     padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 6px;
-    margin: 1rem auto;
     display: block;
     cursor: pointer;
 }
@@ -209,7 +215,7 @@
 }
 
 .discussion-grid {
-    margin-top: 50px;
+    padding-top: 80px;
 }
 
 #discussion-board {

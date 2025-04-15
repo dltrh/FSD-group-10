@@ -50,7 +50,7 @@ const EventDetailsModal = () => {
         const y =
             element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-        discussionRef.current?.scrollIntoView({ behavior: "smooth"});
+        discussionRef.current?.scrollIntoView({ behavior: "smooth" , box: "start"});
     };
 
     return (
@@ -63,15 +63,17 @@ const EventDetailsModal = () => {
                         Created on: {event.createdOn} <br />
                         Finished by: {event.finishedBy}
                     </p>
-                    <button className="finish-button">
-                        Finish the event early
-                    </button>
-                    <button
-                        className="discuss-button"
-                        onClick={handleScrollToDiscussion}
-                    >
-                        Go to Discussion Board for this event
-                    </button>
+                    <div className="event-buttons">
+                        <button className="finish-button">
+                            Finish the event early
+                        </button>
+                        <button
+                            className="discuss-button"
+                            onClick={handleScrollToDiscussion}
+                        >
+                            Go to Discussion Board for this event
+                        </button>
+                    </div>
                 </div>
 
                 <div className="change-section">
