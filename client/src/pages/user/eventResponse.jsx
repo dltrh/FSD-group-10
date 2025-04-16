@@ -68,7 +68,10 @@ export default function EventResponseForm() {
                     </div>
                     <div className="form-buttons">
                         <Link to="/attend/:id">
-                            <button className="btn-attend" onClick={handleAttend}>
+                            <button
+                                className="btn-attend"
+                                onClick={handleAttend}
+                            >
                                 I want to attend the event
                             </button>
                         </Link>
