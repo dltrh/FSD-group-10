@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
-import Footer from '../../components/Footer';
-import '../../css/eventResponse.css';
+import React, { useState } from "react";
+import Footer from "../../components/Footer";
+import "../../css/event-response.css";
 
 export default function EventResponseForm() {
-    const [eventId, setEventId] = useState('');
-    const [inviteId, setInviteId] = useState('');
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+    const [eventId, setEventId] = useState("");
+    const [inviteId, setInviteId] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
 
     const handleAttend = () => {
         // handle attend logic
-        console.log('Attending:', { eventId, inviteId, email, message });
+        console.log("Attending:", { eventId, inviteId, email, message });
     };
 
     const handleDecline = () => {
         // handle decline logic
-        console.log('Declining:', { eventId, inviteId, email, message });
+        console.log("Declining:", { eventId, inviteId, email, message });
     };
 
     return (
         <div className="event-response-container">
-            <h1 className="event-response-title">Want to respond to an event?</h1>
+            <h1 className="event-response-title">
+                Want to respond to an event?
+            </h1>
             <p className="event-response-subtitle">
                 Please enter the details of an event that you are invited.
             </p>
@@ -72,6 +74,5 @@ export default function EventResponseForm() {
             </div>
             <Footer />
         </div>
-
     );
 }

@@ -1,12 +1,12 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { SharedRoutes } from "./SharedRoutes";
-import { UserRoutes } from "./UserRoutes";
-import { AdminRoutes } from "./AdminRoutes";
+    import { createBrowserRouter, RouterProvider } from "react-router-dom";
+    import { SharedRoutes } from "./SharedRoutes";
+    import { UserRoutes } from "./UserRoutes";
+    import { AdminRoutes } from "./AdminRoutes";
 
-const allRoutes = [...SharedRoutes, ...UserRoutes, ...AdminRoutes];
+    const allRoutes = [...SharedRoutes, ...UserRoutes, ...AdminRoutes];
 
-const router = createBrowserRouter(allRoutes);
+    const router = createBrowserRouter(allRoutes);
 
-const AppRouter = () => <RouterProvider router={router} />;
+    const AppRouter = () => <RouterProvider router={router} />;
 
-export default AppRouter;
+    export default AppRouter;
