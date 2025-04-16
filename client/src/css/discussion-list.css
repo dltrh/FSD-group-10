@@ -1,0 +1,42 @@
+.discussion-heading {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.discussion-list-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    /* padding: 20px; */
+}
+
+.discussion-header {
+    display: grid;
+    place-items: start;
+    grid-auto-rows: auto;
+    padding-left: 20px;
+    height: min-content;
+}
+
+.discussion-header p {
+    font-size: 25px;
+    margin: 0;
+    align-self: self-start;
+}
+
+.discussion-header h1 {
+    color: #ae312f;
+    font-size: 45px;
+}
+
+@media (max-width: 1024px) {
+    .discussion-list-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .discussion-list-container {
+        grid-template-columns: 1fr;
+    }
+}
