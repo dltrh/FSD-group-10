@@ -10,6 +10,7 @@ import Header from "./components/adminHeader";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Events from "./pages/Events";
+import AdminSettings from "./pages/Settings"
 
 
 export default function AdminPages() {
@@ -23,6 +24,7 @@ export default function AdminPages() {
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/users" element={<Users />} />
                         <Route path="/events" element={<Events />} />
+                        <Route path="/settings" element={<AdminSettings />} />
                     </Routes>
                 </div>
             </div>
