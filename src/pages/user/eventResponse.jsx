@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import "../../css/event-response.css";
+import { Link } from "react-router-dom";
 
 export default function EventResponseForm() {
     const [eventId, setEventId] = useState("");
@@ -66,15 +67,16 @@ export default function EventResponseForm() {
                         ></textarea>
                     </div>
                     <div className="form-buttons">
-                        <button className="btn-attend" onClick={handleAttend}>
-                            I want to attend the event
-                        </button>
+                        <Link to="/attend/:id">
+                            <button className="btn-attend" onClick={handleAttend}>
+                                I want to attend the event
+                            </button>
+                        </Link>
                         <button className="btn-decline" onClick={handleDecline}>
                             I want to decline the event
                         </button>
                     </div>
                 </div>
-            
             </div>
             <Footer />
         </div>

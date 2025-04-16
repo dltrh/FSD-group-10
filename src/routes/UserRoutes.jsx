@@ -7,6 +7,7 @@ import Placeholder from "../pages/shared/Placeholder";
 import ManageEvent from "../pages/user/ManageEvent";
 import EventDetailsModal from "../pages/user/EventDetailsModal";
 import EventResponse from "../pages/user/EventResponse";
+import AcceptEvent from "../pages/user/AcceptEvent";
 
 export const UserRoutes = [
     {
@@ -47,6 +48,11 @@ export const UserRoutes = [
     {
         path: "/response",
         element: <EventResponse />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/attend/:id",
+        element: <AcceptEvent />,
         errorElement: <Placeholder />,
     },
 ];
