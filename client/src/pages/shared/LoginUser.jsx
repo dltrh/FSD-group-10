@@ -22,7 +22,7 @@ export default function LoginUser() {
             </div>
 
             <h1>Login</h1>
-             
+
             <form className="login-field" onSubmit={handleInput}>
                 <label htmlFor="email-input">Email *</label>
                 <input
@@ -45,7 +45,7 @@ export default function LoginUser() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <Link to="/forgot-password">Forgot password?</Link>
+                <Link to="/forgot-password-user">Forgot password?</Link>
                 <div className="buttons">
                     <Link to="/">
                         <button

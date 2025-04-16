@@ -3,7 +3,7 @@ import LoginUser from "../pages/shared/LoginUser";
 import LoginAdmin from "../pages/shared/LoginAdmin";
 import Register from "../pages/shared/Register";
 import Welcome from "../pages/shared/Welcome";
-import ForgotPassword from "../pages/shared/ForgotPassword";
+import ForgotPasswordUser from "../pages/shared/ForgotPasswordUser";
 
 export const SharedRoutes = [
     {
@@ -27,8 +27,8 @@ export const SharedRoutes = [
         errorElement: <Placeholder />,
     },
     {
-        path: "/forgot-password",
-        element: <ForgotPassword />,
+        path: "/forgot-password-user",
+        element: <ForgotPasswordUser />,
         errorElement: <Placeholder />,
     },
 ];
