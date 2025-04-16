@@ -6,7 +6,6 @@ import { FaTachometerAlt, FaUsers, FaCalendarAlt } from 'react-icons/fa';
 const Sidebar = () => {
     return (
         <div className="sidebar">
-            {/* <h1>Planny</h1> */}
             <img src={logo} alt="logo" className="admin-logo"/>
             <nav className="nav-links">
                 <Link to="dashboard" className="nav-item">

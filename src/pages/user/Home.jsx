@@ -23,7 +23,7 @@ const Home = () => {
                 <button onClick={() => navigate('/manage')} className="home-btn dark">
                     Manage an already existing event
                 </button>
-                <button onClick={() => navigate('/respond')} className="home-btn red">
+                <button onClick={() => navigate('/response')} className="home-btn red">
                     Respond to an event
                 </button>
             </div>

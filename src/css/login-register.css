@@ -1,4 +1,4 @@
-.login-page, .register-page {
+.login-page, .register-page, .forgot-password {
     display: grid;
     background-color: #e3e3e3;
     min-height: 100vh;
@@ -13,7 +13,7 @@
     height: 100px;
 }
 
-h1 {
+.login-page h1, .register-page h1, .forgot-password-page h1 {
     font-weight: 600;
     font-size: 2.5rem;
     font-family: Verdana, sans-serif;

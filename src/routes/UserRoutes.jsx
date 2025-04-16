@@ -6,6 +6,7 @@ import DiscussionDetails from "../components/DiscussionDetails";
 import Placeholder from "../pages/shared/Placeholder";
 import ManageEvent from "../pages/user/ManageEvent";
 import EventDetailsModal from "../pages/user/EventDetailsModal";
+import EventResponse from "../pages/user/EventResponse";
 
 export const UserRoutes = [
     {
@@ -41,6 +42,11 @@ export const UserRoutes = [
     {
         path: "/manage/details/:id",
         element: <EventDetailsModal />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/response",
+        element: <EventResponse />,
         errorElement: <Placeholder />,
     },
 ];
