@@ -1,5 +1,5 @@
 import { getRelativeTime } from "../utils/timeUtils";
-import "../css/event-card.css";
+import "../css/event/event-card.css";
 import placeholder from "../assets/home/placeholder.jpg";
 
 export default function EventCard({ event }) {
@@ -15,7 +15,11 @@ export default function EventCard({ event }) {
                     <hr className="event-card-divider" />
                 </div>
                 <div className="event-image-container">
-                    <img src={placeholder} alt="placeholder image" className="event-image"/>
+                    <img
+                        src={placeholder}
+                        alt="placeholder image"
+                        className="event-image"
+                    />
                 </div>
                 <div className="event-card-body">
                     <p className="event-description">{event.description}</p>

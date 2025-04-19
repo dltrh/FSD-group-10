@@ -2,7 +2,7 @@ import React from "react";
 
 const Events = () => {
     return (
-        <div className="events">
+        <div className="admin-events">
             <button className="add-btn">Add New</button>
             <table>
                 <thead>
@@ -22,7 +22,7 @@ const Events = () => {
                         <td>Party</td>
                         <td>24/12/2025</td>
                         <td>Steve J</td>
-                        <td className="btn-group">
+                        <td className="admin-btn-group">
                             <button>Edit</button>
                             <button>Cancel</button>
                         </td>
@@ -33,7 +33,7 @@ const Events = () => {
                         <td>Meeting</td>
                         <td>10/11/2025</td>
                         <td>Cecilia Y</td>
-                        <td className="btn-group">
+                        <td className="admin-btn-group">
                             <button>Edit</button>
                             <button>Cancel</button>
                         </td>

@@ -3,6 +3,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import AdminLayout from "../pages/admin/AdminLayout";
 import Users from "../pages/admin/Users";
 import Events from "../pages/admin/Events";
+import AdminSettings from "../pages/admin/Settings";
 
 export const AdminRoutes = [
     {
@@ -13,6 +14,7 @@ export const AdminRoutes = [
             { path: "dashboard", element: <Dashboard /> },
             { path: "users", element: <Users /> },
             { path: "events", element: <Events /> },
+            { path: "settings", element: <AdminSettings /> },
         ],
     }
 ];

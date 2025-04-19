@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef } from "react";
 
 import { useParams } from "react-router-dom";
-import "../../css/event-details-modal.css";
+import "../../css/event/event-details-modal.css";
 import DiscussionList from "../../components/DiscussionList.jsx";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";

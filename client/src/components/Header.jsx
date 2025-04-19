@@ -53,7 +53,7 @@ export default function Header() {
                             <button>Account</button>
                             <button>Saved</button>
                             <button>My events</button>
-                            <button>Logout</button>
+                            <Link to="/"><button>Logout</button></Link>
                         </div>
                     </li>
                 </ul>

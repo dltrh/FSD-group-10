@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "../../css/manage-event.css";
+import "../../css/event/manage-event.css";
 import EventList from "../../components/EventList.jsx";
 import Header from "../../components/Header.jsx";
 

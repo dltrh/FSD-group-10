@@ -2,7 +2,7 @@ import React from "react";
 
 const Users = () => {
     return (
-        <div className="users">
+        <div className="admin-users">
             <button className="add-btn">Add New</button>
             <table>
                 <thead>
@@ -33,7 +33,7 @@ const Users = () => {
                         <td>Dani1@gmail.com</td>
                         <td>vuSBF354JH</td>
                         <td>234567890</td>
-                        <td className="btn-group">
+                        <td className="admin-btn-group">
                             <button>Edit</button>
                             <button>Cancel</button>
                         </td>
@@ -44,7 +44,7 @@ const Users = () => {
                         <td>CecilY@gmail.com</td>
                         <td>jofa#415u9F</td>
                         <td>098765432</td>
-                        <td className="btn-group">
+                        <td className="admin-btn-group">
                             <button>Edit</button>
                             <button>Cancel</button>
                         </td>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import "../../css/event-response.css";
+import "../../css/event/event-response.css";
 import { Link } from "react-router-dom";
 
 export default function EventResponseForm() {

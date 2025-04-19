@@ -1,5 +1,5 @@
 import React from "react";
-import "../../css/admin.css";
+import "../../css/admin/admin.css";
 import { Outlet, Router } from "react-router-dom";
 
 // Components
