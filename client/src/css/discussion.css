@@ -44,6 +44,24 @@
     overflow: hidden;
 }
 
+.event-title{
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines before ellipsis */
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+.discussion-topic {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines before ellipsis */
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .discussion-description {
     font-size: 15px;
     line-height: 1.4;
@@ -126,4 +144,5 @@
 .reply-item:hover {
     background-color: #f1f5ff;
 }
+
 

@@ -6,8 +6,8 @@ import reliable from "../assets/welcome-page/reliable.png";
 export default function WhyUs() {
     return (
         <>
-            <h2 className="why-us-header">WHY US?</h2>
-            <hr />
+            <h2 className="why-us-header">WHY US?</h2>     
+            <hr className="why-us-line"/>  
             <div className="why-us-container">
                 <div className="why-us-content">
                     <h3>

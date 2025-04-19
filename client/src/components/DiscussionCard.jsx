@@ -12,7 +12,7 @@ export default function DiscussionCard({ discussion }) {
         <>
             <div className="discussion-card-container">
                 <div className="discussion-card-header">
-                    <h3>{discussion.topic}</h3>
+                    <h3 className="discussion-topic">{discussion.topic}</h3>
                     <div>
                         <p className="discussion-time">🕒 {relativeTime}</p>
                     </div>

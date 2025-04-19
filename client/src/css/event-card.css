@@ -1,0 +1,48 @@
+.event-card-container {
+    display: grid;
+    grid-template-rows: 100px 350px 100px;
+    background-color: #fff;
+    /* height: 500px; */
+    border: solid 1px #e3e3e3;
+    border-radius: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    width: 445px;
+}
+
+.event-card-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-title{
+    font-size: 25px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines before ellipsis */
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines before ellipsis */
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+}
+
+.event-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-image {
+    height: 300px;
+}

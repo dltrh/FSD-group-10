@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import HomeCover from "../../components/HomeCover";
 import WhyUs from "../../components/WhyUs";
+import EventList from "../../components/EventList";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -18,13 +19,13 @@ const Home = () => {
                     onClick={() => navigate("/create")}
                     className="home-btn"
                 >
-                    Create an Event
+                    Create event
                 </button>
                 <button
                     onClick={() => navigate("/manage")}
                     className="home-btn dark"
                 >
-                    Manage an already existing event
+                    Manage an existing event
                 </button>
                 <button
                     onClick={() => navigate("/response")}
@@ -32,6 +33,10 @@ const Home = () => {
                 >
                     Respond to an event
                 </button>
+            </div>
+            <div className="event-list-section">
+                <h2 className="event-heading">Latest public events</h2>
+                <EventList />
             </div>
             <WhyUs />
             <Footer />

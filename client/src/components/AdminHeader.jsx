@@ -14,11 +14,11 @@ const AdminHeader = () => {
 
     const getTitle = () => {
         switch (location.pathname) {
-            case "/":
+            case "/admin":
                 return "Dashboard";
-            case "/users":
+            case "/admin/users":
                 return "Users";
-            case "/events":
+            case "/admin/events":
                 return "Events";
             default:
                 return "Dashboard";

@@ -15,7 +15,7 @@ export default function AdminLayout() {
     return (
         <div className="app">
             <Sidebar />
-            <div className="main-content">
+            <div className="admin-main-content">
                 <AdminHeader />
                 <Outlet />
             </div>
