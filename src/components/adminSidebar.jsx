@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaTachometerAlt, FaUsers, FaCalendarAlt } from 'react-icons/fa';
+import { IoIosSettings } from 'react-icons/io';
 
 const Sidebar = () => {
     return (
@@ -18,6 +19,10 @@ const Sidebar = () => {
                 <Link to="/events" className="nav-item">
                     <FaCalendarAlt className="nav-icon" />
                     Events
+                </Link>
+                <Link to="/settings" className="nav-item">
+                    <IoIosSettings className="nav-icon" />
+                    Settings
                 </Link>
             </nav>
         </div>
