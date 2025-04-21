@@ -10,11 +10,11 @@ CREATE TABLE User (
 );
 
 INSERT INTO User (email, password) VALUES
-('alice@example.com', 'password123'),
-('bob@example.com', 'securepass456'),
-('charlie@example.com', 'letmein789'),
-('diana@example.com', 'passw0rd'),
-('eve@example.com', 'qwerty123');
+('alice@example.com', '123'),
+('bob@example.com', '123'),
+('charlie@example.com', '123'),
+('diana@example.com', '123'),
+('eve@example.com', '123');
 
 -- Event Table
 CREATE TABLE Event (
