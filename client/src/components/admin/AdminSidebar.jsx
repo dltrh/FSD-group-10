@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaUsers, FaCalendarAlt } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";

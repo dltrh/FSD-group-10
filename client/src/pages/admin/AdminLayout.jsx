@@ -3,8 +3,8 @@ import "../../css/admin/admin.css";
 import { Outlet, Router } from "react-router-dom";
 
 // Components
-import Sidebar from "../../components/AdminSidebar";
-import AdminHeader from "../../components/AdminHeader";
+import Sidebar from "../../components/admin/AdminSidebar";
+import AdminHeader from "../../components/admin/AdminHeader";
 
 // Pages
 import Dashboard from "./Dashboard";
