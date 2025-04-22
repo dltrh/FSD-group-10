@@ -22,7 +22,7 @@ const Users = () => {
                         <td>Apple123@gmail.com</td>
                         <td>Wsa3141das</td>
                         <td>123456789</td>
-                        <td className="btn-group">
+                        <td className="admin-btn-group">
                             <button>Edit</button>
                             <button>Cancel</button>
                         </td>

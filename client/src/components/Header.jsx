@@ -6,7 +6,7 @@ import search from "../assets/header/search.png";
 import profile from "../assets/header/profile.png";
 import "../css/header.css";
 import "bootstrap/dist/css/bootstrap.css";
-import NotificationDropdown from "./NotificationDropdown";
+import NotificationDropdown from "./notification/NotificationDropdown";
 
 const notifications = [
     {

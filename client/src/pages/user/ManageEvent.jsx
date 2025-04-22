@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../css/event/manage-event.css";
-import EventList from "../../components/EventList.jsx";
+import EventList from "../../components/event/EventList.jsx";
 import Header from "../../components/Header.jsx";
 
 const themes = ["Wedding", "Birthday", "Corporate", "Festival"];

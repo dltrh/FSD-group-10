@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DiscussionDetails from "./DiscussionDetails";
 import DiscussionCard from "./DiscussionCard";
-import "../css/discussion/discussion-list.css";
+import "../../css/discussion/discussion-list.css";
 
 const discussions = [
     {

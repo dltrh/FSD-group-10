@@ -1,6 +1,6 @@
-import { getRelativeTime } from "../utils/timeUtils";
-import "../css/event/event-card.css";
-import placeholder from "../assets/home/placeholder.jpg";
+import { getRelativeTime } from "../../utils/timeUtils";
+import "../../css/event/event-card.css";
+import placeholder from "../../assets/home/placeholder.jpg";
 
 export default function EventCard({ event }) {
     // const relativeTime = getRelativeTime(event.time);

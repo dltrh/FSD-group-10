@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/notification/notification-dropdown.css";
+import "../../css/notification/notification-dropdown.css";
 import { useState } from "react";
 import NotificationDetailsModal from "./NotificationDetailsModal";
 

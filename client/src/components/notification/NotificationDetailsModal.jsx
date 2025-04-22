@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/notification/notification-details-modal.css";
+import "../../css/notification/notification-details-modal.css";
 
 export default function NotificationDetailsModal({ notification, onClose }) {
     return (

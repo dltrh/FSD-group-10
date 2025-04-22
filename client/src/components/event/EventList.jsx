@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EventCard from "./EventCard";
-import "../css/event/event-list.css";
+import "../../css/event/event-list.css";
 
 const events = [
     {

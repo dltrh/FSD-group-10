@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 import "../../css/event/event-details-modal.css";
-import DiscussionList from "../../components/DiscussionList.jsx";
+import DiscussionList from "../../components/discussion/DiscussionList.jsx";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
 
