@@ -37,12 +37,12 @@
     margin-left: 20px;
 }
   
-.nav ul li a {
+.nav ul li a, .notification-link {
     color: #2c2c2c;
     text-decoration: none;
 }
   
-.nav ul li a:hover {
+.nav ul li a:hover, .notification-link {
     text-decoration: underline;
 }
 
