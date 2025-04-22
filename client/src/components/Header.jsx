@@ -137,7 +137,7 @@ export default function Header() {
                         <div className="profile-dropdown">
                             <button>Account</button>
                             <button>Saved</button>
-                            <button>My events</button>
+                            <Link to="/:user-id/my-events"><button>My events</button></Link>
                             <Link to="/">
                                 <button>Logout</button>
                             </Link>
