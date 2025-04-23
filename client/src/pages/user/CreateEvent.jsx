@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../css/create-event.css";
+import "../../css/event/create-event.css";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
 

@@ -1,8 +1,5 @@
 import React from "react";
-import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import "../css/discussion.css";
+import "../../css/discussion/discussion.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 const DiscussionDetails = ({ discussion, onClose }) => {

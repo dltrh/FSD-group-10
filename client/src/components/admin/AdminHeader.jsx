@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import search from "../assets/header/search.png";
+import search from "../../assets/header/search.png";
 
 const AdminHeader = () => {
     const location = useLocation();
@@ -14,11 +14,11 @@ const AdminHeader = () => {
 
     const getTitle = () => {
         switch (location.pathname) {
-            case "/":
+            case "/admin":
                 return "Dashboard";
-            case "/users":
+            case "/admin/users":
                 return "Users";
-            case "/events":
+            case "/admin/events":
                 return "Events";
             default:
                 return "Dashboard";

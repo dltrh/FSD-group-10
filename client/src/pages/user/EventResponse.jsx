@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import "../../css/event-response.css";
+import "../../css/event/event-response.css";
 import { Link } from "react-router-dom";
 
 export default function EventResponseForm() {
@@ -68,7 +68,10 @@ export default function EventResponseForm() {
                     </div>
                     <div className="form-buttons">
                         <Link to="/attend/:id">
-                            <button className="btn-attend" onClick={handleAttend}>
+                            <button
+                                className="btn-attend"
+                                onClick={handleAttend}
+                            >
                                 I want to attend the event
                             </button>
                         </Link>

@@ -17,20 +17,22 @@ export default function ForgotPasswordUser() {
                     <img src={logo} alt="App logo" className="logo" />
                 </Link>
             </div>
-
+            <div className="forgot-password-field">
             <h3>Enter your username (your registered email) to get your password reset link</h3>
-             
-            <form className="forgot-password-form" onSubmit={handleInput}>
-                <input
-                    id="forgot-password-email-input"
-                    className="form-control"
-                    type="text"
-                    placeholder="Email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </form>
+                <form className="forgot-password-form" onSubmit={handleInput}>
+                    <input
+                        id="forgot-password-email-input"
+                        className="form-control"
+                        type="text"
+                        placeholder="Email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button type="submit">Submit</button>
+                </form>
+                <Link to="/reset-password-user">Reset password</Link>
+            </div>
         </div>
     );
 }

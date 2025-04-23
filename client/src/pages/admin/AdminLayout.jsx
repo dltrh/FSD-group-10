@@ -1,10 +1,10 @@
 import React from "react";
-import "../../css/admin.css";
+import "../../css/admin/admin.css";
 import { Outlet, Router } from "react-router-dom";
 
 // Components
-import Sidebar from "../../components/AdminSidebar";
-import AdminHeader from "../../components/AdminHeader";
+import Sidebar from "../../components/admin/AdminSidebar";
+import AdminHeader from "../../components/admin/AdminHeader";
 
 // Pages
 import Dashboard from "./Dashboard";
@@ -15,7 +15,7 @@ export default function AdminLayout() {
     return (
         <div className="app">
             <Sidebar />
-            <div className="main-content">
+            <div className="admin-main-content">
                 <AdminHeader />
                 <Outlet />
             </div>

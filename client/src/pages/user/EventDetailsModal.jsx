@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useRef } from "react";
 
 import { useParams } from "react-router-dom";
-import "../../css/event-details-modal.css";
-import DiscussionList from "../../components/DiscussionList.jsx";
+import "../../css/event/event-details-modal.css";
+import DiscussionList from "../../components/discussion/DiscussionList.jsx";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
 
@@ -43,14 +43,17 @@ const EventDetailsModal = () => {
     };
 
     const discussionRef = useRef(null);
-    
+
     const handleScrollToDiscussion = () => {
         const element = document.getElementById("discussion-grid");
         const yOffset = -148; // Adjust based on your sticky header height
         const y =
             element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-        discussionRef.current?.scrollIntoView({ behavior: "smooth" , box: "start"});
+        discussionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            box: "start",
+        });
     };
 
     return (
@@ -146,7 +149,11 @@ const EventDetailsModal = () => {
                     ))}
                 </section>
 
-                <div className="discussion-grid" id="discussion-grid" ref={discussionRef}>
+                <div
+                    className="discussion-grid"
+                    id="discussion-grid"
+                    ref={discussionRef}
+                >
                     <DiscussionList />
                 </div>
             </div>

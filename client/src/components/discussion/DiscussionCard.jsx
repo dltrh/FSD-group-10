@@ -1,10 +1,7 @@
 import React from "react";
-import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import "../css/discussion.css";
+import "../../css/discussion/discussion.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { getRelativeTime } from "../utils/timeUtils";
+import { getRelativeTime } from "../../utils/timeUtils";
 
 export default function DiscussionCard({ discussion }) {
     const relativeTime = getRelativeTime(discussion.time);
@@ -12,7 +9,7 @@ export default function DiscussionCard({ discussion }) {
         <>
             <div className="discussion-card-container">
                 <div className="discussion-card-header">
-                    <h3>{discussion.topic}</h3>
+                    <h3 className="discussion-topic">{discussion.topic}</h3>
                     <div>
                         <p className="discussion-time">🕒 {relativeTime}</p>
                     </div>

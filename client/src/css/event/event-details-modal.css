@@ -43,6 +43,11 @@
     margin-bottom: 30px;
 }
 
+.event-buttons button {
+    height: 40px;
+    font-size: 17px;
+}
+
 .finish-button {
     background: #ba3a2e;
     color: white;

@@ -1,14 +1,3 @@
-/* Reset body and html
-html,
-body,
-#root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-} */
-
-/* main app styling */
 .app {
     display: flex;
     height: 100vh;
@@ -19,7 +8,7 @@ body,
     height: 80px;
 }
 
-.main-content {
+.admin-main-content {
     flex-grow: 1;
     background: #fefefe;
 }
@@ -111,23 +100,36 @@ body,
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 6px;
 }
 
 /* Table Styling */
-table {
+.admin-events table, .admin-users table {
     margin: 1rem;
     width: 90%;
     border-collapse: collapse;
 }
 
-th,
-td {
+.admin-events th, .admin-users th,
+.admin-events td, .admin-users td {
     border: 1px solid #333;
     padding: 0.5rem;
     text-align: left;
 }
 
-.btn-group {
-    display: flex;
+.admin-btn-group {
+    /* display: flex; */
     gap: 0.5rem;
+}
+
+.admin-btn-group button {
+    margin: 10px;
+    padding: 10px;
+    width: 40%;
+    font-size: 1rem;
+    background-color: #e3e3e3;
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
 }
