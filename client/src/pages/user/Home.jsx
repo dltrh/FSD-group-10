@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../../css/Home.css";
+import "../../css/home.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import HomeCover from "../../components/HomeCover";
