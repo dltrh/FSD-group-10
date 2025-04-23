@@ -57,9 +57,8 @@ const notifications = [
         user_ud: 2,
         sent_at: "25/07/2025",
         message: "Your RSVP has been confirmed.",
-    }
+    },
 ];
-
 
 export default function Header() {
     // Search bar
@@ -115,18 +114,25 @@ export default function Header() {
                             <button id="btn-create-event">Create Event</button>
                         </Link>
                     </li>
-                    <li ref={notificationDropdownRef} className="notification-container">
-                        <Link onClick={() => setNotificationOpen(!notificationOpen)}>
+                    <li
+                        ref={notificationDropdownRef}
+                        className="notification-container"
+                    >
+                        <Link
+                            onClick={() =>
+                                setNotificationOpen(!notificationOpen)
+                            }
+                        >
                             Notifications
                         </Link>
-                        
+
                         <NotificationDropdown
                             notifications={notifications}
                             isOpen={notificationOpen}
                         />
                     </li>
                     <li>
-                        <Link to="/contact">Contact</Link>
+                        <Link to="/contacts">Contacts</Link>
                     </li>
                     <li className="profile-container">
                         <img
@@ -136,8 +142,12 @@ export default function Header() {
                         />
                         <div className="profile-dropdown">
                             <button>Account</button>
-                            <button>Saved</button>
-                            <Link to="/:user-id/my-events"><button>My events</button></Link>
+                            <Link to="/:user-id/saved-events">
+                                <button>Saved events</button>
+                            </Link>
+                            <Link to="/:user-id/my-events">
+                                <button>My events</button>
+                            </Link>
                             <Link to="/">
                                 <button>Logout</button>
                             </Link>

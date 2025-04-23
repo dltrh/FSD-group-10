@@ -46,3 +46,24 @@
 .event-image {
     height: 300px;
 }
+
+.event-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.save-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.save-button:hover {
+    transform: scale(1.1);
+}
+
+.save-button.active {
+    color: #ae312f;
+}

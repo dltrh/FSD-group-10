@@ -5,6 +5,7 @@ import Register from "../pages/shared/Register";
 import Welcome from "../pages/shared/Welcome";
 import ForgotPasswordUser from "../pages/shared/ForgotPasswordUser";
 import ResetPasswordUser from "../pages/shared/ResetPasswordUser";
+import Contacts from "../pages/shared/Contacts";
 
 export const SharedRoutes = [
     {
@@ -35,6 +36,11 @@ export const SharedRoutes = [
     {
         path: "/reset-password-user",
         element: <ResetPasswordUser />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/contacts",
+        element: <Contacts />,
         errorElement: <Placeholder />,
     },
 ];

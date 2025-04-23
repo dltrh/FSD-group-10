@@ -9,6 +9,7 @@ import EventDetailsModal from "../pages/user/EventDetailsModal";
 import EventResponse from "../pages/user/EventResponse";
 import AcceptEvent from "../pages/user/AcceptEvent";
 import MyEvents from "../pages/user/MyEvents";
+import SavedEvents from "../pages/user/SavedEvents";
 
 export const UserRoutes = [
     {
@@ -59,6 +60,11 @@ export const UserRoutes = [
     {
         path: "/:user-id/my-events",
         element: <MyEvents />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/:user-id/saved-events",
+        element: <SavedEvents />,
         errorElement: <Placeholder />,
     },
 ];

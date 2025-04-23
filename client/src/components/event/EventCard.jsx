@@ -1,14 +1,29 @@
-import { getRelativeTime } from "../../utils/timeUtils";
+import { useSavedEvents } from "../../context/EventsContext.jsx";
+import { FaHeart } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
 import "../../css/event/event-card.css";
 import placeholder from "../../assets/home/placeholder.jpg";
 
 export default function EventCard({ event }) {
-    // const relativeTime = getRelativeTime(event.time);
+    const { toggleSaveEvent, isEventSaved } = useSavedEvents();
+    const isSaved = isEventSaved(event.id);
     return (
         <>
             <div className="event-card-container">
                 <div className="event-card-header">
-                    <h3 className="event-title">{event.title}</h3>
+                    <div className="event-header-top">
+                        <h3 className="event-title">{event.title}</h3>
+                        <button
+                            className={`save-button ${isSaved ? "active" : ""}`}
+                            onClick={() => toggleSaveEvent(event)}
+                        >
+                            {isSaved ? (
+                                <FaHeart color="ae312f" size={25} />
+                            ) : (
+                                <FiHeart color="black" size={25} />
+                            )} 
+                        </button>
+                    </div>
                     <div>
                         <p className="event-time">🕒 {event.timeStart}</p>
                     </div>
