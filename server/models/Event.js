@@ -1,24 +1,26 @@
-module.exports = (sequelize, DataTypes) => {
-    const Event = sequelize.define("Event", {
-        eventId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        organizerId: { type: DataTypes.INTEGER },
-        title: DataTypes.STRING,
-        description: DataTypes.TEXT,
-        timeStart: DataTypes.DATE,
-        timeEnd: DataTypes.DATE,
-        eventType: DataTypes.STRING,
-        eventTheme: DataTypes.STRING,
-        budget: DataTypes.DECIMAL(10, 2),
-        location: DataTypes.STRING,
-        maxPpl: DataTypes.INTEGER,
-        attendeesList: DataTypes.TEXT,
-        canBring: DataTypes.BOOLEAN,
-        gifts: DataTypes.TEXT
-    }, { tableName: 'Event', timestamps: false });
+const mongoose = require('mongoose');
 
-    Event.associate = models => {
-        Event.belongsTo(models.User, { foreignKey: 'organizerId' });
-    };
+const eventSchema = new mongoose.Schema({
+    organizerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    title: String,
+    description: String,
+    timeStart: Date,
+    timeEnd: Date,
+    eventType: String,
+    eventTheme: String,
+    budget: mongoose.Types.Decimal128,
+    location: String,
+    maxPpl: Number,
+    attendeesList: String,
+    canBring: Boolean,
+    gifts: String
+}, {
+    collection: 'Event',
+    timestamps: false
+});
 
-    return Event;
-};
+module.exports = mongoose.model('Event', eventSchema);

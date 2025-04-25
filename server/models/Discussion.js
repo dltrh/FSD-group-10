@@ -1,11 +1,27 @@
-module.exports = (sequelize, DataTypes) => {
-    const Discussion = sequelize.define("Discussion", {
-        discussId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        userId: DataTypes.INTEGER,
-        eventId: DataTypes.INTEGER,
-        content: DataTypes.TEXT,
-        createdAt: DataTypes.DATE
-    }, { tableName: 'Discussion', timestamps: false });
+const mongoose = require('mongoose');
 
-    return Discussion;
-};
+const discussionSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    eventId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    collection: 'Discussion',
+    timestamps: false
+});
+
+module.exports = mongoose.model('Discussion', discussionSchema);

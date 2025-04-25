@@ -1,8 +1,19 @@
-module.exports = (sequelize, DataTypes) => {
-    const AttendList = sequelize.define("AttendList", {
-        userId: { type: DataTypes.INTEGER, primaryKey: true },
-        eventId: { type: DataTypes.INTEGER, primaryKey: true }
-    }, { tableName: 'AttendList', timestamps: false });
+const mongoose = require('mongoose');
 
-    return AttendList;
-};
+const attendListSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    eventId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true
+    }
+}, {
+    collection: 'AttendList',
+    timestamps: false
+});
+
+module.exports = mongoose.model('AttendList', attendListSchema);

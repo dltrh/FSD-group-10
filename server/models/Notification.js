@@ -1,12 +1,33 @@
-module.exports = (sequelize, DataTypes) => {
-    const Invitation = sequelize.define("Invitation", {
-        inviteId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        organizerId: DataTypes.INTEGER,
-        receiverId: DataTypes.INTEGER,
-        eventId: DataTypes.INTEGER,
-        status: DataTypes.STRING,
-        sentAt: DataTypes.DATE
-    }, { tableName: 'Invitation', timestamps: false });
+const mongoose = require('mongoose');
 
-    return Invitation;
-};
+const invitationSchema = new mongoose.Schema({
+    organizerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    receiverId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    eventId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'declined'], // có thể tuỳ chỉnh nếu bạn dùng các trạng thái khác
+        required: true
+    },
+    sentAt: {
+        type: Date,
+        default: Date.now
+    }
+}, {
+    collection: 'Invitation',
+    timestamps: false
+});
+
+module.exports = mongoose.model('Invitation', invitationSchema);

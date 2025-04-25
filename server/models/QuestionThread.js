@@ -1,9 +1,18 @@
-module.exports = (sequelize, DataTypes) => {
-    const QuestionThread = sequelize.define("QuestionThread", {
-        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        discussId: DataTypes.INTEGER,
-        questionContent: DataTypes.TEXT
-    }, { tableName: 'QuestionThread', timestamps: false });
+const mongoose = require('mongoose');
 
-    return QuestionThread;
-};
+const questionThreadSchema = new mongoose.Schema({
+    discussId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Discussion',
+        required: true
+    },
+    questionContent: {
+        type: String,
+        required: true
+    }
+}, {
+    collection: 'QuestionThread',
+    timestamps: false
+});
+
+module.exports = mongoose.model('QuestionThread', questionThreadSchema);

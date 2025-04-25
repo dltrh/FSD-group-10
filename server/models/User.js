@@ -1,13 +1,18 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define("User", {
-        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-        email: { type: DataTypes.STRING, unique: true, allowNull: false },
-        password: { type: DataTypes.STRING, allowNull: false },
-    }, { tableName: 'User', timestamps: false });
+const mongoose = require('mongoose');
 
-    User.associate = models => {
-        User.hasMany(models.Event, { foreignKey: 'organizerId' });
-    };
+const userSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        unique: true,
+        required: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+}, {
+    collection: 'User',
+    timestamps: false,
+});
 
-    return User;
-};
+module.exports = mongoose.model('User', userSchema);
