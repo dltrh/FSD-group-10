@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const dotenv = require('dotenv');
-const connectDB = require('./config/database');
+const connectDB = require('./src/config/database');
 
 const app = express();
 require('dotenv').config();
