@@ -2,17 +2,49 @@ import logo from "../../assets/logo.png";
 import "../../css/login-register.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginAdmin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-    const handleInput = (e) => {
+    const handleInput = async (e) => {
         e.preventDefault();
-        alert(`Email: ${email}\nPassword: ${password}`);
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: email, password })
+            });
+
+            let data = {};
+            try {
+                data = await response.json();
+            } catch (error) {
+                console.error("Không parse được JSON:", error);
+            }
+
+            if (response.ok) {
+                if (data.isAdmin) {
+                    window.location.href = "/admin/dashboard";
+                } else {
+                    window.location.href = "/user/home";
+                }
+            } else {
+                alert(data.message || "Login failed");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Something went wrong during login");
+        }
+
         setEmail("");
         setPassword("");
     };
+
+
     return (
         <div className="login-page">
             <div className="login-header">

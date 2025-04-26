@@ -22,28 +22,34 @@ exports.register = async (req, res) => {
 
 //login section 
 exports.login = async (req, res) => {
+    console.log("Body received:", req.body);
+
     const error = validateLogin(req.body);
     if (error)
         return res.status(400).json({ message: error });
 
     const { username, password } = req.body;
     const user = users.find(user => user.username === username);
+    console.log("User found:", user);
+
     if (!user)
         return res.status(400).json({ message: 'User not found' });
 
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", isMatch);
+
     if (!isMatch)
         return res.status(401).json({ message: 'Invalid credentials' });
 
-    // Save both username and isAdmin to session
     req.session.user = { username: user.username, isAdmin: user.isAdmin };
-    // Redirect based on role condition
-    if (user.isAdmin) {
-        return res.redirect('/admin/dashboard'); //admin dashboard for admin role
-    } else {
-        return res.redirect('/user/home'); // home page for others
-    }
+
+    return res.json({
+        message: "Login successful",
+        isAdmin: user.isAdmin,
+        username: user.username
+    });
 };
+
 
 //logout section
 exports.logout = (req, res) => {
