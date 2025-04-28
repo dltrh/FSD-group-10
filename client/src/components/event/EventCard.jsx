@@ -6,7 +6,7 @@ import placeholder from "../../assets/home/placeholder.jpg";
 
 export default function EventCard({ event }) {
     const { toggleSaveEvent, isEventSaved } = useSavedEvents();
-    const isSaved = isEventSaved(event.id);
+    const isSaved = isEventSaved(event.eventId);
     return (
         <>
             <div className="event-card-container">
@@ -16,16 +16,18 @@ export default function EventCard({ event }) {
                         <button
                             className={`save-button ${isSaved ? "active" : ""}`}
                             onClick={() => toggleSaveEvent(event)}
-                        >
+                        >   
                             {isSaved ? (
                                 <FaHeart color="ae312f" size={25} />
                             ) : (
                                 <FiHeart color="black" size={25} />
                             )} 
+                            
                         </button>
+        
                     </div>
                     <div>
-                        <p className="event-time">🕒 {event.timeStart}</p>
+                        <p className="event-time">🕒 {new Date(event.timeStart).toLocaleString()}</p>
                     </div>
                     <hr className="event-card-divider" />
                 </div>
@@ -38,6 +40,12 @@ export default function EventCard({ event }) {
                 </div>
                 <div className="event-card-body">
                     <p className="event-description">{event.description}</p>
+                    <p className="event-description">
+                        Budget: ${event.budget}
+                    </p>
+                    <p className="event-description">
+                        Location: {event.location}
+                    </p>
                 </div>
             </div>
         </>

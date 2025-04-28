@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EventCard from "./EventCard";
 import "../../css/event/event-list.css";
 
@@ -6,7 +6,9 @@ const themes = ["Wedding", "Birthday", "Corporate", "Festival"];
 const statuses = ["Upcoming", "Completed", "Cancelled"];
 const locations = ["Ha Noi", "Ho Chi Minh", "Da Nang", "Hue"];
 
-export default function EventList( {events} ) {
+export default function EventList(  ) {
+    const [events, setEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [search, setSearch] = useState("");
     const [selectedTheme, setSelectedTheme] = useState("");
@@ -14,6 +16,52 @@ export default function EventList( {events} ) {
     const [budget, setBudget] = useState(50);
     const [selectedLocations, setSelectedLocations] = useState([]);
     const [sortOption, setSortOption] = useState("Newest");
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/events');
+                const data = await response.json();
+                setEvents(data);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    useEffect(() => {
+        let result = [...events];
+
+        if (search) {
+            const query = search.toLowerCase();
+            result = result.filter(
+                (event) =>
+                    (event.title && event.title.toLowerCase().includes(query)) ||
+                    (event.description && event.description.toLowerCase().includes(query))
+            );
+        }
+
+        // Apply sorting
+        if (sortOption === "Newest") {
+            result.sort((a, b) => new Date(b.timeStart) - new Date(a.timeStart));
+        } else if (sortOption === "Oldest") {
+            result.sort((a, b) => new Date(a.timeStart) - new Date(b.timeStart));
+        } else if (sortOption === "Price: Low to High") {
+            result.sort((a, b) => (a.budget || 0) - (b.budget || 0));
+        } else if (sortOption === "Price: High to Low") {
+            result.sort((a, b) => (b.budget || 0) - (a.budget || 0));
+        }
+
+        setFilteredEvents(result);
+    }, [search, events, budget, sortOption]);
+
+
+    // Handle search input changes
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
 
     const toggleStatus = (status) => {
         setSelectedStatuses((prev) =>
@@ -30,18 +78,7 @@ export default function EventList( {events} ) {
                 : [...prev, location]
         );
     };
-    const handleSearch = () => {
-        const query = search.toLowerCase();
-
-        const results = events.filter(
-            (event) =>
-                event.title.toLowerCase().includes(query) ||
-                event.host.toLowerCase().includes(query) ||
-                event.venue.toLowerCase().includes(query)
-        );
-
-        setFilteredEvents(results);
-    };
+   
 
     return (
         <div className="event-list-overlay">
@@ -103,22 +140,21 @@ export default function EventList( {events} ) {
             <div className="main-content">
                 <div className="top-controls">
                     <div className="search-bar">
+
                         <input
                             type="text"
                             placeholder="Search by name, host, venue..."
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={handleSearchChange}
+                            
                         />
-                        <button
-                            className="search-button"
-                            onClick={handleSearch}
-                        >
-                            Search
-                        </button>
+                        <button className = "search-button"> Search</button>
+             
                     </div>
                     <div className="sort-options">
                         {[
                             "Newest",
+                            "Oldest",
                             "Price: Low to High",
                             "Price: High to Low",
                         ].map((opt) => (
@@ -135,11 +171,8 @@ export default function EventList( {events} ) {
                     </div>
                 </div>
                 <div className="event-list-container">
-                    {events.map((event) => (
-                        <div
-                            key={event.id}
-                            onClick={() => setSelectedEvent(event)}
-                        >
+                    {filteredEvents.map((event) => (
+                        <div key={event._id}>
                             <EventCard event={event} />
                         </div>
                     ))}

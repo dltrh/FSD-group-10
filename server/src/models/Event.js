@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
+    eventId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     organizerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -12,7 +17,7 @@ const eventSchema = new mongoose.Schema({
     timeEnd: Date,
     eventType: String,
     eventTheme: String,
-    budget: mongoose.Types.Decimal128,
+    budget: Number,
     location: String,
     maxPpl: Number,
     attendeesList: String,

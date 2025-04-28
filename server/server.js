@@ -5,11 +5,13 @@ const connectDB = require('./src/config/database');
 const PORT = process.env.PORT || 5000;
 const app = express();
 require('dotenv').config();
+const cors = require('cors');
 
 //Connect to MongoDB database
 connectDB();
 
 // Middlewares
+app.use(cors())
 
 // Routes
 app.use(express.json());
@@ -29,6 +31,17 @@ app.use('/api', authRoutes);
 //express initial
 app.get('/', (req, res) => {
     res.send('Hello from EventApp Server!');
+});
+
+const Event = require('./src/models/Event');
+app.get('/events', async (req, res) => {
+    try {
+        const events = await Event.find();
+        res.json(events);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 //Port
