@@ -6,19 +6,54 @@ import { Link } from "react-router-dom";
 
 export default function EventResponseForm() {
     const [eventId, setEventId] = useState("");
-    const [inviteId, setInviteId] = useState("");
-    const [email, setEmail] = useState("");
+    const [invitationId, setInvitationId] = useState("");
     const [message, setMessage] = useState("");
 
-    const handleAttend = () => {
-        // handle attend logic
-        console.log("Attending:", { eventId, inviteId, email, message });
+    const Status = {
+        ACCEPTED: "Accepted",
+        DECLINED: "Declined",
+        PENDING: "Pending",
     };
 
-    const handleDecline = () => {
-        // handle decline logic
-        console.log("Declining:", { eventId, inviteId, email, message });
+    const handleEventResponse = async (status) => {
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/invitations",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        invitationId,
+                        eventId,
+                        status, // 'accepted' or 'declined'
+                        message,
+                    }),
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to submit your reponse!");
+            }
+
+            const data = await response.json();
+            console.log("Response saved:", data);
+            alert(
+                `You have successfully ${
+                    status === Status.ACCEPTED
+                        ? Status.ACCEPTED
+                        : Status.DECLINED
+                } the event.`
+            );
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+        }
     };
+
+    const handleAttend = () => handleEventResponse(Status.ACCEPTED);
+    const handleDecline = () => handleEventResponse(Status.DECLINED);
 
     return (
         <div>
@@ -44,17 +79,8 @@ export default function EventResponseForm() {
                         <input
                             type="text"
                             placeholder="Your invite ID"
-                            value={inviteId}
-                            onChange={(e) => setInviteId(e.target.value)}
-                            className="form-input"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            placeholder="Your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={invitationId}
+                            onChange={(e) => setInvitationId(e.target.value)}
                             className="form-input"
                         />
                     </div>
@@ -67,7 +93,7 @@ export default function EventResponseForm() {
                         ></textarea>
                     </div>
                     <div className="form-buttons">
-                        <Link to="/attend/:id">
+                        <Link>
                             <button
                                 className="btn-attend"
                                 onClick={handleAttend}
