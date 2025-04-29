@@ -3,6 +3,7 @@ import { FaHeart } from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
 import "../../css/event/event-card.css";
 import placeholder from "../../assets/home/placeholder.jpg";
+import {formatDate, calculateEventStatus} from "../../utils/timeUtils";
 
 export default function EventCard({ event }) {
     const { toggleSaveEvent, isEventSaved } = useSavedEvents();
@@ -27,7 +28,12 @@ export default function EventCard({ event }) {
         
                     </div>
                     <div>
-                        <p className="event-time">🕒 {new Date(event.timeStart).toLocaleString()}</p>
+                        <p className="event-time">
+                            🕒 Time Start: {formatDate(event.timeStart)} <br/>
+                            🕒 Time End:  {formatDate(event.timeEnd)}  <br />
+                            ☑️  Status: {calculateEventStatus(event)}
+                        </p>
+                        
                     </div>
                     <hr className="event-card-divider" />
                 </div>
