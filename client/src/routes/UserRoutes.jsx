@@ -10,6 +10,8 @@ import EventResponse from "../pages/user/EventResponse";
 import AcceptEvent from "../pages/user/AcceptEvent";
 import MyEvents from "../pages/user/MyEvents";
 import SavedEvents from "../pages/user/SavedEvents";
+import Invitations from "../pages/user/Invitations";
+import InvitationResponseStatus from "../pages/user/InvitationResponseStatus"
 
 export const UserRoutes = [
     {
@@ -53,6 +55,11 @@ export const UserRoutes = [
         errorElement: <Placeholder />,
     },
     {
+        path: "/response/:status",
+        element: <InvitationResponseStatus />,
+        errorElement: <Placeholder />,
+    },
+    {
         path: "/attend/:id",
         element: <AcceptEvent />,
         errorElement: <Placeholder />,
@@ -65,6 +72,11 @@ export const UserRoutes = [
     {
         path: "/:user-id/saved-events",
         element: <SavedEvents />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/:user-id/invitations",
+        element: <Invitations />,
         errorElement: <Placeholder />,
     },
 ];

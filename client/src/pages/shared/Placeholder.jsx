@@ -2,6 +2,7 @@ import boredCat from "../../assets/error/bored-cat.gif";
 import "../../css/placeholder-error.css";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header.jsx";
+import Footer from "../../components/Footer.jsx";
 export default function Placeholder() {
     return (
         <div>
@@ -36,6 +37,7 @@ export default function Placeholder() {
                     </p>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

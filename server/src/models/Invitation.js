@@ -1,32 +1,37 @@
 const mongoose = require('mongoose');
 
 const invitationSchema = new mongoose.Schema({
+    invitationId: { type: String, required: true },
     organizerId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true
     },
     receiverId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true
     },
     eventId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Event',
         required: true
     },
     status: {
         type: String,
-        enum: ['pending', 'accepted', 'declined'], // optional validation
-        default: 'pending'
+        enum: ['Pending', 'Accepted', 'Declined'],
+        default: 'Pending'
     },
     sentAt: {
         type: Date,
         default: Date.now
+    },
+    message: {
+        type: String,
+        default: ""  // Default message
     }
 }, {
-    collection: 'Invitation',
+    collection: 'Invitation',  // better naming
     timestamps: false
 });
 
