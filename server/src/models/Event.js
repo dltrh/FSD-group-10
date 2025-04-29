@@ -18,7 +18,7 @@ const eventSchema = new mongoose.Schema(
         timeEnd: { type: Date, required: true },
         eventType: String,
         eventTheme: String,
-        budget: mongoose.Types.Decimal128,
+        budget: Number,
         location: String,
         maxPpl: Number,
         attendeesList: [

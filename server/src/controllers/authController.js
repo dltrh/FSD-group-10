@@ -8,35 +8,48 @@ exports.register = async (req, res) => {
     if (error)
         return res.status(400).json({ message: error });
 
-    const { username, password } = req.body;
+    const { username, password, isAdmin = false } = req.body;
+    //check if the input information matched with existing account information
     const existingUser = users.find(user => user.username === username);
     if (existingUser)
         return res.status(400).json({ message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    users.push({ username, password: hashedPassword });
+    users.push({ username, password: hashedPassword, isAdmin });
     ~
         res.status(201).json({ message: 'User registered successfully' });
 };
 
 //login section 
 exports.login = async (req, res) => {
+    console.log("Body received:", req.body);
+
     const error = validateLogin(req.body);
     if (error)
         return res.status(400).json({ message: error });
 
     const { username, password } = req.body;
     const user = users.find(user => user.username === username);
+    console.log("User found:", user);
+
     if (!user)
         return res.status(400).json({ message: 'User not found' });
 
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", isMatch);
+
     if (!isMatch)
         return res.status(401).json({ message: 'Invalid credentials' });
 
-    req.session.user = { username };
-    res.json({ message: 'Login successful' });
+    req.session.user = { username: user.username, isAdmin: user.isAdmin };
+
+    return res.json({
+        message: "Login successful",
+        isAdmin: user.isAdmin,
+        username: user.username
+    });
 };
+
 
 //logout section
 exports.logout = (req, res) => {

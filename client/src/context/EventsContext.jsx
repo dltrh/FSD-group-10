@@ -17,14 +17,14 @@ export function SavedEventsProvider({ children }) {
 
     const toggleSaveEvent = (event) => {
         setSavedEvents((prev) =>
-            prev.find((e) => e.id === event.id)
-                ? prev.filter((e) => e.id !== event.id)
+            prev.find((e) => e.eventId === event.eventId)
+                ? prev.filter((e) => e.eventId !== event.eventId)
                 : [...prev, event]
         );
     };
 
     const isEventSaved = (eventId) =>
-        savedEvents.some((event) => event.id === eventId);
+        savedEvents.some((event) => event.eventId === eventId);
 
     const value = { savedEvents, toggleSaveEvent, isEventSaved };
 
