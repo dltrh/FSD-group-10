@@ -145,6 +145,9 @@ export default function Header() {
                             <Link to="/:user-id/saved-events">
                                 <button>Saved events</button>
                             </Link>
+                            <Link to="/:user-id/invitations">
+                                <button>My invitations</button>
+                            </Link>
                             <Link to="/:user-id/my-events">
                                 <button>My events</button>
                             </Link>
