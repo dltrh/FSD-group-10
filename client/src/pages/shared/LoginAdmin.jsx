@@ -8,33 +8,50 @@ export default function LoginAdmin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     const handleInput = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch(`${baseURL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: email, password })
+                body: JSON.stringify({ email, password })
             });
 
-            let data = {};
-            try {
+            const contentType = response.headers.get("content-type");
+            let data = null;
+
+            // Nếu có JSON, thì parse
+            if (contentType && contentType.includes("application/json")) {
                 data = await response.json();
-            } catch (error) {
-                console.error("Không parse được JSON:", error);
             }
 
-            if (response.ok) {
+            if (!response.ok) {
+                const errorMsg = (data && data.message) || "Login failed";
+                alert(errorMsg);
+                return;
+            }
+
+            // Khi response ok và data tồn tại
+            if (data) {
+                // Lưu user vào localStorage
+                localStorage.setItem("user", JSON.stringify({
+                    email: data.email,
+                    isAdmin: data.isAdmin
+                }));
+
+                // Điều hướng theo quyền
                 if (data.isAdmin) {
-                    window.location.href = "/admin/dashboard";
+                    navigate("/admin/dashboard");
                 } else {
-                    window.location.href = "/user/home";
+                    navigate("/user/home");
                 }
             } else {
-                alert(data.message || "Login failed");
+                alert("Unexpected server response");
             }
+
         } catch (error) {
             console.error("Login error:", error);
             alert("Something went wrong during login");
@@ -43,6 +60,7 @@ export default function LoginAdmin() {
         setEmail("");
         setPassword("");
     };
+
 
 
     return (

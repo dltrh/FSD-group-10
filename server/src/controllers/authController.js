@@ -1,26 +1,36 @@
 const bcrypt = require('bcrypt');
 const { validateRegister, validateLogin } = require('../utils/validators');
+const User = require('../models/User'); // Import model MongoDB
 
-
-//register section
+// REGISTER
 exports.register = async (req, res) => {
     const error = validateRegister(req.body);
     if (error)
         return res.status(400).json({ message: error });
 
-    const { username, password, isAdmin = false } = req.body;
-    //check if the input information matched with existing account information
-    const existingUser = users.find(user => user.username === username);
-    if (existingUser)
-        return res.status(400).json({ message: 'User already exists' });
+    const { email, password, isAdmin = false } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    users.push({ username, password: hashedPassword, isAdmin });
-    ~
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser)
+            return res.status(400).json({ message: 'User already exists' });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({
+            email,
+            password: hashedPassword,
+            isAdmin
+        });
+
+        await newUser.save();
         res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        console.error("Register error:", err);
+        res.status(500).json({ message: 'Server error during registration' });
+    }
 };
 
-//login section 
+// LOGIN
 exports.login = async (req, res) => {
     console.log("Body received:", req.body);
 
@@ -28,34 +38,50 @@ exports.login = async (req, res) => {
     if (error)
         return res.status(400).json({ message: error });
 
-    const { username, password } = req.body;
-    const user = users.find(user => user.username === username);
-    console.log("User found:", user);
+    const { email, password } = req.body;
 
-    if (!user)
-        return res.status(400).json({ message: 'User not found' });
+    try {
+        const user = await User.findOne({ email });
+        console.log("User found:", user);
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Password match:", isMatch);
+        if (!user)
+            return res.status(400).json({ message: 'User not found' });
 
-    if (!isMatch)
-        return res.status(401).json({ message: 'Invalid credentials' });
+        const isMatch = await bcrypt.compare(password, user.password);
+        console.log("Password match:", isMatch);
 
-    req.session.user = { username: user.username, isAdmin: user.isAdmin };
+        // For Test only
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-    return res.json({
-        message: "Login successful",
-        isAdmin: user.isAdmin,
-        username: user.username
-    });
+        // if (!isMatch)
+        //     return res.status(401).json({ message: 'Invalid credentials' });
+
+        // Set session
+        req.session.user = {
+            email: user.email,
+            isAdmin: user.isAdmin
+        };
+
+        return res.json({
+            message: "Login successful",
+            isAdmin: user.isAdmin,
+            email: user.email
+        });
+
+    } catch (err) {
+        console.error("Login error:", err);
+        res.status(500).json({ message: 'Server error during login' });
+    }
 };
 
-
-//logout section
+// LOGOUT
 exports.logout = (req, res) => {
     req.session.destroy(err => {
         if (err)
             return res.status(500).json({ message: 'Logout failed' });
+
         res.clearCookie('connect.sid');
         res.json({ message: 'Logged out' });
     });
