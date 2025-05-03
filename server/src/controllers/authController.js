@@ -8,9 +8,9 @@ exports.register = async (req, res) => {
     if (error)
         return res.status(400).json({ message: error });
 
-    const { email, password, isAdmin = false, firstname, lastname, phone } = req.body;
-    const fullname = `${firstname} ${lastname}`;
-    const userId = `user_${Date.now()}`;
+    const { email, password, isAdmin = false, fullname, phone, userId } = req.body;
+    // const fullname = `${firstname} ${lastname}`;
+    // const userId = `user_${Date.now()}`;
 
     try {
         const existingUser = await User.findOne({ email });
