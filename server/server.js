@@ -28,6 +28,10 @@ app.use(session({
 const authRoutes = require('./src/routes/authRoutes');
 app.use('/api', authRoutes);
 
+// DevRoutes
+const devRoutes = require('./src/routes/devRoutes');
+app.use('/dev', devRoutes);
+
 //express initial
 app.get('/', (req, res) => {
     res.send('Hello from EventApp Server!');

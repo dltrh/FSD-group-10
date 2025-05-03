@@ -1,24 +1,62 @@
 import logo from "../../assets/logo.png";
 import "../../css/login-register.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Register() {
+    const navigate = useNavigate();
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-    const handleInput = (e) => {
+    const handleInput = async (e) => {
         e.preventDefault();
-        alert(`Email: ${email}\nPassword: ${password}`);
-        setEmail("");
-        setPassword("");
-        setFirstname("");
-        setLastname("");
-        setPhone("");
+
+        const fullname = `${firstname} ${lastname}`;
+        const userId = `user_${Date.now()}`;
+
+        const payload = {
+            email,
+            password,
+            phone,
+            fullname,
+            userId
+        };
+
+        try {
+            const response = await fetch(`${baseURL}/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(`Error: ${data.message}`);
+            } else {
+                alert("Registration successful!");
+                // Reset fields
+                setEmail("");
+                setPassword("");
+                setFirstname("");
+                setLastname("");
+                setPhone("");
+
+                //Redirect to login page if registering success
+                navigate("/login-user")
+            }
+        } catch (error) {
+            console.error("Registration error:", error);
+            alert("An error occurred during registration.");
+        }
     };
+
     return (
         <div className="register-page">
             <div className="register-header">
@@ -36,12 +74,18 @@ export default function Register() {
                         className="form-control"
                         type="text"
                         placeholder="First name *"
+                        required
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
                     />
                     <input
                         id="last-name-input"
                         className="form-control"
                         type="text"
                         placeholder="Last name *"
+                        required
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
                     />
                 </div>
                 <input
@@ -67,6 +111,9 @@ export default function Register() {
                     id="formPhoneNumber"
                     className="form-control"
                     placeholder="Phone number *"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                 />
                 <div className="buttons">
                     <Link to="/">

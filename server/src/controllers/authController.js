@@ -8,7 +8,9 @@ exports.register = async (req, res) => {
     if (error)
         return res.status(400).json({ message: error });
 
-    const { email, password, isAdmin = false } = req.body;
+    const { email, password, isAdmin = false, firstname, lastname, phone } = req.body;
+    const fullname = `${firstname} ${lastname}`;
+    const userId = `user_${Date.now()}`;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -19,7 +21,10 @@ exports.register = async (req, res) => {
         const newUser = new User({
             email,
             password: hashedPassword,
-            isAdmin
+            isAdmin,
+            fullname,
+            phone,
+            userId
         });
 
         await newUser.save();
@@ -51,12 +56,12 @@ exports.login = async (req, res) => {
         console.log("Password match:", isMatch);
 
         // For Test only
-        if (user.password !== password) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        // if (!isMatch)
+        // if (user.password !== password) {
         //     return res.status(401).json({ message: 'Invalid credentials' });
+        // }
+
+        if (!isMatch)
+            return res.status(401).json({ message: 'Invalid credentials' });
 
         // Set session
         req.session.user = {

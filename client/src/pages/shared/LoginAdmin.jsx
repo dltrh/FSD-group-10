@@ -23,18 +23,19 @@ export default function LoginAdmin() {
             const contentType = response.headers.get("content-type");
             let data = null;
 
-            // Nếu có JSON, thì parse
+            // if received JSON file, then parse
             if (contentType && contentType.includes("application/json")) {
                 data = await response.json();
             }
 
+            //check response
             if (!response.ok) {
                 const errorMsg = (data && data.message) || "Login failed";
                 alert(errorMsg);
                 return;
             }
 
-            // Khi response ok và data tồn tại
+            // if response ok and data existing
             if (data) {
                 // Lưu user vào localStorage
                 localStorage.setItem("user", JSON.stringify({
@@ -42,7 +43,7 @@ export default function LoginAdmin() {
                     isAdmin: data.isAdmin
                 }));
 
-                // Điều hướng theo quyền
+                // Direct to authorized page based on the isAdmin attribute
                 if (data.isAdmin) {
                     navigate("/admin/dashboard");
                 } else {
