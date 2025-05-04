@@ -27,7 +27,10 @@ router.post('/create-admin', async (req, res) => {
         const newUser = new User({
             email,
             password: hashedPassword,
-            isAdmin: true
+            isAdmin: true,
+            fullname: 'Admin',
+            phone: '00000000',
+            userId: `admin_${Date.now()}`
         });
 
         // save into database
