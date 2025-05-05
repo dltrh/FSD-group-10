@@ -9,6 +9,7 @@ const eventRoutes = require("./src/routes/eventRoutes");
 const invitationRoutes = require("./src/routes/invitationRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
+const devRoutes = require("./src/routes/devRoutes");
 
 const app = express();
 dotenv.config();
@@ -19,14 +20,11 @@ connectDB();
 console.log(process.env.MONGODB_URI);
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // React frontend origin
+    credentials: true
+}));
 app.use(express.json());
-
-// Routes
-app.use("/api", authRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/invitations", invsitationRoutes);
-app.use("/api/users", userRoutes);
 
 // Session
 app.use(
@@ -38,12 +36,16 @@ app.use(
     })
 );
 
+// Routes
+app.use("/api", authRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/invitations", invitationRoutes);
+app.use("/api/users", userRoutes);
+
 // AuthRoutes
-const authRoutes = require("./src/routes/authRoutes");
 app.use("/api", authRoutes);
 
 // DevRoutes
-const devRoutes = require("./src/routes/devRoutes");
 app.use("/dev", devRoutes);
 
 //express initial
