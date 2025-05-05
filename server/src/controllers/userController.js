@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const getUserByID = async (req, res) => {
+exports.getUserByID = async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findOne({ userId: userId });
@@ -12,5 +12,3 @@ const getUserByID = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
-module.exports = { getUserByID };

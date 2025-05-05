@@ -34,7 +34,7 @@ const EventDetailsModal = () => {
     useEffect(() => {
     const fetchEvent = async () => {
         try {
-            const response = await fetch('http://localhost:5000/events');
+            const response = await fetch('http://localhost:5000/api/events');
             if (!response.ok) throw new Error("Event not found");
 
             const data = await response.json();
@@ -109,7 +109,7 @@ const EventDetailsModal = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/events/${eventId}`, {
+            const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

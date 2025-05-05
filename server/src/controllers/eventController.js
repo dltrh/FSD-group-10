@@ -1,6 +1,6 @@
 const Event = require("../models/Event.js");
 
-const getAllEvents = async (req, res) => {
+exports.getAllEvents = async (req, res) => {
     try {
         const events = await Event.find();
         if (!events) {
@@ -12,7 +12,7 @@ const getAllEvents = async (req, res) => {
     }
 };
 
-const getEventById = async (req, res) => {
+exports.getEventById = async (req, res) => {
     try {
         const event = await Event.findOne({ eventId: req.params.eventId });
         if (!event) return res.status(404).json({ error: "Event not found" });
@@ -23,4 +23,24 @@ const getEventById = async (req, res) => {
     }
 };
 
-module.exports = { getAllEvents, getEventById };
+exports.updateEvent = async (req, res) => {
+    const { id } = req.params; // This is your eventId like "event_000006"
+    const { maxPpl, timeStart, location } = req.body;
+
+    try {
+        const updatedEvent = await Event.findOneAndUpdate(
+            { eventId: id },
+            { maxPpl, timeStart, location },
+            { new: true }
+        );
+
+        if (!updatedEvent) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        res.json(updatedEvent);
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({ error: "Failed to update event" });
+    }
+};

@@ -69,6 +69,14 @@ exports.login = async (req, res) => {
             isAdmin: user.isAdmin
         };
 
+        // Set cookie 
+        res.cookie('token', token, {
+            maxAge: 1000 * 60 * 60 * 24, // 1 day
+            httpOnly: true,
+            secure: false, // Set to true if using HTTPS
+            sameSite: 'Lax' 
+        });
+
         return res.json({
             message: "Login successful",
             isAdmin: user.isAdmin,

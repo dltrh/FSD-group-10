@@ -29,7 +29,7 @@ const eventSchema = new mongoose.Schema(
         ],
         canBring: Boolean,
         isPublic: { type: Boolean, required: true },
-        gifts: String,
+        gifts: String
     },
     {
         collection: "Event",

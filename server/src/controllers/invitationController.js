@@ -1,6 +1,6 @@
 const Invitation = require("../models/Invitation.js");
 
-const getInvitationById = async (req, res) => {
+exports.getInvitationById = async (req, res) => {
     try {
         const { id } = req.params;
         const invitation = await Invitation.findOne({ invitationId: id });
@@ -13,7 +13,7 @@ const getInvitationById = async (req, res) => {
     }
 };
 
-const getInvitationByEventId = async (req, res) => {
+exports.getInvitationByEventId = async (req, res) => {
     try {
         const { eventId } = req.params;
         const invitation = await Invitation.findOne({ eventId: eventId });
@@ -26,7 +26,7 @@ const getInvitationByEventId = async (req, res) => {
     }
 };
 
-const getAllInvitations = async (req, res) => {
+exports.getAllInvitations = async (req, res) => {
     try {
         const invitations = await Invitation.find();
         res.json(invitations);
@@ -35,7 +35,7 @@ const getAllInvitations = async (req, res) => {
     }
 };
 
-const updateInvitationStatus = async (req, res) => {
+exports.updateInvitationStatus = async (req, res) => {
     const { invitationId, eventId, status, message } = req.body;
 
     if (!invitationId || !eventId || !status) { 
@@ -63,12 +63,4 @@ const updateInvitationStatus = async (req, res) => {
         console.error("Error updating invitation:", err);
         res.status(500).json({ error: "Server error" });
     }
-};
-
-
-module.exports = {
-    getInvitationById,
-    getAllInvitations,
-    updateInvitationStatus,
-    getInvitationByEventId
 };
