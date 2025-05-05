@@ -44,6 +44,30 @@ app.get('/events', async (req, res) => {
     }
 });
 
+app.put('/events/:id', async (req, res) => {
+    const { id } = req.params; // This is your eventId like "event_000006"
+    const { maxPpl, timeStart, location } = req.body;
+
+    try {
+        const updatedEvent = await Event.findOneAndUpdate(
+            { eventId: id },
+            { maxPpl, timeStart, location },
+            { new: true }
+        );
+
+        if (!updatedEvent) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.json(updatedEvent);
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({ error: 'Failed to update event' });
+    }
+});
+
+
+
 //Port
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);

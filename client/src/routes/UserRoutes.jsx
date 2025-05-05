@@ -43,7 +43,7 @@ export const UserRoutes = [
         errorElement: <Placeholder />,
     },
     {
-        path: "/manage/details/:id",
+        path: "/manage/details/:eventId",
         element: <EventDetailsModal />,
         errorElement: <Placeholder />,
     },
