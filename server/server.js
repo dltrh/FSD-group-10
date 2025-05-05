@@ -25,9 +25,9 @@ app.use(express.json());
 // Routes
 app.use("/api", authRoutes);
 app.use("/api/events", eventRoutes);
-app.use("/api/invitations", invitationRoutes);
+app.use("/api/invitations", invsitationRoutes);
 app.use("/api/users", userRoutes);
-    
+
 // Session
 app.use(
     session({
@@ -37,6 +37,19 @@ app.use(
         cookie: { secure: false }, // secure: true nếu dùng HTTPS
     })
 );
+
+// AuthRoutes
+const authRoutes = require("./src/routes/authRoutes");
+app.use("/api", authRoutes);
+
+// DevRoutes
+const devRoutes = require("./src/routes/devRoutes");
+app.use("/dev", devRoutes);
+
+//express initial
+app.get("/", (req, res) => {
+    res.send("Hello from EventApp Server!");
+});
 
 const Event = require("./src/models/Event");
 app.get("/events", async (req, res) => {

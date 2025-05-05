@@ -1,18 +1,44 @@
 import logo from "../../assets/logo.png";
 import "../../css/login-register.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function LoginUser() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const navigate = useNavigate();
 
-    const handleInput = (e) => {
+    const handleInput = async (e) => {
         e.preventDefault();
-        alert(`Email: ${email}\nPassword: ${password}`);
-        setEmail("");
-        setPassword("");
+
+        try {
+            const response = await fetch(`${baseURL}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(`Error: ${data.message}`);
+            } else {
+                alert("Login successful!");
+                setEmail("");
+                setPassword("");
+
+                // ✅ Redirect to home page
+                navigate("/home");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("An error occurred during login.");
+        }
     };
+
     return (
         <div className="login-page">
             <div className="login-header">
