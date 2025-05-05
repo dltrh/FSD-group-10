@@ -3,7 +3,20 @@ const Invitation = require("../models/Invitation.js");
 const getInvitationById = async (req, res) => {
     try {
         const { id } = req.params;
-        const invitation = await Invitation.findById(id);
+        const invitation = await Invitation.findOne({ invitationId: id });
+        if (!invitation) {
+            return res.status(404).json({ message: "Invitation not found" });
+        }
+        res.json(invitation);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+const getInvitationByEventId = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const invitation = await Invitation.findOne({ eventId: eventId });
         if (!invitation) {
             return res.status(404).json({ message: "Invitation not found" });
         }
@@ -52,8 +65,10 @@ const updateInvitationStatus = async (req, res) => {
     }
 };
 
+
 module.exports = {
     getInvitationById,
     getAllInvitations,
     updateInvitationStatus,
+    getInvitationByEventId
 };

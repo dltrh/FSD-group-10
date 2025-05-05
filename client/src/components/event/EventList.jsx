@@ -4,7 +4,7 @@ import "../../css/event/event-list.css";
 import { parseDateString, calculateEventStatus } from "../../utils/timeUtils";
 
 
-export default function EventList(  ) {
+export default function EventList () {
     const [events, setEvents] = useState([]);
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -18,6 +18,7 @@ export default function EventList(  ) {
     // Dynamic filter options
     const [availableLocations, setAvailableLocations] = useState([]);
     const [availableThemes, setAvailableThemes] = useState([]);
+    
     // Define status options - these will be calculated dynamically
     const statuses = ["Upcoming", "In Progress", "Completed"];
 
@@ -172,7 +173,7 @@ export default function EventList(  ) {
                 <h4>Event Theme</h4>
                 {selectedTheme && (
                     <button
-                        className="sort-button"
+                        className="sort-button reset-button"
                         onClick={resetThemeFilter}
                     >
                         Reset
@@ -215,8 +216,8 @@ export default function EventList(  ) {
                         onChange={(e) => setBudget(e.target.value)}
                     />
                     <span>${budget}</span>
-                    <button onClick={() => setAppliedBudget(budget)}>
-                        Apply Budget Filter
+                    <button className="apply-btn" onClick={() => setAppliedBudget(budget)}>
+                        Apply
                     </button>
                 </div>
 

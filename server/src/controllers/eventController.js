@@ -12,4 +12,15 @@ const getAllEvents = async (req, res) => {
     }
 };
 
-module.exports = { getAllEvents };
+const getEventById = async (req, res) => {
+    try {
+        const event = await Event.findOne({ eventId: req.params.eventId });
+        if (!event) return res.status(404).json({ error: "Event not found" });
+        res.json(event);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+module.exports = { getAllEvents, getEventById };

@@ -9,7 +9,7 @@
     box-sizing: border-box;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    width: 445px;
+    width: 500px;
 }
 
 .event-card-container:hover {

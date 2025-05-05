@@ -1,0 +1,134 @@
+.invitation-card-container {
+    display: grid;
+    grid-template-rows: 200px 350px 100px;
+    background-color: #fff;
+    border: solid 1px #e3e3e3;
+    border-radius: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    width: 500px;
+}
+
+.invitation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.invitation-card-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-title {
+    font-size: 25px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines before ellipsis */
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.invitation-card-status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: black;
+    display: inline-block;
+  }
+  
+/* Specific background colors */
+.invitation-card-status.accepted {
+    background-color: #cef7d3;
+    text-transform: 'capitalize'
+}
+
+.invitation-card-status.pending {
+    background-color: #e3e3e3;
+}
+
+.invitation-card-status.declined {
+    background-color: #ae312f;
+    color: white;
+}
+
+.event-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines before ellipsis */
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+}
+
+.event-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.event-image {
+    height: 300px;
+}
+
+.event-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.save-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.save-button:hover {
+    transform: scale(1.1);
+}
+
+.save-button.active {
+    color: #ae312f;
+}
+
+.status-dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    flex-direction: column;
+    z-index: 1000;
+    right: 0;
+}
+
+.status-dropdown button {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    height: 40px;
+    font-size: 1rem;
+    justify-content: left;
+}
+
+.status-dropdown button:hover {
+    background-color: #f0f0f0;
+}   
+
+.status-dropdown-container {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.status-dropdown-container:hover .status-dropdown {
+    display: grid; 
+}

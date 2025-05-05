@@ -7,9 +7,12 @@ const connectDB = require("./src/config/database");
 // Import routes
 const eventRoutes = require("./src/routes/eventRoutes");
 const invitationRoutes = require("./src/routes/invitationRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+const userRoutes = require("./src/routes/userRoutes");
 
 const app = express();
 dotenv.config();
+const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB database
 connectDB();
@@ -18,10 +21,13 @@ console.log(process.env.MONGODB_URI);
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use("/api", authRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/invitations", invitationRoutes);
-
-
+app.use("/api/users", userRoutes);
+    
 // Session
 app.use(
     session({
@@ -31,15 +37,6 @@ app.use(
         cookie: { secure: false }, // secure: true nếu dùng HTTPS
     })
 );
-
-// Auth Routes
-const authRoutes = require("./src/routes/authRoutes");
-app.use("/api", authRoutes);
-
-// Express initial
-app.get("/", (req, res) => {
-    res.send("Hello from EventApp Server!");
-});
 
 const Event = require("./src/models/Event");
 app.get("/events", async (req, res) => {
@@ -52,7 +49,7 @@ app.get("/events", async (req, res) => {
     }
 });
 
-//Port
+// Port
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
