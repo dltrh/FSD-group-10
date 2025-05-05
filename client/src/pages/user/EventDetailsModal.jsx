@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../css/event/event-details-modal.css";
 import DiscussionList from "../../components/discussion/DiscussionList.jsx";
 import Header from "../../components/Header.jsx";
@@ -9,6 +9,7 @@ import { formatDate } from "../../utils/timeUtils";
 
 const EventDetailsModal = () => {
     const { eventId } = useParams();
+    const navigate = useNavigate();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const formRef = useRef(null);
@@ -130,7 +131,31 @@ const EventDetailsModal = () => {
         }
     };
 
+    // New function to handle finishing the event early
+    const handleFinishEvent = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ isFinished: true }),  // Update isFinished to true
+            });
 
+            if (response.ok) {
+                const updatedEvent = await response.json();
+                setEvent(updatedEvent); // Update the local state with the updated event
+                alert('✅ Event finished successfully!');
+                navigate('/manage'); // Redirect to the manage page
+            } else {
+                const errorData = await response.json();
+                alert(`❌ Failed to finish event: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ An unexpected error occurred.');
+        }
+    };
 
 
 
@@ -146,7 +171,7 @@ const EventDetailsModal = () => {
                     </p>
 
                     <div className="event-buttons">
-                        <button className="finish-button">
+                        <button className="finish-button" onClick={handleFinishEvent}>
                             Finish the event early
                         </button>
                         <button

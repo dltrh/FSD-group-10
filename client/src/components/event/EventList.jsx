@@ -90,6 +90,11 @@ export default function EventList () {
     useEffect(() => {
         let result = [...events];
 
+        // Filter out events that are not public
+        result = result.filter(event => event.isPublic === true);
+        // Filter out events that are finished
+        result = result.filter(event => event.isFinished === false);
+
         if (search) {
             const query = search.toLowerCase();
             result = result.filter(
