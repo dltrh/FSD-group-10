@@ -15,6 +15,7 @@ export default function LoginUser() {
         try {
             const response = await fetch(`${baseURL}/login`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },

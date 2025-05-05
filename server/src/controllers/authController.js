@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
             maxAge: 1000 * 60 * 60 * 24, // 1 day
             httpOnly: true,
             secure: false, // Set to true if using HTTPS
-            sameSite: 'Lax' 
+            sameSite: 'Strict' 
         });
 
         return res.json({
@@ -95,7 +95,22 @@ exports.logout = (req, res) => {
         if (err)
             return res.status(500).json({ message: 'Logout failed' });
 
-        res.clearCookie('connect.sid');
+        // res.clearCookie('connect.sid');
+        res.clearCookie('token', { path: '/' });
         res.json({ message: 'Logged out' });
     });
 };
+
+exports.getProfile = async (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) return res.status(401).json({ message: "Not authenticated" });
+
+    try {
+        const userData = jwt.verify(token, SECRET);
+        res.json({ message: "Welcome!", user: userData });
+    } catch (err) {
+        res.status(401).json({ message: "Invalid token" });
+    }
+};
+
