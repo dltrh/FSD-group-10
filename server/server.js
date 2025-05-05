@@ -1,46 +1,62 @@
-const express = require('express');
-const session = require('express-session');
-const dotenv = require('dotenv');
-const connectDB = require('./src/config/database');
-const PORT = process.env.PORT || 5000;
-const app = express();
-require('dotenv').config();
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const session = require("express-session");
+const dotenv = require("dotenv");
+const connectDB = require("./src/config/database");
 
-//Connect to MongoDB database
+// Import routes
+const eventRoutes = require("./src/routes/eventRoutes");
+const invitationRoutes = require("./src/routes/invitationRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+
+const app = express();
+dotenv.config();
+const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB database
 connectDB();
+console.log(process.env.MONGODB_URI);
 
 // Middlewares
-app.use(cors())
-
-// Routes
+app.use(cors());
 app.use(express.json());
 
-//session
-app.use(session({
-    secret: process.env.SESSION_SECRET || "mySecretKey",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } // secure: true nếu bạn dùng HTTPS
-}));
+// Routes
+app.use("/api", authRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/invitations", invitationRoutes);
+app.use("/api/users", userRoutes);
 
-// AuthRoutes
-const authRoutes = require('./src/routes/authRoutes');
-app.use('/api', authRoutes);
+// Session
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "mySecretKey",
+        resave: false,
+        saveUninitialized: false,
+        cookie: { secure: false }, // secure: true nếu dùng HTTPS
+    })
+);
+
+
+
+// DevRoutes
+const devRoutes = require("./src/routes/devRoutes");
+app.use("/dev", devRoutes);
 
 //express initial
-app.get('/', (req, res) => {
-    res.send('Hello from EventApp Server!');
+app.get("/", (req, res) => {
+    res.send("Hello from EventApp Server!");
 });
 
-const Event = require('./src/models/Event');
-app.get('/events', async (req, res) => {
+const Event = require("./src/models/Event");
+app.get("/events", async (req, res) => {
     try {
         const events = await Event.find();
         res.json(events);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: "Server error" });
     }
 });
 

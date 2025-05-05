@@ -11,7 +11,7 @@ export default function MyEvents() {
             <Header />
             <h2 className="my-events-heading">My events</h2>
             <div className="my-events-section">
-                <EventList events={dummyEvents} />
+                <EventList />
             </div>
             <Footer />
         </>

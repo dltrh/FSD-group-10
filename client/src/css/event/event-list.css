@@ -13,7 +13,7 @@
 
 .event-list-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 1rem;
     max-width: 100%;
     width: 100%;
@@ -102,7 +102,21 @@
 
 .range-slider input::-webkit-slider-thumb:hover {
     background: #ae312f; /* Indigo-700 */
-  }
+}
+
+.range-slider .apply-btn {
+    border: none;
+    border-radius: 6px;
+    height: 30px;
+    background-color: #e3e3e3;
+    color:black;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.range-slider .apply-btn:hover {
+    background-color: #ae312f;
+    color:white;
+}
 
 .main-content {
     /* flex: 3; */
@@ -161,6 +175,16 @@
 
 .sort-button.active {
     background: #ae312f;
+    color: white;
+}
+
+.reset-button {
+    margin-bottom: 10px;
+    transition: background 0.3s ease-in-out;
+}
+
+.reset-button:hover {
+    background: #2c2c2c;
     color: white;
 }
 

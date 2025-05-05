@@ -1,79 +1,37 @@
 import React, { useState, useEffect } from "react";
-import EventCard from "./EventCard";
-import "../../css/event/event-list.css";
+import InviteCard from "./InviteCard";
+import "../../css/event/invite-list.css";
 import { parseDateString, calculateEventStatus } from "../../utils/timeUtils";
 
-
-export default function EventList () {
+export default function InviteList() {
+    const [invitations, setInvitations] = useState([]);
     const [events, setEvents] = useState([]);
-    const [filteredEvents, setFilteredEvents] = useState([]);
-    const [selectedEvent, setSelectedEvent] = useState(null);
     const [search, setSearch] = useState("");
+    const [filteredInvitations, setFilteredInvitations] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
     const [selectedTheme, setSelectedTheme] = useState("");
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedLocations, setSelectedLocations] = useState([]);
     const [sortOption, setSortOption] = useState("Newest");
-   
 
     // Dynamic filter options
     const [availableLocations, setAvailableLocations] = useState([]);
     const [availableThemes, setAvailableThemes] = useState([]);
-    
+
     // Define status options - these will be calculated dynamically
-    const statuses = ["Upcoming", "In Progress", "Completed"];
+    const statuses = ["Accepted", "Pending", "Declined"];
 
     // Budget-related filters
     const [budget, setBudget] = useState(500);
-    const [appliedBudget, setAppliedBudget] = useState(0); 
+    const [appliedBudget, setAppliedBudget] = useState(0);
     const [maxBudget, setMaxBudget] = useState(500); // default is 500 if nothing happens
-
-
-
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/events');
-                const data = await response.json();
-
-
-                // Process events to add status
-                const processedEvents = data.map(event => ({
-                    ...event,
-                    status: calculateEventStatus(event)
-                }));
-
-                // Extract unique locations and themes
-                extractFilterOptions(processedEvents);
-                setEvents(processedEvents);
-
-                // Find max budget
-                if (processedEvents.length > 0) {
-                    const budgets = processedEvents
-                        .map(event => event.budget)
-                        .filter(budget => typeof budget === 'number' && !isNaN(budget));
-
-                    const max = budgets.length > 0 ? Math.max(...budgets) : 0;
-                    setMaxBudget(max);
-                    setBudget(max); // Optional: Set slider to max when loaded
-                }
-                
-
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        };
-
-        fetchEvents();
-    }, []);
-
-   
 
     // Extract unique filter options
     const extractFilterOptions = (eventsData) => {
         const locationSet = new Set();
         const themeSet = new Set();
 
-        eventsData.forEach(event => {
+        eventsData.forEach((event) => {
             if (event.location) {
                 locationSet.add(event.location);
             }
@@ -87,61 +45,140 @@ export default function EventList () {
         setAvailableThemes(Array.from(themeSet).sort());
     };
 
+    const fetchEventById = async (eventId) => {
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/events/${eventId}`
+            );
+            const data = await response.json();
+            return data;
+            
+        } catch (err) {
+            console.error(
+                "Error fetching invitation's event information: ",
+                err
+            );
+        }
+    };
+
+    // Fetch and align events with invitations
     useEffect(() => {
-        let result = [...events];
+        const fetchEventsInInvitations = async () => {
+            try {
+                const eventsData = await Promise.all(
+                    invitations.map(async (invitation) => {
+                        const response = await fetch(
+                            `http://localhost:5000/api/events/${invitation.eventId}`
+                        );
+                        const event = await response.json();
+                        return {
+                            ...event,
+                            status: calculateEventStatus(event),
+                        };
+                    })
+                );
 
-        // Filter out events that are not public
-        result = result.filter(event => event.isPublic === true);
-        // Filter out events that are finished
-        result = result.filter(event => event.isFinished === false);
+                extractFilterOptions(eventsData);
+                setEvents(eventsData);
 
-        if (search) {
-            const query = search.toLowerCase();
-            result = result.filter(
-                (event) =>
-                    (event.title && event.title.toLowerCase().includes(query)) ||
-                    (event.location && event.location.toLowerCase().includes(query)) ||
-                    (event.description && event.description.toLowerCase().includes(query))
+                // Find max budget
+                const budgets = eventsData
+                    .map((event) => event.budget)
+                    .filter(
+                        (budget) => typeof budget === "number" && !isNaN(budget)
+                    );
+
+                const max = budgets.length > 0 ? Math.max(...budgets) : 0;
+                setMaxBudget(max);
+                setBudget(max);
+            } catch (error) {
+                console.error("Error fetching events in invitations:", error);
+            }
+        };
+
+        if (invitations.length > 0) {
+            fetchEventsInInvitations();
+        }
+    }, [invitations]);
+
+    useEffect(() => {
+        const filterAndFetchFromInvitations = async () => {
+            const enrichedInvitations = await Promise.all(
+                invitations.map(async (invitation) => {
+                    const event = await fetchEventById(invitation.eventId);
+                    return event ? { ...invitation, event } : null;
+                })
             );
-        }
+    
+            let filtered = enrichedInvitations.filter(invite => invite && invite.event);
+    
+            if (search) {
+                const query = search.toLowerCase();
+                filtered = filtered.filter(({ event }) =>
+                    event.title?.toLowerCase().includes(query) ||
+                    event.location?.toLowerCase().includes(query) ||
+                    event.description?.toLowerCase().includes(query)
+                );
+            }
+    
+            if (sortOption === "Newest") {
+                filtered.sort((a, b) => new Date(b.event.timeStart) - new Date(a.event.timeStart));
+            } else if (sortOption === "Oldest") {
+                filtered.sort((a, b) => new Date(a.event.timeStart) - new Date(b.event.timeStart));
+            } else if (sortOption === "Price: Low to High") {
+                filtered.sort((a, b) => (a.event.budget || 0) - (b.event.budget || 0));
+            } else if (sortOption === "Price: High to Low") {
+                filtered.sort((a, b) => (b.event.budget || 0) - (a.event.budget || 0));
+            }
+    
+            if (selectedTheme) {
+                filtered = filtered.filter(({ event }) => event.eventTheme === selectedTheme);
+            }
+    
+            if (selectedStatuses.length > 0) {
+                filtered = filtered.filter((invitation) => selectedStatuses.includes(invitation.status));
+            }
+    
+            filtered = filtered.filter(({ event }) => event.budget <= budget);
+    
+            if (selectedLocations.length > 0) {
+                filtered = filtered.filter(({ event }) => selectedLocations.includes(event.location));
+            }
+    
+            setFilteredInvitations(filtered);
+        };
+    
+        filterAndFetchFromInvitations();
+    }, [
+        invitations,
+        search,
+        sortOption,
+        selectedTheme,
+        selectedStatuses,
+        selectedLocations,
+        budget,
+    ]);
+    
+    // Fetch all user's invitations
+    useEffect(() => {
+        const fetchInvitations = async () => {
+            try {
+                const response = await fetch(
+                    "http://localhost:5000/api/invitations"
+                );
+                const data = await response.json();
 
-        // Apply sorting
-        if (sortOption === "Newest") {
-            result.sort((a, b) => new Date(b.timeStart) - new Date(a.timeStart));
-        } else if (sortOption === "Oldest") {
-            result.sort((a, b) => new Date(a.timeStart) - new Date(b.timeStart));
-        } else if (sortOption === "Price: Low to High") {
-            result.sort((a, b) => (a.budget || 0) - (b.budget || 0));
-        } else if (sortOption === "Price: High to Low") {
-            result.sort((a, b) => (b.budget || 0) - (a.budget || 0));
-        }
+                const invitations = data.map((invite) => ({
+                    ...invite,
+                }));
+                setInvitations(invitations);
+            } catch (error) {
+                console.error("Error fetching invitations:", error);
+            }
+        };
 
-        if (selectedTheme){
-            result = result.filter(event =>
-                event.eventTheme && event.eventTheme === selectedTheme
-            );
-        }
-        // Apply status filters - now using our calculated status
-        if (selectedStatuses.length > 0) {
-            result = result.filter(event =>
-                event.status && selectedStatuses.includes(event.status)
-            );
-        }
-
-        // Apply budget filter
-        result = result.filter(event =>
-            event.budget && event.budget <= budget
-        );
-
-        // Apply location filters
-        if (selectedLocations.length > 0) {
-            result = result.filter(event =>
-                event.location && selectedLocations.includes(event.location)
-            );
-        }
-
-        setFilteredEvents(result);
-    }, [search, events, appliedBudget, sortOption, selectedTheme, selectedStatuses, selectedLocations]);
+        fetchInvitations();
+    }, []);
 
 
     // Handle search input changes
@@ -170,10 +207,8 @@ export default function EventList () {
         setSelectedTheme("");
     };
 
-   
-
     return (
-        <div className="event-list-overlay">
+        <div className="invitation-list-overlay">
             <div className="filters">
                 <h4>Event Theme</h4>
                 {selectedTheme && (
@@ -221,7 +256,10 @@ export default function EventList () {
                         onChange={(e) => setBudget(e.target.value)}
                     />
                     <span>${budget}</span>
-                    <button className="apply-btn" onClick={() => setAppliedBudget(budget)}>
+                    <button
+                        className="apply-btn"
+                        onClick={() => setAppliedBudget(budget)}
+                    >
                         Apply
                     </button>
                 </div>
@@ -244,16 +282,13 @@ export default function EventList () {
             <div className="main-content">
                 <div className="top-controls">
                     <div className="search-bar">
-
                         <input
                             type="text"
                             placeholder="Search by name, description, location"
                             value={search}
                             onChange={handleSearchChange}
-                            
                         />
-                        <button className = "search-button"> Search</button>
-             
+                        <button className="search-button"> Search</button>
                     </div>
                     <div className="sort-options">
                         {[
@@ -274,10 +309,10 @@ export default function EventList () {
                         ))}
                     </div>
                 </div>
-                <div className="event-list-container">
-                    {filteredEvents.map((event) => (
-                        <div key={event._id}>
-                            <EventCard event={event} />
+                <div className="invitation-list-container">
+                    {filteredInvitations.map((invitation) => (
+                        <div key={invitation._id}>
+                            <InviteCard invitation={invitation} />
                         </div>
                     ))}
                 </div>
