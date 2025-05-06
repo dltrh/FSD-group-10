@@ -13,6 +13,7 @@ import SavedEvents from "../pages/user/SavedEvents";
 import Invitations from "../pages/user/Invitations";
 import InvitationResponseStatus from "../pages/user/InvitationResponseStatus"
 import ProtectedRoutes from "./ProtectedRoutes";
+import Profile from "../pages/user/Profile";
 
 export const UserRoutes = [
     {
@@ -80,6 +81,11 @@ export const UserRoutes = [
     {
         path: "/:user-id/invitations",
         element: <Invitations />,
+        errorElement: <Placeholder />,
+    },
+    {
+        path: "/:user-id/profile",
+        element: <Profile />,
         errorElement: <Placeholder />,
     },
 ];

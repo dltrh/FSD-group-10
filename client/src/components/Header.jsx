@@ -141,7 +141,9 @@ export default function Header() {
                             className="profile-icon"
                         />
                         <div className="profile-dropdown">
-                            <button>Account</button>
+                            <Link to="/:user-id/profile">
+                                <button>Account</button>
+                            </Link>
                             <Link to="/:user-id/saved-events">
                                 <button>Saved events</button>
                             </Link>

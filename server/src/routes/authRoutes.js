@@ -8,13 +8,11 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
 
-<<<<<<< HEAD
 //get user 
 router.get('/user', authMiddleware.requireLogin, authController.getProfile);
-=======
+
 // Forgot and reset password
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
->>>>>>> 036e7176f9e74c49e1445415c1644843f3d3e945
 
 module.exports = router;
