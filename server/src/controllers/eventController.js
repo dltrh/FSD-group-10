@@ -44,3 +44,35 @@ exports.updateEvent = async (req, res) => {
         res.status(500).json({ error: "Failed to update event" });
     }
 };
+
+// This function is used to delete an event by its ID. 
+// But deletion is not a good practise so changing status of isFinished attribute is a safer option
+exports.finishEvent = async (req, res) => {
+    const { id } = req.params;
+    const { isFinished } = req.body;
+
+    console.log("Request received for finishing event with data:", { id, isFinished });  // Log data
+
+    try {
+        const result = await Event.updateOne(
+            { eventId: id }, // Matching by eventId
+            { $set: { isFinished: isFinished } }  // Use $set to explicitly update the field
+        );
+
+        if (result.nModified === 0) {
+            return res.status(404).json({ error: "Event not found or no update occurred" });
+        }
+
+        // Fetch the updated event to confirm changes
+        const updatedEvent = await Event.findOne({ eventId: id });
+
+        console.log("Updated Event:", updatedEvent);  // Log the updated event
+
+        res.json(updatedEvent);
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({ error: "Failed to update event" });
+    }
+};
+
+
