@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 const bcrypt = require("bcrypt");
 const { validateRegister, validateLogin } = require("../utils/validators");
 const User = require("../models/User"); // Import model MongoDB
+=======
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const { validateRegister, validateLogin, validateResetPassword } = require('../utils/validators');
+const User = require('../models/User'); // Import model MongoDB
+>>>>>>> 036e7176f9e74c49e1445415c1644843f3d3e945
 
 // REGISTER
 exports.register = async (req, res) => {

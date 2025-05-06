@@ -5,10 +5,29 @@ import { useState } from "react";
 
 export default function ForgotPasswordUser() {
     const [email, setEmail] = useState("");
-    const handleInput = (e) => {
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const handleInput = async (e) => {
         e.preventDefault();
-        alert(`Email: ${email}`);
-        setEmail("");
+        try {
+            const response = await fetch(`${baseURL}/forgot-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message);
+            } else {
+                // Show token link
+                alert(`Reset link: ${data.resetLink}`);
+                //automatic redirect
+                // navigate(`/reset-password-user?token=${data.token}`); 
+            }
+        } catch (err) {
+            alert("System error!!!");
+        }
     };
     return (
         <div className="forgot-password-page">
@@ -18,7 +37,7 @@ export default function ForgotPasswordUser() {
                 </Link>
             </div>
             <div className="forgot-password-field">
-            <h3>Enter your username (your registered email) to get your password reset link</h3>
+                <h3>Enter your username (your registered email) to get your password reset link</h3>
                 <form className="forgot-password-form" onSubmit={handleInput}>
                     <input
                         id="forgot-password-email-input"

@@ -35,3 +35,19 @@ exports.validateLogin = (data) => {
 
     return null;
 };
+
+//Validation for reset password
+exports.validateResetPassword = ({ userId, newPassword, confirmPassword }) => {
+    //check whether all the fields have data 
+    if (!userId || !newPassword || !confirmPassword)
+        return 'All fields are required';
+
+    //check whether the new password and confirm password is matched
+    if (newPassword !== confirmPassword)
+        return 'Passwords do not match';
+
+    //check whether the new password is suit with the minimum length
+    if (newPassword.length < 6)
+        return 'New password must be at least 6 characters';
+    return null;
+};
