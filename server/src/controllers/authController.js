@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const { validateRegister, validateLogin } = require('../utils/validators');
+const crypto = require('crypto');
+const { validateRegister, validateLogin, validateResetPassword } = require('../utils/validators');
 const User = require('../models/User'); // Import model MongoDB
 
 // REGISTER
@@ -70,12 +71,12 @@ exports.login = async (req, res) => {
         };
 
         // Set cookie 
-        res.cookie('token', token, {
-            maxAge: 1000 * 60 * 60 * 24, // 1 day
-            httpOnly: true,
-            secure: false, // Set to true if using HTTPS
-            sameSite: 'Strict' 
-        });
+        // res.cookie('token', token, {
+        //     maxAge: 1000 * 60 * 60 * 24, // 1 day
+        //     httpOnly: true,
+        //     secure: false, // Set to true if using HTTPS
+        //     sameSite: 'Strict'
+        // });
 
         return res.json({
             message: "Login successful",
@@ -102,15 +103,61 @@ exports.logout = (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-    const token = req.cookies.token;
+    // const token = req.cookies.token;
 
-    if (!token) return res.status(401).json({ message: "Not authenticated" });
+    // if (!token) return res.status(401).json({ message: "Not authenticated" });
 
-    try {
-        const userData = jwt.verify(token, SECRET);
-        res.json({ message: "Welcome!", user: userData });
-    } catch (err) {
-        res.status(401).json({ message: "Invalid token" });
+    // try {
+    //     const userData = jwt.verify(token, SECRET);
+    //     res.json({ message: "Welcome!", user: userData });
+    // } catch (err) {
+    //     res.status(401).json({ message: "Invalid token" });
+    // }
+    const user = req.session.user;
+
+    if (!user) {
+        return res.status(401).json({ message: "Not authenticated" });
     }
+
+    res.json({ message: "Welcome!", user });
 };
 
+// Forgot password
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'Email not found' });
+
+    // Simple token replacement with userId for reset link
+    res.status(200).json({ resetLink: `/reset-password-user?userId=${user.userId}` });
+};
+
+// Reset password
+exports.resetPassword = async (req, res) => {
+    try {
+        const { userId, newPassword, confirmPassword } = req.body;
+        console.log("Reset request:", req.body); // Debug log
+
+        if (!userId || !newPassword || !confirmPassword) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ message: "Passwords do not match" });
+        }
+
+        const user = await User.findOne({ userId });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ message: "Password reset successfully" });
+    } catch (error) {
+        console.error("Reset password error:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};

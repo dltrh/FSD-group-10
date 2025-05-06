@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    userId: {  
-        type: String, 
-        required: true, 
-        unique: true 
+    userId: {
+        type: String,
+        required: true,
+        unique: true
     },
     fullname: {
         type: String,
@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
+    },
+    resetToken: {
+        type: String,
+        default: null
+    },
+    tokenExpiration: {
+        type: Date,
+        default: null
     }
 }, {
     collection: 'User',
