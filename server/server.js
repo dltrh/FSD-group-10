@@ -21,10 +21,12 @@ connectDB();
 console.log(process.env.MONGODB_URI);
 
 // Middlewares
-app.use(cors({
-    origin: 'http://localhost:5173', // React frontend origin
-    credentials: true
-}));
+app.use(
+    cors({
+        origin: "http://localhost:5173", // React frontend origin
+        credentials: true,
+    })
+);
 app.use(express.json());
 app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
 
@@ -34,7 +36,7 @@ app.use(
         secret: process.env.SESSION_SECRET || "mySecretKey",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false }, // secure: true nếu dùng HTTPS
+        cookie: { secure: false, httpOnly: true, sameSite: "Strict" }, // Set secure to true if using HTTPS
     })
 );
 

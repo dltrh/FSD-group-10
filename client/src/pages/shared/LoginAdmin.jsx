@@ -84,6 +84,7 @@ export default function LoginAdmin() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="username"
                 />
 
                 <label htmlFor="password-input">Passsword *</label>
@@ -95,6 +96,7 @@ export default function LoginAdmin() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
                 />
                 <Link to="/forgot-password">Forgot password?</Link>
                 <div className="buttons">

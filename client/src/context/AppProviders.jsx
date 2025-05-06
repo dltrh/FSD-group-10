@@ -1,9 +1,10 @@
 import { SavedEventsProvider } from "./EventsContext";
+import { AuthProvider } from "./AuthContext";
 
 export default function AppProviders({ children }) {
     return (
-        <SavedEventsProvider>
-            {children}
-        </SavedEventsProvider>
+        <AuthProvider>
+            <SavedEventsProvider>{children}</SavedEventsProvider>
+        </AuthProvider>
     );
 }

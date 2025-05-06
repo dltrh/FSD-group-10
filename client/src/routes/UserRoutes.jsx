@@ -12,11 +12,14 @@ import MyEvents from "../pages/user/MyEvents";
 import SavedEvents from "../pages/user/SavedEvents";
 import Invitations from "../pages/user/Invitations";
 import InvitationResponseStatus from "../pages/user/InvitationResponseStatus"
+import ProtectedRoutes from "./ProtectedRoutes";
 
 export const UserRoutes = [
     {
         path: "/home",
-        element: <Home />,
+        element: <ProtectedRoutes>
+            <Home />
+        </ProtectedRoutes>,
         errorElement: <Placeholder />,
     },
     {
