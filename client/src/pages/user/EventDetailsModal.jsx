@@ -19,8 +19,8 @@ const EventDetailsModal = () => {
         maxPpl: event?.maxPpl || "",
         timeStart: event?.timeStart || "",
         location: event?.location || "",
-        message: "",
     });
+
     useEffect(() => {
         if (event) {
             setFormData({
@@ -131,31 +131,33 @@ const EventDetailsModal = () => {
         }
     };
 
-    // New function to handle finishing the event early
+    // Function to handle finishing the event early
     const handleFinishEvent = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
+            console.log("Sending request with:", { isFinished: true }); // Log this
+            const response = await fetch(`http://localhost:5000/api/events/finish/${eventId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ isFinished: true }),  // Update isFinished to true
+                body: JSON.stringify({ isFinished: true }),
             });
 
+            const updatedEvent = await response.json();
+            console.log("Updated Event:", updatedEvent); // Check the response
             if (response.ok) {
-                const updatedEvent = await response.json();
-                setEvent(updatedEvent); // Update the local state with the updated event
                 alert('✅ Event finished successfully!');
-                navigate('/manage'); // Redirect to the manage page
+                navigate('/manage');
             } else {
-                const errorData = await response.json();
-                alert(`❌ Failed to finish event: ${errorData.error}`);
+                alert('❌ Failed to finish event');
             }
         } catch (error) {
             console.error('Error:', error);
             alert('❌ An unexpected error occurred.');
         }
     };
+
+
 
 
 
