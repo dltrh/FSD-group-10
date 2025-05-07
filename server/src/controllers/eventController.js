@@ -1,4 +1,5 @@
 const Event = require("../models/Event.js");
+const {getNextEventId} = require("../utils/getNextEventId.js");
 
 exports.getAllEvents = async (req, res) => {
     try {
@@ -75,4 +76,63 @@ exports.finishEvent = async (req, res) => {
     }
 };
 
+// Create a new event
+exports.createEvent = async (req, res) => {
+    
+    try {
+        const eventId = await getNextEventId();
+        const organizerId = "user_00001"; // Replace with actual user ID from session or token
+        const {
+            title,
+            description,
+            maxPpl,
+            timeStart,
+            timeEnd,
+            eventTheme,
+            budget,
+            location,
+            gifts,
+            eventType,
+            canBring,
+            isPublic,
+            notes,
+            
+        } = req.body;
+
+        // Validate required fields
+        if (!title || !description || !maxPpl || !timeStart || !timeEnd || !budget || !location || !eventType || !eventTheme) {
+            alert('Please provide all required fields');
+            return res.status(400).json({ error: 'Please provide all required fields' });
+        }
+
+        // Create event data object
+        const eventData = {
+            title,
+            description,
+            maxPpl: parseInt(maxPpl),
+            timeStart,
+            timeEnd,
+            eventTheme,
+            budget: parseFloat(budget),
+            location,
+            gifts,
+            eventType,
+            canBring: String(canBring).toLowerCase() === 'true' || canBring === true,
+            isPublic: String(isPublic).toLowerCase() === 'public' || isPublic === true,
+            isFinished: false,
+            notes,
+            eventId,
+            organizerId,
+        };
+
+        // Create new event
+        const newEvent = new Event(eventData);
+        const savedEvent = await newEvent.save();
+
+        res.status(201).json(savedEvent);
+    } catch (error) {
+        console.error('Error creating event:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
