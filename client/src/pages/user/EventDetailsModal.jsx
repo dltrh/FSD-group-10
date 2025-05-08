@@ -20,6 +20,30 @@ const EventDetailsModal = () => {
         timeStart: event?.timeStart || "",
         location: event?.location || "",
     });
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await fetch("http://localhost:5000/api/getCurrentUserId", {
+                    method: "GET",
+                    credentials: "include", // Include session cookies
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setLoggedInUserId(data.user); // Set the logged-in user's ID
+                } else {
+                    console.error("Failed to fetch user ID");
+                }
+            } catch (error) {
+                console.error("Error fetching user ID:", error);
+            }
+        };
+
+        fetchUserId();
+    }, []);
+
+
 
     useEffect(() => {
         if (event) {
@@ -55,7 +79,7 @@ const EventDetailsModal = () => {
     fetchEvent();
 }, [eventId]);
     
-    if (loading) return <p>Loading event...</p>;
+    if (loading || loggedInUserId === null) return <p>Loading...</p>;
     if (!event) return <p>Event not found.</p>;
     const detailEvents = [
         { label: "Description", description: event.description },
@@ -170,7 +194,7 @@ const EventDetailsModal = () => {
                         Created on: {formatDate(event.timeStart)} <br />
                         Finished by: {formatDate(event.timeEnd)}
                     </p>
-
+                    {loggedInUserId === event.organizerId && (
                     <div className="event-buttons">
                         <button className="finish-button" onClick={handleFinishEvent}>
                             Finish the event early
@@ -182,8 +206,9 @@ const EventDetailsModal = () => {
                             Go to Discussion Board for this event
                         </button>
                     </div>
+                    )}
                 </div>
-
+                {loggedInUserId === event.organizerId && (
                 <div className="change-section">
                     <div className="info-icon">ℹ️</div>
                     <div>
@@ -196,7 +221,7 @@ const EventDetailsModal = () => {
                             Yes, I want to change
                         </button>
                     </div>
-
+                    
                     {showForm && (
                         <div ref={formRef} className="change-form-section">
                             <form className="change-form" onSubmit={handleSubmit}>
@@ -245,7 +270,7 @@ const EventDetailsModal = () => {
                         </div>
                     )}
                 </div>
-
+                )}
                 <section className="details-grid">
                     {detailEvents.map((event, index) => (
                         <div key={index} className="detail-box">
