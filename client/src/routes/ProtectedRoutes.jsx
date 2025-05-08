@@ -11,7 +11,7 @@ function ProtectedRoute({ children }) {
         // Not logged in
         return (
             <>
-                {alert("You have to login first to access this page.")};
+                {alert("You have to login first to gain access to this page.")};
                 <Navigate to="/" replace />;
             </>
         );

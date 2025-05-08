@@ -1,18 +1,29 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const questionThreadSchema = new mongoose.Schema({
-    discussId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Discussion',
-        required: true
+const questionThreadSchema = new mongoose.Schema(
+    {
+        questionId: {
+            type: String,
+            required: true,
+        },
+        discussionId: {
+            type: String,
+            ref: "Discussion",
+            required: true,
+        },
+        content: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
     },
-    questionContent: {
-        type: String,
-        required: true
+    {
+        collection: "QuestionThread",
+        timestamps: false,
     }
-}, {
-    collection: 'QuestionThread',
-    timestamps: false
-});
+);
 
-module.exports = mongoose.model('QuestionThread', questionThreadSchema);
+module.exports = mongoose.model("QuestionThread", questionThreadSchema);

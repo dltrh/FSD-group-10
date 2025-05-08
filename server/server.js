@@ -11,6 +11,9 @@ const invitationRoutes = require("./src/routes/invitationRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const devRoutes = require("./src/routes/devRoutes");
+const discussionRoutes = require("./src/routes/discussionRoutes");
+const questionRoutes = require("./src/routes/questionRoutes");
+const repliesRoutes = require("./src/routes/repliesRoutes");
 
 const app = express();
 dotenv.config();
@@ -49,6 +52,9 @@ app.use("/api/events", eventRoutes); // EventRoutes
 app.use("/api/invitations", invitationRoutes); // InvitationRoutes
 app.use("/api/users", userRoutes); // UserRoutes
 app.use("/dev", devRoutes); // DevRoutes
+app.use("/api/discussions", discussionRoutes); // DiscussionRoutes
+app.use("/api/questions", questionRoutes); // QuestionRoutes
+app.use("/api/replies", repliesRoutes); // RepliesRoutes
 
 // Port
 app.listen(PORT, () => {

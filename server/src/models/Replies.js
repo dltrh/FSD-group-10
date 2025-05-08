@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
 
 const repliesSchema = new mongoose.Schema({
+    replyId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     questionId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'QuestionThread',
         required: true
     },
-    repContent: {
+    content: {
         type: String,
         required: true
     },

@@ -101,8 +101,7 @@ exports.createEvent = async (req, res) => {
     console.log("UserId from session (create event):", userId); // Log the user email
     console.log("Session content (create event:", req.session);
     try {
-        const eventId = await getNextEventId();
-        const organizerId = "user_00001"; // Replace with actual user ID from session or token
+        const eventId = await getNextEventId(); 
         const {
             title,
             description,

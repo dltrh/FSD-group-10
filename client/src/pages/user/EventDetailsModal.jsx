@@ -6,7 +6,6 @@ import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
 import { formatDate } from "../../utils/timeUtils";
 
-
 const EventDetailsModal = () => {
     const { eventId } = useParams();
     const navigate = useNavigate();
@@ -31,30 +30,31 @@ const EventDetailsModal = () => {
         }
     }, [event]);
 
-
     useEffect(() => {
-    const fetchEvent = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/events/publicEvents');
-            if (!response.ok) throw new Error("Event not found");
+        const fetchEvent = async () => {
+            try {
+                const response = await fetch(
+                    "http://localhost:5000/api/events/publicEvents"
+                );
+                if (!response.ok) throw new Error("Event not found");
 
-            const data = await response.json();
-            console.log("Fetched events:", data);  // Log the fetched data
+                const data = await response.json();
+                console.log("Fetched events:", data); // Log the fetched data
 
-            const foundEvent = data.find((e) => e.eventId === eventId);
+                const foundEvent = data.find((e) => e.eventId === eventId);
 
-            setEvent(foundEvent);
-        } catch (error) {
-            console.error(error);
-            setEvent(null);
-        } finally {
-            setLoading(false);
-        }
-    };
-    
-    fetchEvent();
-}, [eventId]);
-    
+                setEvent(foundEvent);
+            } catch (error) {
+                console.error(error);
+                setEvent(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEvent();
+    }, [eventId]);
+
     if (loading) return <p>Loading event...</p>;
     if (!event) return <p>Event not found.</p>;
     const detailEvents = [
@@ -66,10 +66,12 @@ const EventDetailsModal = () => {
         { label: "Budget", description: `$${event.budget}` },
         { label: "Location", description: event.location },
         { label: "Max People", description: event.maxPpl },
-        { label: "Can I bring other people?", description: event.canBring ? "Yes" : "No" },
+        {
+            label: "Can I bring other people?",
+            description: event.canBring ? "Yes" : "No",
+        },
         { label: "Gifts I can bring to the event", description: event.gifts },
     ];
-
 
     const handleChangeClick = () => {
         setShowForm(true);
@@ -93,15 +95,18 @@ const EventDetailsModal = () => {
             box: "start",
         });
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Only include fields the user actually changed
         const updatedFields = {};
-        if (formData.maxPpl !== event.maxPpl) updatedFields.maxPpl = formData.maxPpl;
-        if (formData.timeStart !== event.timeStart) updatedFields.timeStart = formData.timeStart;
-        if (formData.location !== event.location) updatedFields.location = formData.location;
+        if (formData.maxPpl !== event.maxPpl)
+            updatedFields.maxPpl = formData.maxPpl;
+        if (formData.timeStart !== event.timeStart)
+            updatedFields.timeStart = formData.timeStart;
+        if (formData.location !== event.location)
+            updatedFields.location = formData.location;
 
         if (Object.keys(updatedFields).length === 0) {
             alert("⚠️ No changes detected.");
@@ -109,24 +114,27 @@ const EventDetailsModal = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/api/events/${eventId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedFields),
-            });
+            const response = await fetch(
+                `http://localhost:5000/api/events/${eventId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedFields),
+                }
+            );
 
             if (response.ok) {
-                alert('✅ Event updated successfully!');
+                alert("✅ Event updated successfully!");
                 window.location.reload();
             } else {
                 const errorData = await response.json();
                 alert(`❌ Failed to update event: ${errorData.error}`);
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('❌ An unexpected error occurred.');
+            console.error("Error:", error);
+            alert("❌ An unexpected error occurred.");
         }
     };
 
@@ -134,31 +142,30 @@ const EventDetailsModal = () => {
     const handleFinishEvent = async () => {
         try {
             console.log("Sending request with:", { isFinished: true }); // Log this
-            const response = await fetch(`http://localhost:5000/api/events/finish/${eventId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ isFinished: true }),
-            });
+            const response = await fetch(
+                `http://localhost:5000/api/events/finish/${eventId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ isFinished: true }),
+                }
+            );
 
             const updatedEvent = await response.json();
             console.log("Updated Event:", updatedEvent); // Check the response
             if (response.ok) {
-                alert('✅ Event finished successfully!');
-                navigate('/manage');
+                alert("✅ Event finished successfully!");
+                navigate("/manage");
             } else {
-                alert('❌ Failed to finish event');
+                alert("❌ Failed to finish event");
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('❌ An unexpected error occurred.');
+            console.error("Error:", error);
+            alert("❌ An unexpected error occurred.");
         }
     };
-
-
-
-
 
     return (
         <div className="overlay">
@@ -172,7 +179,10 @@ const EventDetailsModal = () => {
                     </p>
 
                     <div className="event-buttons">
-                        <button className="finish-button" onClick={handleFinishEvent}>
+                        <button
+                            className="finish-button"
+                            onClick={handleFinishEvent}
+                        >
                             Finish the event early
                         </button>
                         <button
@@ -187,8 +197,13 @@ const EventDetailsModal = () => {
                 <div className="change-section">
                     <div className="info-icon">ℹ️</div>
                     <div>
-                        <strong>Want to change the details of the event?</strong>
-                        <p>You can only change Maximum Capacity, Location and Time Start after payment.</p>
+                        <strong>
+                            Want to change the details of the event?
+                        </strong>
+                        <p>
+                            You can only change Maximum Capacity, Location and
+                            Time Start after payment.
+                        </p>
                         <button
                             className="change-button"
                             onClick={handleChangeClick}
@@ -199,13 +214,23 @@ const EventDetailsModal = () => {
 
                     {showForm && (
                         <div ref={formRef} className="change-form-section">
-                            <form className="change-form" onSubmit={handleSubmit}>
+                            <form
+                                className="change-form"
+                                onSubmit={handleSubmit}
+                            >
                                 <label>
                                     Maximum Capacity of Attendees
-                                    <input type="text"
+                                    <input
+                                        type="text"
                                         name="maxPpl"
                                         value={formData.maxPpl}
-                                        onChange={(e) => setFormData({ ...formData, maxPpl: e.target.value })} />
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                maxPpl: e.target.value,
+                                            })
+                                        }
+                                    />
                                 </label>
                                 <label>
                                     Start Time:
@@ -213,18 +238,28 @@ const EventDetailsModal = () => {
                                         type="datetime-local"
                                         name="timeStart"
                                         value={formData.timeStart}
-                                        onChange={(e) => setFormData({ ...formData, timeStart: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                timeStart: e.target.value,
+                                            })
+                                        }
                                     />
-
                                 </label>
                                 <label>
                                     Location
-                                    <input type="text"
+                                    <input
+                                        type="text"
                                         name="location"
                                         value={formData.location}
-                                        onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                location: e.target.value,
+                                            })
+                                        }
+                                    />
                                 </label>
-                    
 
                                 <div className="form-buttons">
                                     <button
@@ -258,13 +293,12 @@ const EventDetailsModal = () => {
                     ))}
                 </section>
 
-
                 <div
                     className="discussion-grid"
                     id="discussion-grid"
                     ref={discussionRef}
                 >
-                    <DiscussionList />
+                    <DiscussionList eventId={eventId} />
                 </div>
             </div>
             <Footer />

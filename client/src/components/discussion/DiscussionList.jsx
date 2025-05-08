@@ -1,146 +1,151 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DiscussionDetails from "./DiscussionDetails";
 import DiscussionCard from "./DiscussionCard";
 import "../../css/discussion/discussion-list.css";
 
-const discussions = [
-    {
-        id: 1,
-        topic: "Ideas for the School Annual Day ",
-        time: "2025-04-14 09:00 AM",
-        description:
-            "Share your ideas and suggestions for School Annual Day",
-        replies: [
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-            "Can we include a student award segment?",
-            "How about a talent show?",
-            "A retro theme would be fun!",
-        ],
-    },
-    {
-        id: 2,
-        topic: "Volunteering for the Science Fair",
-        time: "2025-04-13 02:30 PM",
-        description:
-            "We need student volunteers for organizing and guiding visitors during the science fair.",
-        replies: [
-            "I'm in!",
-            "Count me in for logistics.",
-            "I can help with registrations.",
-        ],
-    },
-    {
-        id: 3,
-        topic: "Class Trip Suggestions",
-        time: "2025-04-12 11:00 AM",
-        description:
-            "Let's brainstorm fun and educational places we can visit for our annual class trip.",
-        replies: [
-            "How about a museum visit?",
-            "A nature camp would be exciting!",
-            "Let's go to a tech park.",
-        ],
-    },
-    {
-        id: 4,
-        topic: "Cultural Fest Performance Planning",
-        time: "2025-04-11 01:00 PM",
-        description:
-            "Anyone interested in singing, dancing, or drama? Let's plan our participation!",
-        replies: [
-            "I'd love to do a group dance!",
-            "I'm good with skits!",
-            "Let's collaborate on a musical act.",
-        ],
-    },
-    {
-        id: 5,
-        topic: "Fundraising Ideas for Sports Equipment",
-        time: "2025-04-10 10:30 AM",
-        description:
-            "We need to raise funds for new sports gear. Share your creative fundraising ideas!",
-        replies: [
-            "Bake sale?",
-            "How about a charity football match?",
-            "We can design and sell school merch!",
-        ],
-    },
-    {
-        id: 6,
-        topic: "Poster Design for Environment Week",
-        time: "2025-04-10 03:00 PM",
-        description:
-            "Calling all artists! We need poster designs for Environment Awareness Week.",
-        replies: [
-            "Let’s make them digitally too!",
-            "We could add quotes from famous environmentalists.",
-        ],
-    },
-    {
-        id: 7,
-        topic: "Open Mic Night Preparation",
-        time: "2025-04-5 05:00 PM",
-        description:
-            "Planning an open mic night! Singers, poets, comedians—this is your stage!",
-        replies: [
-            "Can I perform a solo song?",
-            "I’ve got a stand-up routine ready!",
-            "Let’s do a duet!",
-        ],
-    },
-];
-
-const DiscussionList = () => {
+const DiscussionList = ({ eventId }) => {
+    const [discussions, setDiscussions] = useState([]);
     const [selectedDiscussion, setSelectedDiscussion] = useState(null);
+    const [isFormVisible, setIsFormVisible] = useState(false); // State to toggle form visibility
+    const [newDiscussion, setNewDiscussion] = useState({
+        content: "",
+        description: "",
+        createdAt: new Date(),
+    });
+
+    useEffect(() => {
+        const fetchDiscussions = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:5000/api/discussions/${eventId}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
+                );
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to fetch discussions for event ${eventId}`
+                    );
+                }
+                const data = await response.json();
+                console.log("Fetched discussions:", data);
+                setDiscussions(data);
+            } catch (error) {
+                console.error(
+                    `Error fetching discussions for event ${eventId}:`,
+                    error
+                );
+            }
+        };
+        fetchDiscussions();
+    }, [eventId]);
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/discussions/${eventId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newDiscussion),
+                    credentials: "include",
+                }
+            );
+            if (!response.ok) {
+                throw new Error("Failed to create new discussion");
+            }
+            const data = await response.json();
+            console.log("New discussion created:", data);
+            setDiscussions((prevDiscussions) => [...prevDiscussions, data]);
+            setIsFormVisible(false); // Hide the form after successful creation
+            setNewDiscussion({ content: "", description: "" }); // Reset the form
+        } catch (error) {
+            console.error("Error creating new discussion:", error);
+        }
+    };
 
     return (
         <>
             <h2 className="discussion-heading">Discussion</h2>
-            <div className="discussion-list-container">
-                {discussions.map((discussion) => (
-                    <div
-                        key={discussion.id}
-                        onClick={() => setSelectedDiscussion(discussion)}
+            <button
+                className="btn-add-discussion"
+                onClick={() => setIsFormVisible(true)} // Show the form on click
+            >
+                New discussion
+            </button>
+
+            {/* Form to create a new discussion */}
+            {isFormVisible && (
+                <div className="discussion-form-container">
+                    <form
+                        className="new-discussion-form"
+                        onSubmit={handleFormSubmit}
                     >
-                        <DiscussionCard
-                            discussion={discussion}
+                        <h2>Post a new discussion topic</h2>
+                        <label htmlFor="content">Discussion Title *</label>
+                        <input
+                            type="text"
+                            id="content"
+                            value={newDiscussion.content}
+                            onChange={(e) =>
+                                setNewDiscussion({
+                                    ...newDiscussion,
+                                    content: e.target.value,
+                                })
+                            }
+                            required
                         />
+                        <label htmlFor="discussion-topic-description">
+                            Discussion Description *
+                        </label>
+                        <textarea
+                            id="discussion-topic-description"
+                            value={newDiscussion.description}
+                            onChange={(e) =>
+                                setNewDiscussion({
+                                    ...newDiscussion,
+                                    description: e.target.value,
+                                })
+                            }
+                            required
+                        />
+                        <div className="new-discussion-form-buttons">
+                            <button
+                                type="button"
+                                onClick={() => setIsFormVisible(false)} // Close form
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn-submit-new-discussion"
+                                type="submit"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+
+            <div className="discussion-list-container">
+                {Array.isArray(discussions) && discussions.length === 0 ? (
+                    <div className="no-discussions-message">
+                        No discussions available.
                     </div>
-                ))}
+                ) : (
+                    discussions.map((discussion) => (
+                        <div
+                            key={discussion.id}
+                            onClick={() => setSelectedDiscussion(discussion)}
+                        >
+                            <DiscussionCard discussion={discussion} />
+                        </div>
+                    ))
+                )}
             </div>
 
             {selectedDiscussion && (
