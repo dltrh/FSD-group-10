@@ -80,8 +80,22 @@ exports.finishEvent = async (req, res) => {
 exports.createEvent = async (req, res) => {
     
     try {
+        // Debugging log to inspect the request body
+        console.log("Request body:", req.body);
+
+        // Check if req.body is defined
+        if (!req.body) {
+            return res.status(400).json({ error: "Request body is missing" });
+        }
         const eventId = await getNextEventId();
         const organizerId = "user_00001"; // Replace with actual user ID from session or token
+        let imageUrl = null;
+
+        if (req.file) {
+            // Store locally or upload to cloud
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
+
         const {
             title,
             description,
@@ -123,6 +137,7 @@ exports.createEvent = async (req, res) => {
             notes,
             eventId,
             organizerId,
+            imageUrl: imageUrl || null,
         };
 
         // Create new event
