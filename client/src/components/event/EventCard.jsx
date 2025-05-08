@@ -45,8 +45,8 @@ export default function EventCard({ event }) {
                 </div>
                 <div className="event-image-container">
                     <img
-                        src={placeholder}
-                        alt="placeholder image"
+                        src= { event.imageUrl ? `http://localhost:5000${event.imageUrl}` : placeholder }
+                        alt={placeholder}
                         className="event-image"
                     />
                 </div>

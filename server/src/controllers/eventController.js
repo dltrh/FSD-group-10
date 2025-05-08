@@ -101,7 +101,19 @@ exports.createEvent = async (req, res) => {
     console.log("UserId from session (create event):", userId); // Log the user email
     console.log("Session content (create event:", req.session);
     try {
-        const eventId = await getNextEventId(); 
+        // Check if req.body is defined
+        if (!req.body) {
+            return res.status(400).json({ error: "Request body is missing" });
+        }
+        const eventId = await getNextEventId();
+        const organizerId = req.session.userId; // Replace with actual user ID from session or token
+        let imageUrl = null;
+
+        if (req.file) {
+            // Store locally or upload to cloud
+            imageUrl = `/uploads/${req.file.filename}`;
+        }
+
         const {
             title,
             description,
@@ -152,11 +164,11 @@ exports.createEvent = async (req, res) => {
             canBring:
                 String(canBring).toLowerCase() === "true" || canBring === true,
             isPublic:
-                String(isPublic).toLowerCase() === "public" ||
-                isPublic === true,
+                String(isPublic).toLowerCase() === "true" || isPublic === true,
             isFinished: false,
             notes,
             eventId,
+            imageUrl: imageUrl || null,
         };
 
         // Create new event

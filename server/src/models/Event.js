@@ -31,7 +31,12 @@ const eventSchema = new mongoose.Schema(
         isPublic: { type: Boolean, required: true },
         isFinished: { type: Boolean, default: false },
         gifts: String,
-        notes: String // notes from the host of the event
+        notes: String, // notes from the host of the event
+        imageUrl: {
+            type: String,
+            required: false,
+        }
+
     },
     {
         collection: "Event",

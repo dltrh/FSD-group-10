@@ -27,30 +27,30 @@ const CreateEvent = () => {
     };
 
     const handleSubmit = async () => {
-        const payload = {
-            title,
-            description,
-            maxPpl,
-            timeStart,
-            timeEnd,
-            eventTheme,
-            budget,
-            location,
-            gifts,
-            eventType,
-            canBring,
-            isPublic,
-            notes
-        };
+        const formData = new FormData();
+
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("maxPpl", maxPpl);
+        formData.append("timeStart", timeStart);
+        formData.append("timeEnd", timeEnd);
+        formData.append("eventTheme", eventTheme);
+        formData.append("budget", budget);
+        formData.append("location", location);
+        formData.append("gifts", gifts);
+        formData.append("eventType", eventType);
+        formData.append("canBring", canBring);
+        formData.append("isPublic", isPublic);
+        formData.append("notes", notes);
+        if (image) {
+            formData.append("image", image); // ✅ append image
+        }
 
         try {
             const res = await fetch("http://localhost:5000/api/events/create", {
                 method: "POST",
-                credentials: 'include', 
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
+                body: formData,
+                credentials: "include"
             });
 
             const data = await res.json();
@@ -62,6 +62,7 @@ const CreateEvent = () => {
             console.error("Error creating event:", err);
         }
     };
+
 
     // This useEffect helps to save data in local storage even when we switch tab
     useEffect(() => {
@@ -81,6 +82,7 @@ const CreateEvent = () => {
             setCanBring(data.canBring ?? true);
             setPublic(data.isPublic ?? true);
             setNotes(data.notes || "");
+            setImage(data.image || null);
         }
     }, []);
 
@@ -97,7 +99,16 @@ const CreateEvent = () => {
                             id="uploaded-image"
                             type="file"
                             accept="image/*"
+                            onChange={(e) => setImage(e.target.files[0])}
                         />
+                        {image && (
+                            <img
+                                src={URL.createObjectURL(image)}
+                                alt="Selected preview"
+                                style={{ maxWidth: "200px", marginTop: "10px" }}
+                            />
+                        )}
+
                         <button >Upload</button>
                         <div
                             className="heart"

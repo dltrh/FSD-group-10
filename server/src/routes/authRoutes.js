@@ -10,6 +10,7 @@ router.post('/logout', authController.logout);
 
 //get user 
 router.get('/user', authMiddleware.requireLogin, authController.getProfile);
+router.get('/getCurrentUserId', authController.getCurrentUserId)
 
 // Forgot and reset password
 router.post('/forgot-password', authController.forgotPassword);
