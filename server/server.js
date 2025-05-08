@@ -28,6 +28,7 @@ app.use(
     cors({
         origin: "http://localhost:5173", // React frontend origin
         credentials: true,
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
 );
 app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));

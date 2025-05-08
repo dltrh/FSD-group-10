@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import "../../css/event/create-event.css";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
+import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
     const [liked, setLiked] = useState(false);
@@ -19,6 +20,7 @@ const CreateEvent = () => {
     const [canBring, setCanBring] = useState(true);
     const [notes, setNotes] = useState("");
     const [image, setImage] = useState(null);
+    const navigate = useNavigate();
 
     const handleVisibilityChange = (e) => {
         setPublic(e.target.value === "Public");
@@ -47,12 +49,14 @@ const CreateEvent = () => {
         try {
             const res = await fetch("http://localhost:5000/api/events/create", {
                 method: "POST",
-                body: formData, // ✅ no Content-Type header (browser sets it)
+                body: formData,
+                credentials: "include"
             });
 
             const data = await res.json();
             alert("Event submitted!");
             console.log("Event created:", data);
+            navigate("/manage"); // Redirect to manage events page after successful submission
         } catch (err) {
             alert("Error! Unsuccessful submission.");
             console.error("Error creating event:", err);

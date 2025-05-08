@@ -1,7 +1,11 @@
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const { validateRegister, validateLogin, validateResetPassword } = require('../utils/validators');
-const User = require('../models/User'); // Import model MongoDB
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const {
+    validateRegister,
+    validateLogin,
+    validateResetPassword,
+} = require("../utils/validators");
+const User = require("../models/User"); // Import model MongoDB
 
 // REGISTER
 exports.register = async (req, res) => {
@@ -63,20 +67,21 @@ exports.login = async (req, res) => {
         if (!isMatch)
             return res.status(401).json({ message: "Invalid credentials" });
 
-        // Set session
-        req.session.user = {
-            email: user.email,
-            isAdmin: user.isAdmin,
-        };
-        res.cookie("user", user.email, { // store user email in cookie
-            signed: true,
-            httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 3600000, // 1 hour
-        });
-        console.log("Session user:", req.session.user);
+        // Strore user data in session
+        req.session.userEmail = user.email; // Store user email in session
+        req.session.userId = user.userId; // Store userId in session
+        req.session.isAdmin = user.isAdmin; // Store isAdmin in session
 
+        // res.cookie("user", user.email, {
+        //     // store user email in cookie
+        //     signed: true,
+        //     httpOnly: true,
+        //     sameSite: "strict",
+        //     secure: process.env.NODE_ENV === "production",
+        //     maxAge: 3600000, // 1 hour
+        // });
+        console.log("Session user:", req.session.userEmail);
+        console.log("Session user id:", req.session.userId);
         return res.json({
             message: "Login successful",
             isAdmin: user.isAdmin,
@@ -93,28 +98,32 @@ exports.logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) return res.status(500).json({ message: "Logout failed" });
 
-        // res.clearCookie('connect.sid');
-        res.clearCookie("token", { path: "/" });
+        res.clearCookie("connect.sid");
+        // res.clearCookie("user", { path: "/" });
         res.json({ message: "Logged out" });
     });
 };
 
-//Profile
+// Profile
 exports.getProfile = async (req, res) => {
-    if (req.session.user) {
-        return res.json({ user: req.session.user });
+    if (req.session.userEmail) {
+        console.log("Session user found:", req.session.userEmail, req.session.userId); // Debug log
+        return res.json({ user: req.session.userEmail });
     }
-    res.status(401).json({ message: "Not authenticated" });
+    console.log("Session user not found:", req.session.userEmail); // Debug log
+    return res.status(401).json({ message: "Not authenticated" });
 };
 
 // Forgot password
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'Email not found' });
+    if (!user) return res.status(404).json({ message: "Email not found" });
 
     // Simple token replacement with userId for reset link
-    res.status(200).json({ resetLink: `/reset-password-user?userId=${user.userId}` });
+    res.status(200).json({
+        resetLink: `/reset-password-user?userId=${user.userId}`,
+    });
 };
 
 // Reset password

@@ -1,11 +1,25 @@
 const Event = require("../models/Event.js");
-const {getNextEventId} = require("../utils/getNextEventId.js");
+const { getNextEventId } = require("../utils/getNextEventId.js");
 
+// Get all events
 exports.getAllEvents = async (req, res) => {
     try {
         const events = await Event.find();
         if (!events) {
             return res.status(404).json({ message: "Event not found" });
+        }
+        res.json(events);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Get public events
+exports.getPublicEvents = async (req, res) => {
+    try {
+        const events = await Event.find({ isPublic: true });
+        if (!events) {
+            return res.status(404).json({ message: "No public events found" });
         }
         res.json(events);
     } catch (err) {
@@ -46,28 +60,33 @@ exports.updateEvent = async (req, res) => {
     }
 };
 
-// This function is used to delete an event by its ID. 
+// This function is used to delete an event by its ID.
 // But deletion is not a good practise so changing status of isFinished attribute is a safer option
 exports.finishEvent = async (req, res) => {
     const { id } = req.params;
     const { isFinished } = req.body;
 
-    console.log("Request received for finishing event with data:", { id, isFinished });  // Log data
+    console.log("Request received for finishing event with data:", {
+        id,
+        isFinished,
+    }); // Log data
 
     try {
         const result = await Event.updateOne(
             { eventId: id }, // Matching by eventId
-            { $set: { isFinished: isFinished } }  // Use $set to explicitly update the field
+            { $set: { isFinished: isFinished } } // Use $set to explicitly update the field
         );
 
         if (result.nModified === 0) {
-            return res.status(404).json({ error: "Event not found or no update occurred" });
+            return res
+                .status(404)
+                .json({ error: "Event not found or no update occurred" });
         }
 
         // Fetch the updated event to confirm changes
         const updatedEvent = await Event.findOne({ eventId: id });
 
-        console.log("Updated Event:", updatedEvent);  // Log the updated event
+        console.log("Updated Event:", updatedEvent); // Log the updated event
 
         res.json(updatedEvent);
     } catch (error) {
@@ -78,7 +97,9 @@ exports.finishEvent = async (req, res) => {
 
 // Create a new event
 exports.createEvent = async (req, res) => {
-    
+    const userId = req.session.userId;
+    console.log("UserId from session (create event):", userId); // Log the user email
+    console.log("Session content (create event:", req.session);
     try {
         // Debugging log to inspect the request body
         console.log("Request body:", req.body);
@@ -110,17 +131,29 @@ exports.createEvent = async (req, res) => {
             canBring,
             isPublic,
             notes,
-            
         } = req.body;
 
         // Validate required fields
-        if (!title || !description || !maxPpl || !timeStart || !timeEnd || !budget || !location || !eventType || !eventTheme) {
-            alert('Please provide all required fields');
-            return res.status(400).json({ error: 'Please provide all required fields' });
+        if (
+            !title ||
+            !description ||
+            !maxPpl ||
+            !timeStart ||
+            !timeEnd ||
+            !budget ||
+            !location ||
+            !eventType ||
+            !eventTheme
+        ) {
+            alert("Please provide all required fields");
+            return res
+                .status(400)
+                .json({ error: "Please provide all required fields" });
         }
 
         // Create event data object
         const eventData = {
+            organizerId: userId,
             title,
             description,
             maxPpl: parseInt(maxPpl),
@@ -131,12 +164,13 @@ exports.createEvent = async (req, res) => {
             location,
             gifts,
             eventType,
-            canBring: String(canBring).toLowerCase() === 'true' || canBring === true,
-            isPublic: String(isPublic).toLowerCase() === 'public' || isPublic === true,
+            canBring:
+                String(canBring).toLowerCase() === "true" || canBring === true,
+            isPublic:
+                String(isPublic).toLowerCase() === "true" || isPublic === true,
             isFinished: false,
             notes,
             eventId,
-            organizerId,
             imageUrl: imageUrl || null,
         };
 
@@ -146,8 +180,29 @@ exports.createEvent = async (req, res) => {
 
         res.status(201).json(savedEvent);
     } catch (error) {
-        console.error('Error creating event:', error);
-        res.status(500).json({ error: 'Server error' });
+        console.error("Error creating event:", error);
+        res.status(500).json({ error: "Server error" });
     }
 };
 
+exports.getEventByEmail = async (req, res) => {
+    const userId = req.session.userId;
+    console.log("UserId from session:", userId); // Log the user email
+
+    if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    try {
+        const events = await Event.find({ organizerId: userId });
+        if (!events) {
+            return res
+                .status(404)
+                .json({ message: "Event hosted by this user not found" });
+        }
+        res.json(events);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
+    }
+};

@@ -14,16 +14,17 @@
 .event-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 1rem;
+    /* gap: 1rem; */
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
-    justify-items: center;
+    justify-content: space-between;
+    /* justify-items: space-between; */
 }
 
 .filters {
     /* flex: 2; */
-    width: 350px;
+    width: 300px;
     background: white;
     padding: 0 1rem 1rem 1rem;
     /* box-shadow: 0 0 8px rgba(0, 0, 0, 0.05); */
@@ -124,17 +125,17 @@
     flex-direction: column;
     gap: 1.5rem;
     max-width: 100%;
-    justify-content: space-between;
+    justify-content: start;
     flex-grow: 1;
     background: #fefefe;
+    min-height: 50vh; 
+    padding: 1rem;
 }
 
 .top-controls {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    padding-left: 40px;
-    padding-right: 40px;
 }
 
 .search-bar {
