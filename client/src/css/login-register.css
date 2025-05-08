@@ -178,6 +178,10 @@
     place-items: center;
 }
 
+.login-field a {
+    max-width: fit-content;
+}
+
 .reset-password-form {
     display: grid;
     gap: 20px;

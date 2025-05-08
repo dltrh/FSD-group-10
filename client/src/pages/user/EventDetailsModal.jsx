@@ -35,14 +35,13 @@ const EventDetailsModal = () => {
     useEffect(() => {
     const fetchEvent = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/events');
+            const response = await fetch('http://localhost:5000/api/events/publicEvents');
             if (!response.ok) throw new Error("Event not found");
 
             const data = await response.json();
             console.log("Fetched events:", data);  // Log the fetched data
 
             const foundEvent = data.find((e) => e.eventId === eventId);
-            console.log("Found Event:", foundEvent);  // Log the found event or undefined
 
             setEvent(foundEvent);
         } catch (error) {

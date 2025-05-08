@@ -7,6 +7,8 @@ import profile from "../assets/header/profile.png";
 import "../css/header.css";
 import "bootstrap/dist/css/bootstrap.css";
 import NotificationDropdown from "./notification/NotificationDropdown";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const notifications = [
     {
@@ -63,10 +65,37 @@ const notifications = [
 export default function Header() {
     // Search bar
     const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+    const { user } = useAuth();
     const handleSearch = (e) => {
         e.preventDefault();
         alert(`Search: ${searchQuery}`);
         setSearchQuery("");
+    };
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/api/logout", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(`Error: ${data.message}`);
+            } else {
+                alert("Logout successful!");
+                // Redirect to login page or home page
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert("An error occurred during logout.");
+        }
     };
 
     // Notification drop-down list
@@ -89,7 +118,7 @@ export default function Header() {
 
     return (
         <div className="header-container">
-            <Link to="/">
+            <Link to={user ? "/home" : "/"}> 
                 <img src={logo} alt="App logo" className="logo" />
             </Link>
             <form className="header-search-bar" onSubmit={handleSearch}>
@@ -150,12 +179,11 @@ export default function Header() {
                             <Link to="/:user-id/invitations">
                                 <button>My invitations</button>
                             </Link>
-                            <Link to="/:user-id/my-events">
+                            <Link to="/manage">
                                 <button>My events</button>
                             </Link>
-                            <Link to="/">
-                                <button>Logout</button>
-                            </Link>
+
+                            <button onClick={handleLogout}>Logout</button>
                         </div>
                     </li>
                 </ul>

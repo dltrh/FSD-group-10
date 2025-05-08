@@ -37,7 +37,7 @@ const Home = () => {
             </div>
             <div className="event-list-section">
                 <h2 className="event-heading">Latest public events</h2>
-                <EventList/>
+                <EventList type="public"/>
             </div>
             <WhyUs />
             <Footer />

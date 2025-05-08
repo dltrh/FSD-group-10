@@ -11,9 +11,9 @@ const ManageEvent = () => {
     return (
         <>
             <Header />
-            <h2 className="my-events-heading">Manage events</h2>
+            <h2 className="my-events-heading">Manage my events</h2>
             <div className="manage-event-section">
-                <EventList />
+                <EventList type="manage"/>
             </div>
             <Footer />
         </>

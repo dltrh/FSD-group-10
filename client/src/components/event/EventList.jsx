@@ -3,9 +3,9 @@ import EventCard from "./EventCard";
 import "../../css/event/event-list.css";
 import { parseDateString, calculateEventStatus } from "../../utils/timeUtils";
 
-
-export default function EventList () {
+export default function EventList({ type }) {
     const [events, setEvents] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [search, setSearch] = useState("");
@@ -13,33 +13,56 @@ export default function EventList () {
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedLocations, setSelectedLocations] = useState([]);
     const [sortOption, setSortOption] = useState("Newest");
-   
 
     // Dynamic filter options
     const [availableLocations, setAvailableLocations] = useState([]);
     const [availableThemes, setAvailableThemes] = useState([]);
-    
+
     // Define status options - these will be calculated dynamically
     const statuses = ["Upcoming", "In Progress", "Completed"];
 
     // Budget-related filters
     const [budget, setBudget] = useState(500);
-    const [appliedBudget, setAppliedBudget] = useState(0); 
+    const [appliedBudget, setAppliedBudget] = useState(0);
     const [maxBudget, setMaxBudget] = useState(500); // default is 500 if nothing happens
 
-
+    let api = "";
+    switch (type) {
+        case "manage": // For managing events, we want to show all events hosted by the user that's logged in
+            api = "http://localhost:5000/api/events/hostedByUser";
+            break;
+        case "all": // For showing all events
+            api = "http://localhost:5000/api/events";
+            break;
+        case "public": // For showing all public events
+            api = "http://localhost:5000/api/events/publicEvents";
+            break;
+        default:
+            api = "http://localhost:5000/api/events";
+    }
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/events');
+                const response = await fetch(api, {
+                    method: "GET",
+                    credentials: "include",
+                });
                 const data = await response.json();
 
+                if (!Array.isArray(data)) {
+                    setErrorMessage(
+                        data?.message ||
+                            data?.error ||
+                            "Unexpected response format."
+                    );
+                    return;
+                }
 
                 // Process events to add status
-                const processedEvents = data.map(event => ({
+                const processedEvents = data.map((event) => ({
                     ...event,
-                    status: calculateEventStatus(event)
+                    status: calculateEventStatus(event),
                 }));
 
                 // Extract unique locations and themes
@@ -49,31 +72,30 @@ export default function EventList () {
                 // Find max budget
                 if (processedEvents.length > 0) {
                     const budgets = processedEvents
-                        .map(event => event.budget)
-                        .filter(budget => typeof budget === 'number' && !isNaN(budget));
+                        .map((event) => event.budget)
+                        .filter(
+                            (budget) =>
+                                typeof budget === "number" && !isNaN(budget)
+                        );
 
                     const max = budgets.length > 0 ? Math.max(...budgets) : 0;
                     setMaxBudget(max);
                     setBudget(max); // Optional: Set slider to max when loaded
                 }
-                
-
             } catch (error) {
-                console.error('Error fetching events:', error);
+                console.error("Error fetching events:", error);
             }
         };
 
         fetchEvents();
     }, []);
 
-   
-
     // Extract unique filter options
     const extractFilterOptions = (eventsData) => {
         const locationSet = new Set();
         const themeSet = new Set();
 
-        eventsData.forEach(event => {
+        eventsData.forEach((event) => {
             if (event.location) {
                 locationSet.add(event.location);
             }
@@ -91,58 +113,76 @@ export default function EventList () {
         let result = [...events];
 
         // Filter out events that are not public
-        result = result.filter(event => event.isPublic === true);
+        result = result.filter((event) => event.isPublic === true);
+
         // Filter out events that are finished
-        result = result.filter(event => event.isFinished === false);
+        result = result.filter((event) => event.isFinished === false);
 
         if (search) {
             const query = search.toLowerCase();
             result = result.filter(
                 (event) =>
-                    (event.title && event.title.toLowerCase().includes(query)) ||
-                    (event.location && event.location.toLowerCase().includes(query)) ||
-                    (event.description && event.description.toLowerCase().includes(query))
+                    (event.title &&
+                        event.title.toLowerCase().includes(query)) ||
+                    (event.location &&
+                        event.location.toLowerCase().includes(query)) ||
+                    (event.description &&
+                        event.description.toLowerCase().includes(query))
             );
         }
 
         // Apply sorting
         if (sortOption === "Newest") {
-            result.sort((a, b) => new Date(b.timeStart) - new Date(a.timeStart));
+            result.sort(
+                (a, b) => new Date(b.timeStart) - new Date(a.timeStart)
+            );
         } else if (sortOption === "Oldest") {
-            result.sort((a, b) => new Date(a.timeStart) - new Date(b.timeStart));
+            result.sort(
+                (a, b) => new Date(a.timeStart) - new Date(b.timeStart)
+            );
         } else if (sortOption === "Price: Low to High") {
             result.sort((a, b) => (a.budget || 0) - (b.budget || 0));
         } else if (sortOption === "Price: High to Low") {
             result.sort((a, b) => (b.budget || 0) - (a.budget || 0));
         }
 
-        if (selectedTheme){
-            result = result.filter(event =>
-                event.eventTheme && event.eventTheme === selectedTheme
+        if (selectedTheme) {
+            result = result.filter(
+                (event) =>
+                    event.eventTheme && event.eventTheme === selectedTheme
             );
         }
         // Apply status filters - now using our calculated status
         if (selectedStatuses.length > 0) {
-            result = result.filter(event =>
-                event.status && selectedStatuses.includes(event.status)
+            result = result.filter(
+                (event) =>
+                    event.status && selectedStatuses.includes(event.status)
             );
         }
 
         // Apply budget filter
-        result = result.filter(event =>
-            event.budget && event.budget <= budget
+        result = result.filter(
+            (event) => event.budget && event.budget <= budget
         );
 
         // Apply location filters
         if (selectedLocations.length > 0) {
-            result = result.filter(event =>
-                event.location && selectedLocations.includes(event.location)
+            result = result.filter(
+                (event) =>
+                    event.location && selectedLocations.includes(event.location)
             );
         }
 
         setFilteredEvents(result);
-    }, [search, events, appliedBudget, sortOption, selectedTheme, selectedStatuses, selectedLocations]);
-
+    }, [
+        search,
+        events,
+        appliedBudget,
+        sortOption,
+        selectedTheme,
+        selectedStatuses,
+        selectedLocations,
+    ]);
 
     // Handle search input changes
     const handleSearchChange = (e) => {
@@ -169,8 +209,6 @@ export default function EventList () {
     const resetThemeFilter = () => {
         setSelectedTheme("");
     };
-
-   
 
     return (
         <div className="event-list-overlay">
@@ -221,7 +259,10 @@ export default function EventList () {
                         onChange={(e) => setBudget(e.target.value)}
                     />
                     <span>${budget}</span>
-                    <button className="apply-btn" onClick={() => setAppliedBudget(budget)}>
+                    <button
+                        className="apply-btn"
+                        onClick={() => setAppliedBudget(budget)}
+                    >
                         Apply
                     </button>
                 </div>
@@ -244,16 +285,13 @@ export default function EventList () {
             <div className="main-content">
                 <div className="top-controls">
                     <div className="search-bar">
-
                         <input
                             type="text"
                             placeholder="Search by name, description, location"
                             value={search}
                             onChange={handleSearchChange}
-                            
                         />
-                        <button className = "search-button"> Search</button>
-             
+                        <button className="search-button"> Search</button>
                     </div>
                     <div className="sort-options">
                         {[
@@ -275,11 +313,19 @@ export default function EventList () {
                     </div>
                 </div>
                 <div className="event-list-container">
-                    {filteredEvents.map((event) => (
-                        <div key={event._id}>
-                            <EventCard event={event} />
-                        </div>
-                    ))}
+                    {filteredEvents.length === 0 && type === "manage" ? (
+                        <p>You haven't hosted any event.</p>
+                    ) : filteredEvents.length === 0 ? (
+                        <p>No events found.</p>
+                    ) : errorMessage ? (
+                        <div className="error-message">{errorMessage}</div>
+                    ) : (
+                        filteredEvents.map((event) => (
+                            <div  key={event._id}>
+                                <EventCard event={event} />
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

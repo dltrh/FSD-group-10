@@ -2,12 +2,14 @@ import logo from "../../assets/logo.png";
 import "../../css/login-register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function LoginUser() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const baseURL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
+    const { setUser } = useAuth();
 
     const handleInput = async (e) => {
         e.preventDefault();
@@ -23,10 +25,12 @@ export default function LoginUser() {
             });
 
             const data = await response.json();
+            console.log("Login response:", data);
 
             if (!response.ok) {
                 alert(`Error: ${data.message}`);
             } else {
+                setUser(email);
                 alert("Login successful!");
                 setEmail("");
                 setPassword("");
