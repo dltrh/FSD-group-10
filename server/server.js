@@ -11,6 +11,7 @@ const invitationRoutes = require("./src/routes/invitationRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const devRoutes = require("./src/routes/devRoutes");
+const notificationRoutes = require("./src/routes/notificationRoutes");
 
 const app = express();
 dotenv.config();
@@ -49,6 +50,8 @@ app.use("/api/events", eventRoutes); // EventRoutes
 app.use("/api/invitations", invitationRoutes); // InvitationRoutes
 app.use("/api/users", userRoutes); // UserRoutes
 app.use("/dev", devRoutes); // DevRoutes
+app.use("/api/notifications", notificationRoutes); // NotificationRoutes
+
 
 // Port
 app.listen(PORT, () => {

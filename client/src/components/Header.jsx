@@ -10,63 +10,61 @@ import NotificationDropdown from "./notification/NotificationDropdown";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const notifications = [
-    {
-        id: 1,
-        event_id: 1,
-        user_ud: 1,
-        sent_at: "22/07/2025",
-        message: "Alice liked your post.",
-    },
-    {
-        id: 2,
-        event_id: 1,
-        user_ud: 1,
-        sent_at: "22/07/2025",
-        message: "Bob liked your post.",
-    },
-    {
-        id: 3,
-        event_id: 2,
-        user_ud: 2,
-        sent_at: "23/07/2025",
-        message: "You have a new RSVP from Charlie.",
-    },
-    {
-        id: 4,
-        event_id: 3,
-        user_ud: 1,
-        sent_at: "23/07/2025",
-        message: "Your event has been updated.",
-    },
-    {
-        id: 5,
-        event_id: 4,
-        user_ud: 3,
-        sent_at: "24/07/2025",
-        message: "Dana commented on your discussion post.",
-    },
-    {
-        id: 6,
-        event_id: 1,
-        user_ud: 1,
-        sent_at: "24/07/2025",
-        message: "Eve joined your event.",
-    },
-    {
-        id: 7,
-        event_id: 2,
-        user_ud: 2,
-        sent_at: "25/07/2025",
-        message: "Your RSVP has been confirmed.",
-    },
-];
 
 export default function Header() {
     // Search bar
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const { user } = useAuth();
+    const [notifications, setNotifications] = useState([]);
+    const [loadingNotifications, setLoadingNotifications] = useState(false);
+
+    const [loggedInUserId, setLoggedInUserId] = useState(null);
+    
+        useEffect(() => {
+            const fetchUserId = async () => {
+                try {
+                    const response = await fetch("http://localhost:5000/api/getCurrentUserId", {
+                        method: "GET",
+                        credentials: "include", // Include session cookies
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        setLoggedInUserId(data.user); // Set the logged-in user's ID
+                    } else {
+                        console.error("Failed to fetch user ID");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user ID:", error);
+                }
+            };
+    
+            fetchUserId();
+        }, []);
+    // Fetch notifications for the user when the component mounts or when user.id changes
+    useEffect(() => {
+        if (!loggedInUserId) return; // ✅ ensure consistent dependency array
+        const fetchNotifications = async () => {
+            setLoadingNotifications(true);
+            try {
+                const response = await fetch(`http://localhost:5000/api/notifications/${loggedInUserId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setNotifications(data);
+                } else {
+                    console.error("Failed to fetch notifications");
+                }
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            } finally {
+                setLoadingNotifications(false);
+            }
+        };
+        fetchNotifications();
+    }, [loggedInUserId]); // ✅ consistent dependency
+    console.log(loggedInUserId);
+    console.log(notifications);
+
     const handleSearch = (e) => {
         e.preventDefault();
         alert(`Search: ${searchQuery}`);
@@ -116,6 +114,8 @@ export default function Header() {
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+  
+
     return (
         <div className="header-container">
             <Link to={user ? "/home" : "/"}> 
@@ -158,6 +158,7 @@ export default function Header() {
                         <NotificationDropdown
                             notifications={notifications}
                             isOpen={notificationOpen}
+                            loading={loadingNotifications}
                         />
                     </li>
                     <li>
