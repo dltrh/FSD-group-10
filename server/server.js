@@ -46,9 +46,8 @@ app.use(
             secure: false,
             httpOnly: true,
             sameSite: "Lax"
-        }, // Set secure to true if using HTTPS
-    })
-);
+        },
+    }));
 
 // Routes
 app.use("/api", authRoutes); // AuthRoutes
