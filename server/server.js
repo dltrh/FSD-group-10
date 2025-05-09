@@ -22,18 +22,19 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 console.log(process.env.MONGODB_URI);
 
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use("/uploads", express.static("uploads"));
-app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
+// Cors
 app.use(
     cors({
-        origin: ["http://localhost:5173", "http://localhost:3000"], // React frontend origin port
+        origin: "http://localhost:5173", // React frontend origin port
         credentials: true,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
 );
+
+// Middlewares
+app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // Session
 app.use(
@@ -41,7 +42,11 @@ app.use(
         secret: process.env.SESSION_SECRET || "mySecretKey",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false, httpOnly: true, sameSite: "Lax" }, // Set secure to true if using HTTPS
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            sameSite: "Lax"
+        }, // Set secure to true if using HTTPS
     })
 );
 
@@ -54,6 +59,7 @@ app.use("/dev", devRoutes); // DevRoutes
 app.use("/api/admin", adminRoutes); //AdminRoutes
 app.use("/api/notifications", notificationRoutes); // NotificationRoutes
 
+app.use("/uploads", express.static("uploads"));
 
 // Port
 app.listen(PORT, () => {
