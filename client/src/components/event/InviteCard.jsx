@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import "../../css/event/invite-card.css";
 import placeholder from "../../assets/home/placeholder.jpg";
 import { formatDate, calculateEventStatus } from "../../utils/timeUtils";
+import {useNavigate} from "react-router-dom";
 
 export default function InviteCard({ invitation }) {
     const [event, setEvent] = useState(null);
     const [user, setUser] = useState(null);
     const [updatedInvitation, setUpdatedInvitation] = useState(invitation);
+    const navigate = useNavigate();
 
     const Status = {
         ACCEPTED: "Accepted",
@@ -112,10 +114,14 @@ export default function InviteCard({ invitation }) {
             fetchInvitationInfo();
         }
     }, [updatedInvitation]);
+    const handleCardClick = () => {
+        navigate(`/manage/details/${event.eventId}`);
+    }
+    console.log(updatedInvitation.organizerId);
 
     return (
         <>
-            <div className="invitation-card-container">
+            <div className="invitation-card-container" onClick={handleCardClick}>
                 {event ? (
                     <>
                         <div className="invitation-card-header">
