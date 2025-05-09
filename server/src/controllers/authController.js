@@ -70,13 +70,21 @@ exports.login = async (req, res) => {
         req.session.userId = user.userId; // Store userId in session
         req.session.isAdmin = user.isAdmin; // Store isAdmin in session
 
-        console.log("Session user:", req.session.userEmail);
-        console.log("Session user id:", req.session.userId);
-        console.log("Session user isAdmin:", req.session.isAdmin);
-        return res.json({
-            message: "Login successful",
-            isAdmin: user.isAdmin,
-            email: user.email,
+        console.log("Session user:", req.session.userEmail); //console log the user Email
+        console.log("Session user id:", req.session.userId); //console log the user ID
+        console.log("Session user isAdmin:", req.session.isAdmin); //console log the isAdmin attribute
+
+        req.session.save((err) => {
+            if (err) {
+                console.error("Session save error:", err);
+                return res.status(500).json({ message: "Session save failed" });
+            }
+
+            return res.json({
+                message: "Login successful",
+                isAdmin: user.isAdmin,
+                email: user.email,
+            });
         });
     } catch (err) {
         console.error("Login error:", err);
@@ -150,7 +158,7 @@ exports.resetPassword = async (req, res) => {
 // Find userId of session
 exports.getCurrentUserId = async (req, res) => {
     if (req.session.userId) {
-        console.log("Session user found:",  req.session.userId); // Debug log
+        console.log("Session user found:", req.session.userId); // Debug log
         return res.json({ user: req.session.userId });
     }
     console.log("Session user not found:", req.session.userId); // Debug log

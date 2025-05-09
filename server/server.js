@@ -26,6 +26,7 @@ console.log(process.env.MONGODB_URI);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use("/uploads", express.static("uploads"));
+app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
 app.use(
     cors({
         origin: ["http://localhost:5173", "http://localhost:3000"], // React frontend origin port
@@ -33,7 +34,6 @@ app.use(
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
 );
-app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
 
 // Session
 app.use(

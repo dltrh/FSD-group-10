@@ -6,6 +6,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetch(`${baseURL}/admin/stats`, {
+            method: "GET",
             credentials: "include", // For session or cookie
         })
             .then(res => res.json())
