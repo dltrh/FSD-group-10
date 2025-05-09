@@ -104,14 +104,18 @@ exports.logout = (req, res) => {
 };
 
 // Profile
-exports.getProfile = async (req, res) => {
-    if (req.session.userEmail) {
-        console.log("Session user found:", req.session.userEmail, req.session.userId); // Debug log
-        return res.json({ user: req.session.userEmail });
+exports.getProfile = (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authenticated" });
     }
-    console.log("Session user not found:", req.session.userEmail); // Debug log
-    return res.status(401).json({ message: "Not authenticated" });
+
+    const { email, fullname, isAdmin, userId, phone } = req.user;
+
+    return res.status(200).json({
+        user: { email, fullname, isAdmin, userId, phone }
+    });
 };
+
 
 // Forgot password
 exports.forgotPassword = async (req, res) => {

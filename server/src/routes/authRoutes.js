@@ -1,18 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const authMiddleware = require('../middleware/auth');
+const { requireLogin } = require('../middleware/auth');
 
-// Register and login routes
+// === AUTH ROUTES ===
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
 
-//get user 
-router.get('/user', authMiddleware.requireLogin, authController.getProfile);
-router.get('/getCurrentUserId', authController.getCurrentUserId)
+// === AUTHENTICATED USER ROUTES ===
+// Return user info at the momment 
+router.get('/user', requireLogin, (req, res) => {
+    const user = req.user;
+    if (!user) {
+        return res.status(404).json({ message: 'User not found in request' });
+    }
 
-// Forgot and reset password
+    res.status(200).json({
+        user: {
+            email: user.email,
+            fullname: user.fullname,
+            userId: user.userId,
+            phone: user.phone,
+            isAdmin: user.isAdmin,
+        }
+    });
+});
+
+// Store userId
+router.get('/getCurrentUserId', authController.getCurrentUserId);
+
+// === PASSWORD RESET ===
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
 

@@ -23,7 +23,7 @@ const Users = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>Fullname</th>
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Action</th>
@@ -33,7 +33,7 @@ const Users = () => {
                     {users.map((user, index) => (
                         <tr key={user._id}>
                             <td>{index + 1}</td>
-                            <td>{user.name}</td>
+                            <td>{user.fullname}</td>
                             <td>{user.email}</td>
                             <td>{user.phone}</td>
                             <td className="admin-btn-group">

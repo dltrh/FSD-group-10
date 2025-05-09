@@ -16,7 +16,7 @@ export const AdminRoutes = [
             { path: "users", element: <Users /> },
             { path: "events", element: <Events /> },
             { path: "settings", element: <AdminSettings /> },
-            { path: "profile", element: <AdminProfile /> }
+            // { path: "profile", element: <AdminProfile /> }
         ],
     }
 ];

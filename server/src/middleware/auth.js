@@ -1,11 +1,11 @@
 const User = require("../models/User");
 
 exports.requireLogin = async (req, res, next) => {
-    const username = req.session.userEmail; 
+    const email = req.session.userEmail;
     // const userId = req.session.userId; // Assuming you have userId in session as well
     // console.log("Username from session:", username);
     // console.log("UserId from session:", userId);
-    if (!username) {
+    if (!email) {
         return res.status(401).json({ error: "Unauthorized" });
     }
 
