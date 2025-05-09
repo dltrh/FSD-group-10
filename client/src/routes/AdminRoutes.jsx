@@ -4,6 +4,7 @@ import AdminLayout from "../pages/admin/AdminLayout";
 import Users from "../pages/admin/Users";
 import Events from "../pages/admin/Events";
 import AdminSettings from "../pages/admin/Settings";
+import AdminProfile from "../pages/admin/adminProfile";
 
 export const AdminRoutes = [
     {
@@ -15,6 +16,7 @@ export const AdminRoutes = [
             { path: "users", element: <Users /> },
             { path: "events", element: <Events /> },
             { path: "settings", element: <AdminSettings /> },
+            { path: "profile", element: <AdminProfile /> }
         ],
     }
 ];

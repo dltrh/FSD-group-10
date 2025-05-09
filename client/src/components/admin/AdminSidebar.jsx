@@ -7,7 +7,9 @@ import { IoIosSettings } from "react-icons/io";
 const Sidebar = () => {
     return (
         <div className="sidebar">
-            <img src={logo} alt="logo" className="admin-logo" />
+            <Link to="/">
+                <img src={logo} alt="logo" className="admin-logo" />
+            </Link>
             <nav className="nav-links">
                 <Link to="dashboard" className="nav-item">
                     <FaTachometerAlt className="nav-icon" />

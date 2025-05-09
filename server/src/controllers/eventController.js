@@ -97,17 +97,8 @@ exports.finishEvent = async (req, res) => {
 
 // Create a new event
 exports.createEvent = async (req, res) => {
-    const userId = req.session.userId;
-    console.log("UserId from session (create event):", userId); // Log the user email
-    console.log("Session content (create event:", req.session);
-    try {
-        // Debugging log to inspect the request body
-        console.log("Request body:", req.body);
 
-        // Check if req.body is defined
-        if (!req.body) {
-            return res.status(400).json({ error: "Request body is missing" });
-        }
+    try {
         const eventId = await getNextEventId();
         const organizerId = "user_00001"; // Replace with actual user ID from session or token
         let imageUrl = null;
@@ -131,6 +122,7 @@ exports.createEvent = async (req, res) => {
             canBring,
             isPublic,
             notes,
+
         } = req.body;
 
         // Validate required fields

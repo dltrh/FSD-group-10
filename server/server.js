@@ -11,6 +11,7 @@ const invitationRoutes = require("./src/routes/invitationRoutes");
 const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const devRoutes = require("./src/routes/devRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
 
 const app = express();
 dotenv.config();
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/uploads", express.static("uploads"));
 app.use(
     cors({
-        origin: "http://localhost:5173", // React frontend origin
+        origin: ["http://localhost:5173", "http://localhost:3000"], // React frontend origin port
         credentials: true,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
@@ -39,7 +40,7 @@ app.use(
         secret: process.env.SESSION_SECRET || "mySecretKey",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false, httpOnly: true, sameSite: "Strict" }, // Set secure to true if using HTTPS
+        cookie: { secure: false, httpOnly: true, sameSite: "Lax" }, // Set secure to true if using HTTPS
     })
 );
 
@@ -49,6 +50,7 @@ app.use("/api/events", eventRoutes); // EventRoutes
 app.use("/api/invitations", invitationRoutes); // InvitationRoutes
 app.use("/api/users", userRoutes); // UserRoutes
 app.use("/dev", devRoutes); // DevRoutes
+app.use("/api/admin", adminRoutes); //AdminRoutes
 
 // Port
 app.listen(PORT, () => {

@@ -20,8 +20,6 @@ exports.register = async (req, res) => {
         phone,
         userId,
     } = req.body;
-    // const fullname = `${firstname} ${lastname}`;
-    // const userId = `user_${Date.now()}`;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -72,16 +70,9 @@ exports.login = async (req, res) => {
         req.session.userId = user.userId; // Store userId in session
         req.session.isAdmin = user.isAdmin; // Store isAdmin in session
 
-        // res.cookie("user", user.email, {
-        //     // store user email in cookie
-        //     signed: true,
-        //     httpOnly: true,
-        //     sameSite: "strict",
-        //     secure: process.env.NODE_ENV === "production",
-        //     maxAge: 3600000, // 1 hour
-        // });
         console.log("Session user:", req.session.userEmail);
         console.log("Session user id:", req.session.userId);
+        console.log("Session user isAdmin:", req.session.isAdmin);
         return res.json({
             message: "Login successful",
             isAdmin: user.isAdmin,
