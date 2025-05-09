@@ -1,5 +1,5 @@
 
-### COSC2769 | COSC2808 - FULL STACK 
+### COSC2769 | COSC2808 - FULL STACK DEVELOPMENT
 # GROUP PROJECT -  Event Planning & Management System 
 
 
