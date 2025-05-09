@@ -26,10 +26,10 @@ const baseRoutes = [
     { path: "/response", element: <EventResponse /> },
     { path: "/response/:status", element: <InvitationResponseStatus /> },
     { path: "/attend/:id", element: <AcceptEvent /> },
-    { path: "/:user-id/my-events", element: <MyEvents /> },
-    { path: "/:user-id/saved-events", element: <SavedEvents /> },
-    { path: "/:user-id/invitations", element: <Invitations /> },
-    { path: "/:user-id/profile", element: <Profile /> },
+    { path: "/my-events", element: <MyEvents /> },
+    { path: "/saved-events", element: <SavedEvents /> },
+    { path: "/invitations", element: <Invitations /> },
+    { path: "/profile", element: <Profile /> },
 ];
 
 export const UserRoutes = baseRoutes.map((route) => ({

@@ -14,6 +14,8 @@ const devRoutes = require("./src/routes/devRoutes");
 const discussionRoutes = require("./src/routes/discussionRoutes");
 const questionRoutes = require("./src/routes/questionRoutes");
 const repliesRoutes = require("./src/routes/repliesRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
+const notificationRoutes = require("./src/routes/notificationRoutes");
 
 const app = express();
 dotenv.config();
@@ -23,18 +25,19 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 console.log(process.env.MONGODB_URI);
 
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use("/uploads", express.static("uploads"));
+// Cors
 app.use(
     cors({
-        origin: "http://localhost:5173", // React frontend origin
+        origin: "http://localhost:5173", // React frontend origin port
         credentials: true,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
 );
+
+// Middlewares
 app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // Session
 app.use(
@@ -42,7 +45,11 @@ app.use(
         secret: process.env.SESSION_SECRET || "mySecretKey",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false, httpOnly: true, sameSite: "Strict" }, // Set secure to true if using HTTPS
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            sameSite: "Lax"
+        }, // Set secure to true if using HTTPS
     })
 );
 
@@ -55,6 +62,10 @@ app.use("/dev", devRoutes); // DevRoutes
 app.use("/api/discussions", discussionRoutes); // DiscussionRoutes
 app.use("/api/questions", questionRoutes); // QuestionRoutes
 app.use("/api/replies", repliesRoutes); // RepliesRoutes
+app.use("/api/admin", adminRoutes); //AdminRoutes
+app.use("/api/notifications", notificationRoutes); // NotificationRoutes
+
+app.use("/uploads", express.static("uploads"));
 
 // Port
 app.listen(PORT, () => {

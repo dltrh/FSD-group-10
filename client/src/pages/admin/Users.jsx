@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Users = () => {
+    const [users, setUsers] = useState([]);
+    const baseURL = import.meta.env.VITE_API_BASE_URL
+
+    useEffect(() => {
+        fetch(`${baseURL}/admin/users`, {
+            credentials: "include"
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch users");
+                return res.json();
+            })
+            .then((data) => setUsers(data))
+            .catch((err) => console.error("Fetch users failed:", err));
+    }, []);
+
     return (
         <div className="admin-users">
             <button className="add-btn">Add New</button>
@@ -10,45 +25,23 @@ const Users = () => {
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Password</th>
                         <th>Phone</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Steve J</td>
-                        <td>Apple123@gmail.com</td>
-                        <td>Wsa3141das</td>
-                        <td>123456789</td>
-                        <td className="admin-btn-group">
-                            <button>Edit</button>
-                            <button>Cancel</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Daniel T</td>
-                        <td>Dani1@gmail.com</td>
-                        <td>vuSBF354JH</td>
-                        <td>234567890</td>
-                        <td className="admin-btn-group">
-                            <button>Edit</button>
-                            <button>Cancel</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Cecilia Y</td>
-                        <td>CecilY@gmail.com</td>
-                        <td>jofa#415u9F</td>
-                        <td>098765432</td>
-                        <td className="admin-btn-group">
-                            <button>Edit</button>
-                            <button>Cancel</button>
-                        </td>
-                    </tr>
+                    {users.map((user, index) => (
+                        <tr key={user._id}>
+                            <td>{index + 1}</td>
+                            <td>{user.name}</td>
+                            <td>{user.email}</td>
+                            <td>{user.phone}</td>
+                            <td className="admin-btn-group">
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

@@ -3,10 +3,16 @@ import "../../css/notification/notification-dropdown.css";
 import { useState } from "react";
 import NotificationDetailsModal from "./NotificationDetailsModal";
 
-export default function NotificationDropdown({ notifications, isOpen }) {
+export default function NotificationDropdown({ notifications, isOpen,loading }) {
     const [selectedNotif, setSelectedNotif] = useState(null);
 
     if (!isOpen) return null;
+    if (loading) {
+        return <div className="notification-dropdown">Loading...</div>;
+    }
+    console.log(notifications);
+
+
 
     return (
         <div className="notification-dropdown">
@@ -19,11 +25,11 @@ export default function NotificationDropdown({ notifications, isOpen }) {
                     notifications.map((notif) => (
                         <div
                             className="notification-item"
-                            key={notif.id}
+                            key={notif.notificationId}
                             onClick={() => setSelectedNotif(notif)}
                         >
                             <p>{notif.message}</p>
-                            <span>{notif.sent_at}</span>
+                            <span>{new Date(notif.sentAt).toLocaleString()}</span>
                         </div>
                     ))
                 )}
@@ -35,6 +41,7 @@ export default function NotificationDropdown({ notifications, isOpen }) {
                     notification={selectedNotif}
                     onClose={() => setSelectedNotif(null)}
                 />
+                
             )}
         </div>
     );

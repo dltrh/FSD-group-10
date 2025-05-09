@@ -5,27 +5,28 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const baseURL = import.meta.env.VITE_API_BASE_URL
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/user", {
+                const res = await fetch(`${baseURL}/user`, {
                     method: "GET",
                     credentials: "include",
                 });
-                
+
                 if (!res.ok) {
-                    const text = await res.text(); // catch the HTML error message
-                    throw new Error(`Error ${res.status}: ${text}`);
+                    const errorText = await res.text();
+                    throw new Error(`Error ${res.status}: ${errorText}`);
                 }
 
                 const data = await res.json();
                 setUser(data.user);
             } catch (error) {
-                console.error("Auth check failed:", error);
+                console.error("Auth check failed:", error.message);
                 setUser(null);
             } finally {
-                setLoading(false); // done fetching
+                setLoading(false);
             }
         };
 

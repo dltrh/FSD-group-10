@@ -6,11 +6,6 @@ import { Outlet, Router } from "react-router-dom";
 import Sidebar from "../../components/admin/AdminSidebar";
 import AdminHeader from "../../components/admin/AdminHeader";
 
-// Pages
-import Dashboard from "./Dashboard";
-import Users from "./Users";
-import Events from "./Events";
-
 export default function AdminLayout() {
     return (
         <div className="app">

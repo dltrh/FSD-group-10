@@ -1,6 +1,6 @@
-import Counter from "../models/Counter.js";
+const Counter = require("../models/Counter.js");
 
-export async function getNextEventId() {
+async function getNextEventId() {
     const counter = await Counter.findByIdAndUpdate(
         { _id: "event" },
         { $inc: { seq: 1 } },
@@ -10,4 +10,6 @@ export async function getNextEventId() {
     const paddedNumber = String(counter.seq).padStart(6, "0");
     return `event_${paddedNumber}`;
 }
+
+module.exports = { getNextEventId };
 

@@ -1,6 +1,7 @@
-// Checking whether user logged in has an admin role or not
+//Check admin
 module.exports = (req, res, next) => {
-    if (!req.session.userEmail) {
+    console.log("Session:", req.session); //For debug
+    if (!req.session.userEmail || !req.session.isAdmin) {
         return res.status(403).json({ message: 'Access denied. Admins only.' });
     }
     next();
