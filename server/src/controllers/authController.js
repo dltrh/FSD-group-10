@@ -146,3 +146,13 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+// Find userId of session
+exports.getCurrentUserId = async (req, res) => {
+    if (req.session.userId) {
+        console.log("Session user found:",  req.session.userId); // Debug log
+        return res.json({ user: req.session.userId });
+    }
+    console.log("Session user not found:", req.session.userId); // Debug log
+    return res.status(401).json({ message: "Not authenticated" });
+};

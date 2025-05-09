@@ -1,33 +1,44 @@
 const mongoose = require('mongoose');
 
-const invitationSchema = new mongoose.Schema({
-    organizerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+const notificationSchema = new mongoose.Schema({
+    notificationId: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    receiverId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    recipientId: {
+        type: String,
+        required: true, // e.g., user_1746540269071
+    },
+    senderId: {
+        type: String,
+        required: true, // e.g., admin_1746379864442
     },
     eventId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Event',
-        required: true
-    },
-    status: {
         type: String,
-        enum: ['pending', 'accepted', 'declined'], // có thể tuỳ chỉnh nếu bạn dùng các trạng thái khác
-        required: true
+        required: false, // Optional if the notification isn't tied to an event
+    },
+    type: {
+        type: String,
+        enum: ['invite', 'reminder', 'update', 'announcement'],
+        required: true,
+    },
+    message: {
+        type: String,
+        required: true,
+    },
+    isRead: {
+        type: Boolean,
+        default: false,
     },
     sentAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     }
 }, {
-    collection: 'Invitation',
+    collection: 'Notification',  // better naming
     timestamps: false
 });
+   
 
-module.exports = mongoose.model('Invitation', invitationSchema);
+module.exports = mongoose.model('Notification', notificationSchema);

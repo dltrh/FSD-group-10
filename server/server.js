@@ -12,6 +12,7 @@ const authRoutes = require("./src/routes/authRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const devRoutes = require("./src/routes/devRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
+const notificationRoutes = require("./src/routes/notificationRoutes");
 
 const app = express();
 dotenv.config();
@@ -51,6 +52,8 @@ app.use("/api/invitations", invitationRoutes); // InvitationRoutes
 app.use("/api/users", userRoutes); // UserRoutes
 app.use("/dev", devRoutes); // DevRoutes
 app.use("/api/admin", adminRoutes); //AdminRoutes
+app.use("/api/notifications", notificationRoutes); // NotificationRoutes
+
 
 // Port
 app.listen(PORT, () => {
