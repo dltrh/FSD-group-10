@@ -34,8 +34,8 @@
     background-color: #ae312f;
     color: white;
     border: none;
-    padding: 5px 10px 5px 10px;
-    font-size: 15px;
+    padding: 0.5rem 1.5rem;
+    font-size: 17px;
     cursor: pointer;
     border-radius: 6px;
 }
@@ -94,15 +94,17 @@
     border-radius: 6px;
     width: 200px;
     align-self: center;
-    font-size: 15px;
+    font-size: 17px;
     cursor: pointer;
     padding: 5px 10px 5px 10px;
+    padding: 0.5rem 1.5rem;
 }
 
 .new-discussion-form-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    
 }
 .btn-submit-new-discussion {
     background-color: #ae312f;

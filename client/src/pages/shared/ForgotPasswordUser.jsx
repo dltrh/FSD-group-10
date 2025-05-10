@@ -13,6 +13,7 @@ export default function ForgotPasswordUser() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
+                credentials: "include", // Include session cookies
             });
 
             const data = await response.json();

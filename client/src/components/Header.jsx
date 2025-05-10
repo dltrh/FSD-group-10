@@ -47,7 +47,13 @@ export default function Header() {
         const fetchNotifications = async () => {
             setLoadingNotifications(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/notifications/${loggedInUserId}`);
+                const response = await fetch(`http://localhost:5000/api/notifications/${loggedInUserId}`, {
+                    credentials: "include",
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setNotifications(data);
@@ -62,8 +68,6 @@ export default function Header() {
         };
         fetchNotifications();
     }, [loggedInUserId]); // ✅ consistent dependency
-    console.log(loggedInUserId);
-    console.log(notifications);
 
     const handleSearch = (e) => {
         e.preventDefault();

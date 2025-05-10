@@ -172,6 +172,8 @@
     gap: 12px;
 }
 
+
+
 .question-heading {
     display: flex;
     flex-direction: row;
@@ -187,6 +189,7 @@
     font-weight: 800;
     cursor: pointer;
     border-radius: 6px;
+    padding: 0.5rem 1.5rem;
 }
 
 .question-form-container, .reply-form-container {

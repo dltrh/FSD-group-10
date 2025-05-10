@@ -10,7 +10,6 @@ export default function NotificationDropdown({ notifications, isOpen,loading }) 
     if (loading) {
         return <div className="notification-dropdown">Loading...</div>;
     }
-    console.log(notifications);
 
 
 

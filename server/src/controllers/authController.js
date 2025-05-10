@@ -70,10 +70,6 @@ exports.login = async (req, res) => {
         req.session.userId = user.userId; // Store userId in session
         req.session.isAdmin = user.isAdmin; // Store isAdmin in session
 
-        console.log("Session user:", req.session.userEmail); //console log the user Email
-        console.log("Session user id:", req.session.userId); //console log the user ID
-        console.log("Session user isAdmin:", req.session.isAdmin); //console log the isAdmin attribute
-
         req.session.save((err) => {
             if (err) {
                 console.error("Session save error:", err);
@@ -104,18 +100,12 @@ exports.logout = (req, res) => {
 };
 
 // Profile
-exports.getProfile = (req, res) => {
-    if (!req.user) {
-        return res.status(401).json({ message: "Not authenticated" });
+exports.getProfile = async (req, res) => {
+    if (req.session.userEmail) {
+        return res.json({ user: req.session.userEmail });
     }
-
-    const { email, fullname, isAdmin, userId, phone } = req.user;
-
-    return res.status(200).json({
-        user: { email, fullname, isAdmin, userId, phone }
-    });
+    return res.status(401).json({ message: "Not authenticated" });
 };
-
 
 // Forgot password
 exports.forgotPassword = async (req, res) => {
@@ -133,7 +123,6 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try {
         const { userId, newPassword, confirmPassword } = req.body;
-        console.log("Reset request:", req.body); // Debug log
 
         if (!userId || !newPassword || !confirmPassword) {
             return res.status(400).json({ message: "All fields are required" });
@@ -162,9 +151,7 @@ exports.resetPassword = async (req, res) => {
 // Find userId of session
 exports.getCurrentUserId = async (req, res) => {
     if (req.session.userId) {
-        console.log("Session user found:", req.session.userId); // Debug log
         return res.json({ user: req.session.userId });
     }
-    console.log("Session user not found:", req.session.userId); // Debug log
     return res.status(401).json({ message: "Not authenticated" });
 };

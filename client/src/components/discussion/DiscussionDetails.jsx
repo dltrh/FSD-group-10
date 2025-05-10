@@ -22,7 +22,10 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         const fetchQuestions = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/questions/${discussion.discussionId}`
+                    `http://localhost:5000/api/questions/${discussion.discussionId}`, {
+                        method: "GET",
+                        credentials: "include", // Include session cookies
+                    }
                 );
                 const data = await response.json();
                 data.forEach((q) => fetchReplies(q.questionId));
@@ -38,7 +41,10 @@ const DiscussionDetails = ({ discussion, onClose }) => {
     const fetchReplies = async (questionId) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/replies/${questionId}`
+                `http://localhost:5000/api/replies/${questionId}`, {
+                    method: "GET",
+                    credentials: "include", // Include session cookies
+                }
             );
             const data = await response.json();
             setRepliesMap((prev) => ({ ...prev, [questionId]: data }));

@@ -66,10 +66,6 @@ exports.finishEvent = async (req, res) => {
     const { id } = req.params;
     const { isFinished } = req.body;
 
-    console.log("Request received for finishing event with data:", {
-        id,
-        isFinished,
-    }); // Log data
 
     try {
         const result = await Event.updateOne(

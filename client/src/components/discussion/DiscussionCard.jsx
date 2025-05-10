@@ -12,7 +12,8 @@ export default function DiscussionCard({ discussion }) {
         const fetchUsername = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/users/${discussion.userId}`
+                    `http://localhost:5000/api/users/${discussion.userId}`,
+                    { method: "GET", credentials: "include" }
                 );
                 if (!response.ok) {
                     throw new Error("Failed to fetch user data");
@@ -32,7 +33,9 @@ export default function DiscussionCard({ discussion }) {
                     <h3 className="discussion-topic">{discussion.content}</h3>
                     <div>
                         <p className="discussion-time">🕒 {relativeTime}</p>
-                        <p className="discussion-owner">Posted by: {username}</p>
+                        <p className="discussion-owner">
+                            Posted by: {username}
+                        </p>
                     </div>
                 </div>
                 <hr className="discussion-card-divider" />
@@ -44,8 +47,7 @@ export default function DiscussionCard({ discussion }) {
                 <div className="discussion-footer">
                     <p className="discussion-replies">
                         {" "}
-                        💬 {discussion.replies?.length ?? 0} {" "}
-                        replies
+                        💬 {discussion.replies?.length ?? 0} replies
                     </p>
                 </div>
             </div>

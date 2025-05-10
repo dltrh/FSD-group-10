@@ -67,7 +67,6 @@ const AdminHeader = () => {
 
             <div className="profile-section" ref={dropdownRef}>
                 <div className="profile-icon" onClick={() => {
-                    console.log("Icon clicked");
                     setDropdownOpen(!dropdownOpen)
                 }}>👤</div>
 

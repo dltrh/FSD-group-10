@@ -35,6 +35,7 @@ export default function EventResponseForm() {
                         status, // 'accepted' or 'declined'
                         message,
                     }),
+                    credentials: "include", // Include session cookies
                 }
             );
 
@@ -43,7 +44,6 @@ export default function EventResponseForm() {
             }
 
             const data = await response.json();
-            console.log("Response saved:", data);
             alert(
                 `You have successfully ${
                     status === Status.ACCEPTED

@@ -26,6 +26,8 @@ export default function InviteList() {
     const [appliedBudget, setAppliedBudget] = useState(0);
     const [maxBudget, setMaxBudget] = useState(500); // default is 500 if nothing happens
 
+    const baseURL = import.meta.env.VITE_API_BASE_URL
+
     // Extract unique filter options
     const extractFilterOptions = (eventsData) => {
         const locationSet = new Set();
@@ -48,11 +50,13 @@ export default function InviteList() {
     const fetchEventById = async (eventId) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/events/${eventId}`
+                `${baseURL}/events/${eventId}`, {
+                    method: "GET",
+                    credentials: "include",
+                }
             );
             const data = await response.json();
             return data;
-            
         } catch (err) {
             console.error(
                 "Error fetching invitation's event information: ",
@@ -68,7 +72,10 @@ export default function InviteList() {
                 const eventsData = await Promise.all(
                     invitations.map(async (invitation) => {
                         const response = await fetch(
-                            `http://localhost:5000/api/events/${invitation.eventId}`
+                            `${baseURL}/events/${invitation.eventId}`, {
+                                method: "GET",
+                                credentials: "include",
+                            }
                         );
                         const event = await response.json();
                         return {
@@ -109,45 +116,66 @@ export default function InviteList() {
                     return event ? { ...invitation, event } : null;
                 })
             );
-    
-            let filtered = enrichedInvitations.filter(invite => invite && invite.event);
-    
+
+            let filtered = enrichedInvitations.filter(
+                (invite) => invite && invite.event
+            );
+
             if (search) {
                 const query = search.toLowerCase();
-                filtered = filtered.filter(({ event }) =>
-                    event.title?.toLowerCase().includes(query) ||
-                    event.location?.toLowerCase().includes(query) ||
-                    event.description?.toLowerCase().includes(query)
+                filtered = filtered.filter(
+                    ({ event }) =>
+                        event.title?.toLowerCase().includes(query) ||
+                        event.location?.toLowerCase().includes(query) ||
+                        event.description?.toLowerCase().includes(query)
                 );
             }
-    
+
             if (sortOption === "Newest") {
-                filtered.sort((a, b) => new Date(b.event.timeStart) - new Date(a.event.timeStart));
+                filtered.sort(
+                    (a, b) =>
+                        new Date(b.event.timeStart) -
+                        new Date(a.event.timeStart)
+                );
             } else if (sortOption === "Oldest") {
-                filtered.sort((a, b) => new Date(a.event.timeStart) - new Date(b.event.timeStart));
+                filtered.sort(
+                    (a, b) =>
+                        new Date(a.event.timeStart) -
+                        new Date(b.event.timeStart)
+                );
             } else if (sortOption === "Price: Low to High") {
-                filtered.sort((a, b) => (a.event.budget || 0) - (b.event.budget || 0));
+                filtered.sort(
+                    (a, b) => (a.event.budget || 0) - (b.event.budget || 0)
+                );
             } else if (sortOption === "Price: High to Low") {
-                filtered.sort((a, b) => (b.event.budget || 0) - (a.event.budget || 0));
+                filtered.sort(
+                    (a, b) => (b.event.budget || 0) - (a.event.budget || 0)
+                );
             }
-    
+
             if (selectedTheme) {
-                filtered = filtered.filter(({ event }) => event.eventTheme === selectedTheme);
+                filtered = filtered.filter(
+                    ({ event }) => event.eventTheme === selectedTheme
+                );
             }
-    
+
             if (selectedStatuses.length > 0) {
-                filtered = filtered.filter((invitation) => selectedStatuses.includes(invitation.status));
+                filtered = filtered.filter((invitation) =>
+                    selectedStatuses.includes(invitation.status)
+                );
             }
-    
+
             filtered = filtered.filter(({ event }) => event.budget <= budget);
-    
+
             if (selectedLocations.length > 0) {
-                filtered = filtered.filter(({ event }) => selectedLocations.includes(event.location));
+                filtered = filtered.filter(({ event }) =>
+                    selectedLocations.includes(event.location)
+                );
             }
-    
+
             setFilteredInvitations(filtered);
         };
-    
+
         filterAndFetchFromInvitations();
     }, [
         invitations,
@@ -158,20 +186,27 @@ export default function InviteList() {
         selectedLocations,
         budget,
     ]);
-    
+
     // Fetch all user's invitations
     useEffect(() => {
         const fetchInvitations = async () => {
             try {
                 const response = await fetch(
-                    "http://localhost:5000/api/invitations"
+                    `${baseURL}/invitations/`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
                 );
                 const data = await response.json();
 
-                const invitations = data.map((invite) => ({
-                    ...invite,
-                }));
-                setInvitations(invitations);
+                if (Array.isArray(data)) {
+                    const invitations = data.map((invite) => ({
+                        ...invite,
+                    }));
+                    setInvitations(invitations);
+                }
+                
             } catch (error) {
                 console.error("Error fetching invitations:", error);
             }
@@ -179,7 +214,6 @@ export default function InviteList() {
 
         fetchInvitations();
     }, []);
-
 
     // Handle search input changes
     const handleSearchChange = (e) => {

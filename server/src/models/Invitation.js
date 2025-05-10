@@ -19,7 +19,7 @@ const invitationSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pending', 'Accepted', 'Declined'],
+        enum: ['pending', 'accepted', 'declined'],
         default: 'Pending'
     },
     sentAt: {

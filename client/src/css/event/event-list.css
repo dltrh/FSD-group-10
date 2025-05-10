@@ -19,6 +19,7 @@
     width: 100%;
     box-sizing: border-box;
     justify-content: space-between;
+    row-gap: 1rem;
     /* justify-items: space-between; */
 }
 

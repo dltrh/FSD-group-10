@@ -37,7 +37,7 @@ app.use(
 // Middlewares
 app.use(cookieParser(process.env.SESSION_SECRET || "mySecretKey"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 // Session
 app.use(
@@ -48,9 +48,10 @@ app.use(
         cookie: {
             secure: false,
             httpOnly: true,
-            sameSite: "Lax"
+            sameSite: "Lax",
         },
-    }));
+    })
+);
 
 // Routes
 app.use("/api", authRoutes); // AuthRoutes
@@ -63,7 +64,6 @@ app.use("/api/questions", questionRoutes); // QuestionRoutes
 app.use("/api/replies", repliesRoutes); // RepliesRoutes
 app.use("/api/admin", adminRoutes); //AdminRoutes
 app.use("/api/notifications", notificationRoutes); // NotificationRoutes
-
 app.use("/uploads", express.static("uploads"));
 
 // Port

@@ -55,7 +55,6 @@ const CreateEvent = () => {
 
             const data = await res.json();
             alert("Event submitted!");
-            console.log("Event created:", data);
             navigate("/manage"); // Redirect to manage events page after successful submission
         } catch (err) {
             alert("Error! Unsuccessful submission.");

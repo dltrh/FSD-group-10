@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import "../../css/event/invite-card.css";
 import placeholder from "../../assets/home/placeholder.jpg";
 import { formatDate, calculateEventStatus } from "../../utils/timeUtils";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function InviteCard({ invitation }) {
     const [event, setEvent] = useState(null);
     const [user, setUser] = useState(null);
     const [updatedInvitation, setUpdatedInvitation] = useState(invitation);
     const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     const Status = {
         ACCEPTED: "Accepted",
@@ -20,34 +21,23 @@ export default function InviteCard({ invitation }) {
 
     const handleInvitationResponse = async (status) => {
         try {
-            const response = await fetch(
-                "http://localhost:5000/api/invitations",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        invitationId: updatedInvitation.invitationId,   
-                        eventId: updatedInvitation.eventId,
-                        status, // 'accepted' or 'declined'
-                        message: ""
-                    }),
-                }
-            );
+            const response = await fetch(`${baseURL}/invitations`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    invitationId: updatedInvitation.invitationId,
+                    eventId: updatedInvitation.eventId,
+                    status, // 'accepted' or 'declined'
+                    message: "",
+                }),
+                credentials: "include",
+            });
 
             if (!response.ok) {
                 throw new Error("Failed to submit your reponse!");
             }
-
-            const data = await response.json();
-            // alert(
-            //     `You have successfully ${
-            //         status === Status.ACCEPTED
-            //             ? Status.ACCEPTED
-            //             : Status.DECLINED
-            //     } the event.`
-            // );
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
@@ -58,7 +48,11 @@ export default function InviteCard({ invitation }) {
         const fetchEventInfo = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/events/${updatedInvitation.eventId}`
+                    `${baseURL}/events/${updatedInvitation.eventId}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
                 );
                 const data = await response.json();
                 setEvent(data);
@@ -79,15 +73,16 @@ export default function InviteCard({ invitation }) {
         const fetchUserInfo = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/users/${updatedInvitation.organizerId}`
+                    `${baseURL}/users/${updatedInvitation.organizerId}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
                 );
                 const data = await response.json();
                 setUser(data);
             } catch (err) {
-                console.error(
-                    "Error fetching user: ",
-                    err
-                );
+                console.error("Error fetching user: ", err);
             }
         };
         if (updatedInvitation?.organizerId) {
@@ -99,7 +94,11 @@ export default function InviteCard({ invitation }) {
         const fetchInvitationInfo = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/invitations/${updatedInvitation.invitationId}`
+                    `${baseURL}/invitations/${updatedInvitation.invitationId}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
                 );
                 const data = await response.json();
                 setUpdatedInvitation(data);
@@ -116,35 +115,44 @@ export default function InviteCard({ invitation }) {
     }, [updatedInvitation]);
     const handleCardClick = () => {
         navigate(`/manage/details/${event.eventId}`);
-    }
-    console.log(updatedInvitation.organizerId);
+    };
 
     return (
         <>
-            <div className="invitation-card-container" onClick={handleCardClick}>
+            <div
+                className="invitation-card-container"
+                onClick={handleCardClick}
+            >
                 {event ? (
                     <>
                         <div className="invitation-card-header">
                             <div className="invitation-header">
                                 <p>
                                     {user
-                                        ? `Sent by ${user.userId}`
+                                        ? `Sent by ${user.fullname}`
                                         : "Loading user..."}
                                 </p>
                                 <div className="status-dropdown-container">
                                     <div
                                         className={`invitation-card-status ${updatedInvitation.status}`}
                                     >
-                                        {updatedInvitation.status.charAt(0).toUpperCase() + updatedInvitation.status.slice(1)}{" "}
+                                        {updatedInvitation.status
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                            updatedInvitation.status.slice(
+                                                1
+                                            )}{" "}
                                     </div>
                                     <div className="status-dropdown">
                                         {statusOptions.map((status) => (
-                                            <button key={status}
-                                                onClick={() =>
+                                            <button
+                                                key={status}
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // prevent bubbling to the card
                                                     handleInvitationResponse(
                                                         status.toLowerCase()
-                                                    )
-                                                }
+                                                    );
+                                                }}
                                             >
                                                 {status}
                                             </button>
@@ -170,8 +178,12 @@ export default function InviteCard({ invitation }) {
                         </div>
                         <div className="event-image-container">
                             <img
-                                src={placeholder}
-                                alt="placeholder image"
+                                src={
+                                    event.imageUrl
+                                        ? `http://localhost:5000${event.imageUrl}`
+                                        : placeholder
+                                }
+                                alt={placeholder}
                                 className="event-image"
                             />
                         </div>

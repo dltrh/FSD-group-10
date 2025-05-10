@@ -32,7 +32,8 @@ export default function Register() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: "include" // Include session cookies
             });
 
             const data = await response.json();

@@ -46,6 +46,9 @@
 .event-buttons button {
     height: 40px;
     font-size: 17px;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
 }
 
 .finish-button {
@@ -71,7 +74,7 @@
     display: block;
     cursor: pointer;
 }
-.discuss-button:hover {
+.discuss-button:hover, .send-invitation-button:hover {
     background: #2c2c2c;
     color: white;
 }
@@ -225,6 +228,70 @@
 
 #discussion-board {
     scroll-margin-top: 200px; /* to match header height */
+}
+
+.invitation-form-container {
+    position: fixed;
+    inset: 0;
+    margin-top: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    height: 700px;
+}
+
+.invitation-form {
+    background: white;
+    margin: 5vh auto;
+    max-width: 100%;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    max-height: none;
+}
+
+.invitation-form button {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 17px;
+    padding: 0.5rem 1.5rem;
+}
+
+.invitation-form .invitation-close-btn:hover {
+    background-color: #2c2c2c;
+    color: white;
+}
+
+.invitation-form input, .invitation-form textarea {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 17px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.invitation-form input:focus, .invitation-form textarea:focus {
+    border-color: #888;
+}
+
+.invitation-form-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.invitation-form-buttons .invitation-submit-btn {
+    background-color: #ae312f;
+    color: white;
+}
+
+.invitation-form-buttons .invitation-submit-btn:hover {
+    background-color: #9b2a2a;
 }
 
 @media (max-width: 1024px) {

@@ -10,10 +10,10 @@ exports.requireLogin = async (req, res, next) => {
     }
 
     try {
-        const user = await User.findOne({ email: username });
+        const user = await User.findOne({ email: email });
 
         if (!user) {
-            console.error("User not found:", username);
+            console.error("User not found:", email);
             return res.status(401).json({ error: "Unauthorized" });
         }
 

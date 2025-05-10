@@ -29,7 +29,6 @@ const DiscussionList = ({ eventId }) => {
                     );
                 }
                 const data = await response.json();
-                console.log("Fetched discussions:", data);
                 setDiscussions(data);
             } catch (error) {
                 console.error(
@@ -59,7 +58,6 @@ const DiscussionList = ({ eventId }) => {
                 throw new Error("Failed to create new discussion");
             }
             const data = await response.json();
-            console.log("New discussion created:", data);
             setDiscussions((prevDiscussions) => [...prevDiscussions, data]);
             setIsFormVisible(false); // Hide the form after successful creation
             setNewDiscussion({ content: "", description: "" }); // Reset the form

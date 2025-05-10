@@ -13,6 +13,9 @@ export function AuthProvider({ children }) {
                 const res = await fetch(`${baseURL}/user`, {
                     method: "GET",
                     credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 });
 
                 if (!res.ok) {

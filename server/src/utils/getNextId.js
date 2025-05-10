@@ -47,3 +47,14 @@ exports.getNextReplyId = async () => {
     const paddedNumber = String(counter.seq).padStart(6, "0");
     return `reply_${paddedNumber}`;
 };
+
+exports.getNextInvitationId = async () => {
+    const counter = await Counter.findByIdAndUpdate(
+        { _id: "invitation" },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+    );
+
+    const paddedNumber = String(counter.seq).padStart(6, "0");
+    return `invitation_${paddedNumber}`;
+};

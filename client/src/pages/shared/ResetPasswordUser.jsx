@@ -33,6 +33,7 @@ export default function ResetPasswordUser() {
                     newPassword,
                     confirmPassword,
                 }),
+                credentials: "include", // Include session cookies
             });
 
             const data = await response.json();
