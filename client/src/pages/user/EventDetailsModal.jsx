@@ -20,6 +20,7 @@ const EventDetailsModal = () => {
         location: event?.location || "",
     });
     const [loggedInUserId, setLoggedInUserId] = useState(null);
+    const [reminderTime, setReminderTime] = useState("");
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -201,6 +202,52 @@ const EventDetailsModal = () => {
                         Created on: {formatDate(event.timeStart)} <br />
                         Finished by: {formatDate(event.timeEnd)}
                     </p>
+                    
+                    {loggedInUserId === event.organizerId && (
+                        <div className="reminder-section">
+                            <h3>Schedule Reminder Notification</h3>
+                            <p>As an organizer, you can set a time to remind attendees before the event starts. Be aware that you cannot send out notifications if your invitee list is empty.</p>
+                            <label>
+                                Reminder Date and Time:
+                                <input
+                                    type="datetime-local"
+                                    value={reminderTime}
+                                    onChange={(e) => setReminderTime(e.target.value)}
+                                />
+                            </label>
+                            <button
+                                className="submit-button"
+                                onClick={async () => {
+                                    try {
+                                        const res = await fetch(`http://localhost:5000/api/notifications/schedule`, {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify({
+                                                eventId: event.eventId,
+                                                reminderTime,
+                                                organizerId: loggedInUserId,
+                                            }),
+                                        });
+                                        if (res.ok) {
+                                            alert("✅ Reminder scheduled!");
+                                        } else {
+                                            const err = await res.json();
+                                            alert(`❌ Failed to schedule reminder: ${err.message}`);
+                                        }
+                                    } catch (err) {
+                                        console.error("Error scheduling reminder:", err);
+                                        alert("❌ An unexpected error occurred.");
+                                    }
+                                }}
+                            >
+                                Schedule Reminder
+                            </button>
+                        </div>
+                    )}
+
+
                     {loggedInUserId === event.organizerId && (
                     <div className="event-buttons">
                         <button
@@ -218,6 +265,128 @@ const EventDetailsModal = () => {
                     </div>
                     )}
                 </div>
+                
+                {loggedInUserId === event.organizerId && (
+                    <div className="attendees-section">
+                        <h3>Confirmed Attendees</h3>
+
+                        <div className="attendees-container">
+                            <div className="attendees-buttons">
+                                <p>PLease note that after you click 'Save Atendees List', it is saved already. <br/> No need to refresh the page!</p>
+                                <button
+                                    className="submit-button"
+                                    onClick={async () => {
+                                        try {
+                                            // Send the updated attendees list to the backend to save it
+                                            const res = await fetch(`http://localhost:5000/api/events/${event.eventId}/attendees/save`, {
+                                                method: "PUT",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                                body: JSON.stringify({ attendeesList: event.attendeesList }),  // Send the whole updated list
+                                            });
+
+                                            if (res.ok) {
+                                                alert("✅ Attendees list saved successfully.");
+                                            } else {
+                                                const error = await res.json();
+                                                alert(`❌ Failed to save list: ${error.message}`);
+                                            }
+                                        } catch (err) {
+                                            console.error("Error saving attendees list:", err);
+                                            alert("❌ Unexpected error occurred.");
+                                        }
+                                    }}
+                                >
+                                    Save Attendees List
+                                </button>
+
+                                <button
+                                    className="change-button"
+                                    onClick={() => {
+                                        const attendeeId = prompt("Enter attendee's ID:");
+                                        if (attendeeId) {
+                                            // Make an API call to add the attendee
+                                            fetch(`http://localhost:5000/api/events/${event.eventId}/attendees/add`, {
+                                                method: "PUT",
+                                                headers: {
+                                                    "Content-Type": "application/json",
+                                                },
+                                                body: JSON.stringify({ userId: attendeeId }),
+                                            })
+                                                .then(res => {
+                                                    if (res.ok) {
+                                                        // If API call succeeds, update the local state and attendees list
+                                                        const updated = { ...event };
+                                                        updated.attendeesList = [...updated.attendeesList, attendeeId];
+                                                        setEvent(updated);
+                                                        alert("✅ Attendee added.");
+                                                    } else {
+                                                        res.json().then(error => {
+                                                            alert(`❌ Failed to add attendee: ${error.message}`);
+                                                        });
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.error("Error adding attendee:", err);
+                                                    alert("❌ Error adding attendee.");
+                                                });
+                                        }
+                                    }}
+                                >
+                                    + Add Attendee
+                                </button>
+                            </div>
+
+                            <div className="attendees-list">
+                                {event.attendeesList && event.attendeesList.length > 0 ? (
+                                    event.attendeesList.map((attendeeId, index) => (
+                                        <div key={index} className="attendee-card">
+                                            👤 {attendeeId}
+                                            <button
+                                                className="change-button"
+                                                onClick={async () => {
+                                                    const confirm = window.confirm(`Remove ${attendeeId} from attendees?`);
+                                                    if (!confirm) return;
+                                                    try {
+                                                        const res = await fetch(`http://localhost:5000/api/events/${event.eventId}/attendees/remove`, {
+                                                            method: "PUT",
+                                                            headers: {
+                                                                "Content-Type": "application/json",
+                                                            },
+                                                            body: JSON.stringify({ userId: attendeeId }),
+                                                        });
+                                                        if (res.ok) {
+                                                            alert("✅ Attendee removed.");
+                                                            const updated = { ...event };
+                                                            updated.attendeesList = updated.attendeesList.filter(id => id !== attendeeId);
+                                                            setEvent(updated);
+                                                        } else {
+                                                            const error = await res.json();
+                                                            alert(`❌ Failed to remove: ${error.message}`);
+                                                        }
+                                                    } catch (err) {
+                                                        console.error("Error removing attendee:", err);
+                                                        alert("❌ Unexpected error occurred.");
+                                                    }
+                                                }}
+                                            >
+                                                ❌ Remove
+                                            </button>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="empty-attendees-msg">No invitee in the list.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+
+
+
                 {loggedInUserId === event.organizerId && (
                 <div className="change-section">
                     <div className="info-icon">ℹ️</div>

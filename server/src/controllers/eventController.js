@@ -198,3 +198,76 @@ exports.getEventByEmail = async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 };
+
+exports.addAttendeeToEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const result = await Event.updateOne(
+            { eventId },
+            { $addToSet: { attendeesList: userId } } // prevents duplicates
+        );
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: "Event not found or user already added" });
+        }
+
+        res.status(200).json({ message: "User added to attendees list" });
+    } catch (error) {
+        console.error("Error updating attendees list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.removeAttendeeFromEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const result = await Event.updateOne(
+            { eventId },
+            { $pull: { attendeesList: userId } }
+        );
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: "Event not found or user not in list" });
+        }
+
+        res.status(200).json({ message: "User removed from attendees list" });
+    } catch (error) {
+        console.error("Error removing attendee:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+// Add this new route to save the updated attendees list
+exports.saveUpdatedAttendeesList = async (req, res) => {
+    const { eventId } = req.params;
+    const { attendeesList } = req.body;
+
+    console.log("Received eventId:", eventId); // Log the eventId
+    console.log("Received attendeesList:", attendeesList); // Log the attendees list
+
+    try {
+        const updatedEvent = await Event.findOne({ eventId });
+        console.log("Event found:", updatedEvent); // Log the event found
+
+        if (!updatedEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const result = await Event.updateOne(
+            { eventId },
+            { $set: { attendeesList } }
+        );
+
+
+        res.status(200).json({ message: "Attendees list saved successfully" });
+    } catch (error) {
+        console.error("Error saving attendees list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+
