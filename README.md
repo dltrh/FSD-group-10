@@ -28,5 +28,5 @@ npm run dev
 ```
 cd server
 npm i
-nodemon server.js
+node server.js
 ```
