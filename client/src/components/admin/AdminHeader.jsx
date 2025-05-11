@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import search from "../../assets/header/search.png";
+import { FaUserCircle } from "react-icons/fa";
 import "../../css/admin/admin.css"
 
 const AdminHeader = ({ searchQuery, setSearchQuery }) => {
@@ -85,22 +86,21 @@ const AdminHeader = ({ searchQuery, setSearchQuery }) => {
         <div className="header">
             <h1>{getTitle()}</h1>
             <form className="header-search-bar" onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <button type="submit">
-                    <img className="search-icon" src={search} alt="Search icon" />
-                </button>
+                <div className="search-wrapper">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button type="submit">
+                        <img className="search-icon" src={search} alt="Search icon" />
+                    </button>
+                </div>
             </form>
 
             <div className="profile-section" ref={dropdownRef}>
-                <div className="profile-icon" onClick={() => {
-                    console.log("Icon clicked");
-                    setDropdownOpen(!dropdownOpen)
-                }}>👤</div>
+                <FaUserCircle className="profile-icon" onClick={() => setDropdownOpen(!dropdownOpen)} />
 
                 {dropdownOpen && (
                     <div className="dropdown-menu">
