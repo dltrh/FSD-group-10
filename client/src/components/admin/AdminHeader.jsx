@@ -56,6 +56,8 @@ const AdminHeader = ({ searchQuery, setSearchQuery }) => {
                 return "Users";
             case "/admin/events":
                 return "Events";
+            case "/admin/settings":
+                return "Settings";
             default:
                 return "Dashboard";
         }
@@ -64,23 +66,6 @@ const AdminHeader = ({ searchQuery, setSearchQuery }) => {
     const handleLogout = () => {
         navigate("/login-admin");
     };
-
-    // Close Dropdown box when cursor is out 
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (
-    //             dropdownRef.current &&
-    //             !dropdownRef.current.contains(event.target)
-    //         ) {
-    //             setDropdownOpen(false);
-    //         }
-    //     };
-
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, []);
 
     return (
         <div className="header">
@@ -104,7 +89,7 @@ const AdminHeader = ({ searchQuery, setSearchQuery }) => {
 
                 {dropdownOpen && (
                     <div className="dropdown-menu">
-                        <div onClick={() => navigate("/admin/profile")}>Profile</div>
+                        <div onClick={() => navigate("/profile")}>Profile</div>
                         <div onClick={() => navigate("/admin/settings")}>Settings</div>
                         <div onClick={handleLogout}>Logout</div>
                     </div>

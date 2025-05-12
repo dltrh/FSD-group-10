@@ -30,6 +30,9 @@ router.get('/user', requireLogin, (req, res) => {
 // Store userId
 router.get('/getCurrentUserId', authController.getCurrentUserId);
 
+// Get user or admin profile
+router.get('/profile', authController.getProfile);
+
 // === PASSWORD RESET ===
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
