@@ -91,6 +91,7 @@ const EventDetailsModal = () => {
         { label: "Budget", description: `$${event.budget}` },
         { label: "Location", description: event.location },
         { label: "Max People", description: event.maxPpl },
+        { label: "Notes from the host", description: event.notes },
         {
             label: "Can I bring other people?",
             description: event.canBring ? "Yes" : "No",
@@ -139,6 +140,7 @@ const EventDetailsModal = () => {
         }
 
         try {
+            // 1. Update the event
             const response = await fetch(
                 `http://localhost:5000/api/events/${eventId}`,
                 {
@@ -150,18 +152,38 @@ const EventDetailsModal = () => {
                 }
             );
 
-            if (response.ok) {
-                alert("✅ Event updated successfully!");
-                window.location.reload();
-            } else {
+            if (!response.ok) {
                 const errorData = await response.json();
                 alert(`❌ Failed to update event: ${errorData.error}`);
+                return;
             }
+
+            // 2. Notify attendees
+            const notifyResponse = await fetch(
+                `http://localhost:5000/api/events/${eventId}/notifyAttendees`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!notifyResponse.ok) {
+                const notifyError = await notifyResponse.json();
+                console.warn("⚠️ Event updated, but failed to notify attendees:", notifyError.error);
+                alert("⚠️ Event updated, but notifying attendees failed.");
+            } else {
+                alert("✅ Event updated and attendees notified!");
+            }
+
         } catch (error) {
             console.error("Error:", error);
             alert("❌ An unexpected error occurred.");
         }
     };
+    
+   
 
     // Function to handle finishing the event early
     const handleFinishEvent = async () => {

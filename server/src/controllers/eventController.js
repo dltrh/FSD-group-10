@@ -1,4 +1,6 @@
 const Event = require("../models/Event.js");
+const Invitation = require('../models/Invitation');
+const Notification = require('../models/Notification');
 const { getNextEventId } = require("../utils/getNextEventId.js");
 
 // Get all events
@@ -270,4 +272,36 @@ exports.saveUpdatedAttendeesList = async (req, res) => {
     }
 };
 
+
+exports.notifyAttendeesOfUpdate = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+
+        const event = await Event.findOne({ eventId });
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        if (!event.attendeesList || event.attendeesList.length === 0) {
+            return res.status(400).json({ error: "No attendees to notify" });
+        }
+
+        const notifications = event.attendeesList.map((recipientId) => ({
+            notificationId: `notif_${Date.now()}_${recipientId}`,
+            recipientId,
+            senderId: event.organizerId,
+            eventId: event.eventId,
+            type: "update",
+            message: `The event "${event.title}" has been updated.`,
+            sentAt: new Date(),
+        }));
+
+        await Notification.insertMany(notifications);
+
+        res.status(200).json({ message: "Attendees notified." });
+    } catch (error) {
+        console.error("Error notifying attendees:", error);
+        res.status(500).json({ error: "Failed to send notifications" });
+    }
+};
 

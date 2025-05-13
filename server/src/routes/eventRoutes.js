@@ -20,5 +20,6 @@ router.post("/create", upload.single("image"), eventController.createEvent);
 router.put('/:eventId/attendees/add', eventController.addAttendeeToEvent);
 router.put('/:eventId/attendees/remove', eventController.removeAttendeeFromEvent);
 router.put('/:eventId/attendees/save', eventController.saveUpdatedAttendeesList);
+router.post('/:eventId/notifyAttendees', eventController.notifyAttendeesOfUpdate);
 
 module.exports = router;
