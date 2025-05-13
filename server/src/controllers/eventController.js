@@ -285,14 +285,20 @@ exports.notifyAttendeesOfUpdate = async (req, res) => {
         if (!event.attendeesList || event.attendeesList.length === 0) {
             return res.status(400).json({ error: "No attendees to notify" });
         }
+        const acceptedInvitations = await Invitation.find({
+            eventId: eventId,
+            status: "accepted"
+        });
 
-        const notifications = event.attendeesList.map((recipientId) => ({
+        const acceptedUserIds = acceptedInvitations.map(invite => invite.receiverId);
+
+        const notifications = acceptedUserIds.map((recipientId) => ({
             notificationId: `notif_${Date.now()}_${recipientId}`,
             recipientId,
             senderId: event.organizerId,
-            eventId: event.eventId,
+            eventId,
             type: "update",
-            message: `The event "${event.title}" has been updated.`,
+            message: `📣 Update: Details for event "${event.title}" have changed.`,
             sentAt: new Date(),
         }));
 

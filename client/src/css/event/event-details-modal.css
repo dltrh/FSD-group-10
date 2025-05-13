@@ -311,6 +311,20 @@
     color: #777;
 }
 
+.status.accepted {
+    background-color: #cef7d3;
+    color: black;
+}
+
+.status.pending {
+    background-color: #e3e3e3;
+    color: black;
+}
+
+.status.declined {
+    background-color: #ae312f;
+    color: white;
+}
 @media (max-width: 1024px) {
     .details-grid {
         grid-template-columns: repeat(2, 1fr);
