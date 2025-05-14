@@ -101,10 +101,24 @@ exports.logout = (req, res) => {
 
 // Profile
 exports.getProfile = async (req, res) => {
-    if (req.session.userEmail) {
-        return res.json({ user: req.session.userEmail });
+    const userId = req.session.userId;
+    if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
     }
-    return res.status(401).json({ message: "Not authenticated" });
+
+    try {
+        const user = await User.findOne({ userId });
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const { email, fullname, isAdmin, phone } = user;
+
+        return res.status(200).json({
+            user: { email, fullname, isAdmin, userId, phone }
+        });
+    } catch (err) {
+        console.error("Get profile error:", err);
+        return res.status(500).json({ message: "Server error" });
+    }
 };
 
 // Forgot password

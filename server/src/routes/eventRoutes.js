@@ -23,5 +23,6 @@ router.put('/:eventId/attendees/remove', eventController.removeAttendeeFromEvent
 router.put('/:eventId/attendees/save', eventController.saveUpdatedAttendeesList);
 router.put('/:eventId/unjoin', eventController.unjoinEvent)
 router.put('/:eventId/join', eventController.joinEvent)
+router.post('/:eventId/notifyAttendees', eventController.notifyAttendeesOfUpdate);
 
 module.exports = router;

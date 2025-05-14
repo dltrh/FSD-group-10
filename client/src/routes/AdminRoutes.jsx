@@ -4,7 +4,8 @@ import AdminLayout from "../pages/admin/AdminLayout";
 import Users from "../pages/admin/Users";
 import Events from "../pages/admin/Events";
 import AdminSettings from "../pages/admin/Settings";
-import AdminProfile from "../pages/admin/adminProfile";
+import Profile from "../pages/user/Profile";
+import ProtectedRoute from "./ProtectedRoutes";
 
 export const AdminRoutes = [
     {
@@ -12,11 +13,46 @@ export const AdminRoutes = [
         element: <AdminLayout />,
         errorElement: <Placeholder />,
         children: [
-            { path: "dashboard", element: <Dashboard /> },
-            { path: "users", element: <Users /> },
-            { path: "events", element: <Events /> },
-            { path: "settings", element: <AdminSettings /> },
-            // { path: "profile", element: <AdminProfile /> }
+            {
+                path: "dashboard",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <Dashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "users",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <Users />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "events",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <Events />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "settings",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <AdminSettings />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "profile",
+                element: (
+                    <ProtectedRoute requireAdmin>
+                        <Profile />
+                    </ProtectedRoute>
+                ),
+            },
         ],
-    }
+    },
 ];

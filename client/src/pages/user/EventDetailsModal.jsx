@@ -26,6 +26,34 @@ const EventDetailsModal = () => {
     const [reminderTime, setReminderTime] = useState("");
     const [joined, setJoined] = useState(false);
     const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const [invitations, setInvitations] = useState([]);
+
+    useEffect(() => {
+        const fetchInvitations = async () => {
+            try {
+                const res = await fetch(
+                    `${baseURL}/invitations/events/${eventId}`
+                );
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    setInvitations(data);
+                } else if (data && typeof data === "object") {
+                    setInvitations([data]); // wrap single object in an array
+                } else {
+                    setInvitations([]); // fallback
+                }
+            } catch (error) {
+                console.error("Error fetching invitations:", error);
+            }
+        };
+
+        if (eventId) fetchInvitations();
+
+        const interval = setInterval(() => {
+            fetchInvitations();
+        }, 3000); // Fetch every 5 seconds
+        return () => clearInterval(interval); // Cleanup interval on unmount
+    }, [eventId]);
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -98,17 +126,16 @@ const EventDetailsModal = () => {
 
                 if (response.status === 200) {
                     const data = await response.json();
-                    console.log("Found user in event:", data);
                     setJoined(data.found);
                 } else if (response.status === 404) {
                     const data = await response.json();
-                    console.log("User not in event:", data);
                     setJoined(false);
                 } else {
                     console.warn("Unexpected response:", response.status);
                 }
             } catch (err) {
-                console.error("Error:", err);
+                // Only log actual fetch/network errors
+                console.error("Network/server error:", err);
             }
         };
         checkCurrentUserJoined();
@@ -130,6 +157,7 @@ const EventDetailsModal = () => {
         { label: "Budget", description: `$${event.budget}` },
         { label: "Location", description: event.location },
         { label: "Max People", description: event.maxPpl },
+        { label: "Notes from the host", description: event.notes },
         {
             label: "Can I bring other people?",
             description: event.canBring ? "Yes" : "No",
@@ -178,6 +206,7 @@ const EventDetailsModal = () => {
         }
 
         try {
+            // 1. Update the event
             const response = await fetch(`${baseURL}/events/${eventId}`, {
                 method: "PUT",
                 credentials: "include", // Include session cookies
@@ -187,12 +216,32 @@ const EventDetailsModal = () => {
                 body: JSON.stringify(updatedFields),
             });
 
-            if (response.ok) {
-                alert("✅ Event updated successfully!");
-                window.location.reload();
-            } else {
+            if (!response.ok) {
                 const errorData = await response.json();
                 alert(`❌ Failed to update event: ${errorData.error}`);
+                return;
+            }
+
+            // 2. Notify attendees
+            const notifyResponse = await fetch(
+                `http://localhost:5000/api/events/${eventId}/notifyAttendees`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!notifyResponse.ok) {
+                const notifyError = await notifyResponse.json();
+                console.warn(
+                    "⚠️ Event updated, but failed to notify attendees:",
+                    notifyError.error
+                );
+                alert("⚠️ Event updated, but notifying attendees failed.");
+            } else {
+                alert("✅ Event updated and attendees notified!");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -460,7 +509,7 @@ const EventDetailsModal = () => {
                         <div className="attendees-container">
                             <div className="attendees-buttons">
                                 <p>
-                                    Please note that after you click 'Save
+                                    PLease note that after you click 'Save
                                     Attendees List', it is saved already. <br />{" "}
                                     No need to refresh the page!
                                 </p>
@@ -567,77 +616,99 @@ const EventDetailsModal = () => {
                                 {event.attendeesList &&
                                 event.attendeesList.length > 0 ? (
                                     event.attendeesList.map(
-                                        (attendeeId, index) => (
-                                            <div
-                                                key={index}
-                                                className="attendee-card"
-                                            >
-                                                👤 {attendeeId}
-                                                <button
-                                                    className="change-button"
-                                                    onClick={async () => {
-                                                        const confirm =
-                                                            window.confirm(
-                                                                `Remove ${attendeeId} from attendees?`
-                                                            );
-                                                        if (!confirm) return;
-                                                        try {
-                                                            const res =
-                                                                await fetch(
-                                                                    `${baseURL}/events/${event.eventId}/attendees/remove`,
-                                                                    {
-                                                                        method: "PUT",
-                                                                        headers:
-                                                                            {
-                                                                                "Content-Type":
-                                                                                    "application/json",
-                                                                            },
-                                                                        body: JSON.stringify(
-                                                                            {
-                                                                                userId: attendeeId,
-                                                                            }
-                                                                        ),
-                                                                    }
+                                        (attendeeId, index) => {
+                                            const invite = invitations.find(
+                                                (inv) =>
+                                                    inv.receiverId ===
+                                                        attendeeId &&
+                                                    inv.eventId ===
+                                                        event.eventId
+                                            );
+                                            // Check if the invite exists and get its status
+                                            // If the invite doesn't exist, set status to "Pending"
+                                            const status = invite
+                                                ? invite.status
+                                                : "pending";
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="attendee-card"
+                                                >
+                                                    👤 {attendeeId}
+                                                    <span
+                                                        className={`status ${status.toLowerCase()}`}
+                                                    >
+                                                        Status: {status}
+                                                    </span>
+                                                    <button
+                                                        className="change-button"
+                                                        onClick={async () => {
+                                                            const confirm =
+                                                                window.confirm(
+                                                                    `Remove ${attendeeId} from attendees?`
                                                                 );
-                                                            if (res.ok) {
-                                                                alert(
-                                                                    "✅ Attendee removed."
-                                                                );
-                                                                const updated =
-                                                                    {
-                                                                        ...event,
-                                                                    };
-                                                                updated.attendeesList =
-                                                                    updated.attendeesList.filter(
-                                                                        (id) =>
-                                                                            id !==
-                                                                            attendeeId
+                                                            if (!confirm)
+                                                                return;
+                                                            try {
+                                                                const res =
+                                                                    await fetch(
+                                                                        `http://localhost:5000/api/events/${event.eventId}/attendees/remove`,
+                                                                        {
+                                                                            method: "PUT",
+                                                                            headers:
+                                                                                {
+                                                                                    "Content-Type":
+                                                                                        "application/json",
+                                                                                },
+                                                                            body: JSON.stringify(
+                                                                                {
+                                                                                    userId: attendeeId,
+                                                                                }
+                                                                            ),
+                                                                        }
                                                                     );
-                                                                setEvent(
-                                                                    updated
+                                                                if (res.ok) {
+                                                                    alert(
+                                                                        "✅ Attendee removed."
+                                                                    );
+                                                                    const updated =
+                                                                        {
+                                                                            ...event,
+                                                                        };
+                                                                    updated.attendeesList =
+                                                                        updated.attendeesList.filter(
+                                                                            (
+                                                                                id
+                                                                            ) =>
+                                                                                id !==
+                                                                                attendeeId
+                                                                        );
+                                                                    setEvent(
+                                                                        updated
+                                                                    );
+                                                                } else {
+                                                                    const error =
+                                                                        await res.json();
+                                                                    alert(
+                                                                        `❌ Failed to remove: ${error.message}`
+                                                                    );
+                                                                }
+                                                            } catch (err) {
+                                                                console.error(
+                                                                    "Error removing attendee:",
+                                                                    err
                                                                 );
-                                                            } else {
-                                                                const error =
-                                                                    await res.json();
                                                                 alert(
-                                                                    `❌ Failed to remove: ${error.message}`
+                                                                    "❌ Unexpected error occurred."
                                                                 );
                                                             }
-                                                        } catch (err) {
-                                                            console.error(
-                                                                "Error removing attendee:",
-                                                                err
-                                                            );
-                                                            alert(
-                                                                "❌ Unexpected error occurred."
-                                                            );
-                                                        }
-                                                    }}
-                                                >
-                                                    ❌ Remove
-                                                </button>
-                                            </div>
-                                        )
+                                                        }}
+                                                    >
+                                                        ❌ Remove
+                                                    </button>
+                                                </div>
+                                            );
+                                        }
                                     )
                                 ) : (
                                     <p className="empty-attendees-msg">

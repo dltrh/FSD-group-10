@@ -1,12 +1,11 @@
 const User = require("../models/User");
 
+//Require user to first login
 exports.requireLogin = async (req, res, next) => {
     const email = req.session.userEmail;
-    // const userId = req.session.userId; // Assuming you have userId in session as well
-    // console.log("Username from session:", username);
-    // console.log("UserId from session:", userId);
+
     if (!email) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({ error: "Unauthorized: No session found" });
     }
 
     try {
@@ -23,4 +22,20 @@ exports.requireLogin = async (req, res, next) => {
         console.error("Error during authentication:", err);
         res.status(500).json({ error: "Internal server error" });
     }
+};
+
+// Admin role authority
+exports.requireAdmin = (req, res, next) => {
+    if (!req.session.isAdmin) {
+        return res.status(403).json({ error: "Admin access only" });
+    }
+    next();
+};
+
+// User role authority
+exports.requireUser = (req, res, next) => {
+    if (req.session.isAdmin) {
+        return res.status(403).json({ error: "User-only access" });
+    }
+    next();
 };

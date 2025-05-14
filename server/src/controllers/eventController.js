@@ -1,5 +1,6 @@
 const Event = require("../models/Event.js");
-const Invitation = require("../models/Invitation.js");
+const Invitation = require('../models/Invitation');
+const Notification = require('../models/Notification');
 const { getNextEventId } = require("../utils/getNextEventId.js");
 
 // Get all events
@@ -81,8 +82,6 @@ exports.finishEvent = async (req, res) => {
 
         // Fetch the updated event to confirm changes
         const updatedEvent = await Event.findOne({ eventId: id });
-
-        console.log("Updated Event:", updatedEvent); // Log the updated event
 
         res.json(updatedEvent);
     } catch (error) {
@@ -174,7 +173,6 @@ exports.createEvent = async (req, res) => {
 
 exports.getEventByEmail = async (req, res) => {
     const userId = req.session.userId;
-    console.log("UserId from session:", userId); // Log the user email
 
     if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
@@ -197,13 +195,12 @@ exports.getEventByEmail = async (req, res) => {
 exports.addAttendeeToEvent = async (req, res) => {
     const { eventId } = req.params;
     const { userId } = req.body;
-    console.log("this is add attendee to event");
+    
     try {
         const result = await Event.updateOne(
             { eventId: eventId },
             { $addToSet: { attendeesList: userId } } // prevents duplicates
         );
-        console.log(result);
 
         if (result?.modifiedCount === 0) {
             return res
@@ -255,8 +252,6 @@ exports.saveUpdatedAttendeesList = async (req, res) => {
     const { eventId } = req.params;
     const { attendeesList } = req.body;
 
-    console.log("Received eventId:", eventId); // Log the eventId
-    console.log("Received attendeesList:", attendeesList); // Log the attendees list
 
     try {
         const updatedEvent = await Event.findOne({ eventId });
@@ -305,7 +300,6 @@ exports.joinEvent = async (req, res) => {
             { eventId: eventId },
             { $addToSet: { attendeesList: userId } } // prevents duplicates
         );
-        console.log(result);
 
         if (result?.modifiedCount === 0) {
             return res
@@ -346,3 +340,41 @@ exports.unjoinEvent = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+exports.notifyAttendeesOfUpdate = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+
+        const event = await Event.findOne({ eventId });
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        if (!event.attendeesList || event.attendeesList.length === 0) {
+            return res.status(400).json({ error: "No attendees to notify" });
+        }
+        const acceptedInvitations = await Invitation.find({
+            eventId: eventId,
+            status: "accepted"
+        });
+
+        const acceptedUserIds = acceptedInvitations.map(invite => invite.receiverId);
+
+        const notifications = acceptedUserIds.map((recipientId) => ({
+            notificationId: `notif_${Date.now()}_${recipientId}`,
+            recipientId,
+            senderId: event.organizerId,
+            eventId,
+            type: "update",
+            message: `📣 Update: Details for event "${event.title}" have changed.`,
+            sentAt: new Date(),
+        }));
+
+        await Notification.insertMany(notifications);
+
+        res.status(200).json({ message: "Attendees notified." });
+    } catch (error) {
+        console.error("Error notifying attendees:", error);
+        res.status(500).json({ error: "Failed to send notifications" });
+    }
+};
+

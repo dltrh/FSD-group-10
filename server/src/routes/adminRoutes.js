@@ -6,6 +6,7 @@ const { requireLogin } = require("../middleware/auth");
 const User = require("../models/User");
 const Event = require("../models/Event")
 
+// get stats for users and events
 router.get('/stats', checkAdmin, adminController.getStats);
 
 //get all users
@@ -69,6 +70,7 @@ router.put("/events/:id", checkAdmin, async (req, res) => {
         const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.status(200).json(updatedEvent);
     } catch (err) {
+        console.error("Update error:", err);
         res.status(500).json({ message: "Error updating event" });
     }
 });
@@ -82,5 +84,9 @@ router.delete("/events/:id", checkAdmin, async (req, res) => {
         res.status(500).json({ message: "Error deleting event" });
     }
 });
+
+// Admin settings
+router.get("/settings", checkAdmin, adminController.getAdminSettings);
+router.post("/settings", checkAdmin, adminController.updateAdminSettings);
 
 module.exports = router;
