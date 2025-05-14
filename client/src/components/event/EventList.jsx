@@ -26,19 +26,21 @@ export default function EventList({ type }) {
     const [appliedBudget, setAppliedBudget] = useState(0);
     const [maxBudget, setMaxBudget] = useState(500); // default is 500 if nothing happens
 
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+
     let api = "";
     switch (type) {
         case "manage": // For managing events, we want to show all events hosted by the user that's logged in
-            api = "http://localhost:5000/api/events/hostedByUser";
+            api = `${baseURL}/events/hostedByUser`;
             break;
         case "all": // For showing all events
-            api = "http://localhost:5000/api/events";
+            api = `${baseURL}/events`;
             break;
         case "public": // For showing all public events
-            api = "http://localhost:5000/api/events/publicEvents";
+            api = `${baseURL}/events/publicEvents`;
             break;
         default:
-            api = "http://localhost:5000/api/events";
+            api = `${baseURL}/events`;
     }
 
     useEffect(() => {

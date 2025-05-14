@@ -12,12 +12,13 @@ const DiscussionList = ({ eventId }) => {
         description: "",
         createdAt: new Date(),
     });
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     useEffect(() => {
         const fetchDiscussions = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/discussions/${eventId}`,
+                    `${baseURL}/discussions/${eventId}`,
                     {
                         method: "GET",
                         credentials: "include",
@@ -44,7 +45,7 @@ const DiscussionList = ({ eventId }) => {
         e.preventDefault();
         try {
             const response = await fetch(
-                `http://localhost:5000/api/discussions/${eventId}`,
+                `${baseURL}/discussions/${eventId}`,
                 {
                     method: "POST",
                     headers: {
@@ -135,9 +136,9 @@ const DiscussionList = ({ eventId }) => {
                         No discussions available.
                     </div>
                 ) : (
-                    discussions.map((discussion) => (
+                    discussions.map((discussion, index) => (
                         <div
-                            key={discussion.id}
+                            key={index}
                             onClick={() => setSelectedDiscussion(discussion)}
                         >
                             <DiscussionCard discussion={discussion} />

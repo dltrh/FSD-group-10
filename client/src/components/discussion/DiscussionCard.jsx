@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../../css/discussion/discussion.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { getRelativeTime } from "../../utils/timeUtils";
+import { FaRegComment } from "react-icons/fa6";
 
 export default function DiscussionCard({ discussion }) {
     const [username, setUsername] = useState("");
+    const [questions, setQuestions] = useState([]);
+    const [questionLength, setQuestionLength] = useState(0);
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     const relativeTime = getRelativeTime(discussion.createdAt);
 
@@ -12,7 +16,7 @@ export default function DiscussionCard({ discussion }) {
         const fetchUsername = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/users/${discussion.userId}`,
+                    `${baseURL}/users/${discussion.userId}`,
                     { method: "GET", credentials: "include" }
                 );
                 if (!response.ok) {
@@ -26,6 +30,31 @@ export default function DiscussionCard({ discussion }) {
         };
         fetchUsername();
     }, [discussion.userId]);
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            try {
+                const response = await fetch(
+                    `${baseURL}/questions/${discussion.discussionId}`,
+                    { method: "GET", credentials: "include" }
+                );
+                if (!response.ok) {
+                    throw new Error("Failed to fetch questions");
+                }
+                const data = await response.json();
+                setQuestions(data);
+                setQuestionLength(data.length);
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+            }
+        };
+        fetchQuestions();
+        // Poll every 3 seconds
+        const interval = setInterval(fetchQuestions, 3000);
+
+        // Clean up interval on unmount
+        return () => clearInterval(interval);
+    }, [discussion.discussionId]);
     return (
         <>
             <div className="discussion-card-container">
@@ -46,8 +75,9 @@ export default function DiscussionCard({ discussion }) {
                 </div>
                 <div className="discussion-footer">
                     <p className="discussion-replies">
-                        {" "}
-                        💬 {discussion.replies?.length ?? 0} replies
+                        <FaRegComment /> {questionLength ?? 0}{" "}
+                        {questionLength === 1 ? "question" : "questions"} asked
+                        in this topic
                     </p>
                 </div>
             </div>

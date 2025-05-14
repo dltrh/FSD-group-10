@@ -18,11 +18,13 @@ const DiscussionDetails = ({ discussion, onClose }) => {
     const [newReply, setNewReply] = useState({
         content: "",
     });
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/questions/${discussion.discussionId}`, {
+                    `${baseURL}/questions/${discussion.discussionId}`, {
                         method: "GET",
                         credentials: "include", // Include session cookies
                     }
@@ -41,7 +43,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
     const fetchReplies = async (questionId) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/replies/${questionId}`, {
+                `${baseURL}/replies/${questionId}`, {
                     method: "GET",
                     credentials: "include", // Include session cookies
                 }
@@ -58,7 +60,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         e.preventDefault();
         try {
             const response = await fetch(
-                `http://localhost:5000/api/questions/${discussion.discussionId}`,
+                `${baseURL}/questions/${discussion.discussionId}`,
                 {
                     method: "POST",
                     headers: {
@@ -87,7 +89,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         
         try {
             const response = await fetch(
-                `http://localhost:5000/api/replies/${selectedQuestion.questionId}`,
+                `${baseURL}/replies/${selectedQuestion.questionId}`,
                 {
                     method: "POST",
                     headers: {

@@ -51,7 +51,7 @@
     padding: 0.5rem 1.5rem;
 }
 
-.finish-button {
+.finish-button, .join-button {
     background: #ba3a2e;
     color: white;
     padding: 0.5rem 1.5rem;
@@ -60,7 +60,7 @@
     display: block;
     cursor: pointer;
 }
-.finish-button:hover {
+.finish-button:hover, .join-button:hover {
     background: #2c2c2c;
     color: white;
 }
@@ -90,6 +90,37 @@
     margin-bottom: 2rem;
 }
 
+.reminder-section{
+    background: white;
+    border-radius: 6px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border: 1px solid #ddd;
+    margin-bottom: 2rem;
+}
+.reminder-section label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 1000;
+    color: #ba3a2e;
+    font-size: 1rem;
+}
+.reminder-section p {
+    display: flex;
+    flex-direction: column;
+    font-weight: 100;
+    color: #333;
+    font-size: 1rem;
+}
+.reminder-section h3 {
+    display: flex;
+    flex-direction: column;
+    font-weight: 1000;
+    color: #333;
+    font-size: 1rem;
+}
 .info-icon {
     font-size: 1.5rem;
 }
@@ -292,6 +323,59 @@
 
 .invitation-form-buttons .invitation-submit-btn:hover {
     background-color: #9b2a2a;
+}
+
+.attendees-section {
+    margin-top: 20px;
+}
+
+.attendees-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 10px;
+}
+
+.attendees-buttons {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.attendees-list {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.attendee-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.attendee-card button {
+    background-color: #ba3a2e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.attendee-card button:hover {
+    background-color: darkred;
+}
+
+.empty-attendees-msg {
+    text-align: center;
+    color: #777;
 }
 
 @media (max-width: 1024px) {

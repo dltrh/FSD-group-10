@@ -9,6 +9,7 @@ export default function EventResponseForm() {
     const [invitationId, setInvitationId] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     const Status = {
         ACCEPTED: "Accepted",
@@ -23,7 +24,7 @@ export default function EventResponseForm() {
         }
         try {
             const response = await fetch(
-                "http://localhost:5000/api/invitations",
+                `${baseURL}/invitations`,
                 {
                     method: "POST",
                     headers: {

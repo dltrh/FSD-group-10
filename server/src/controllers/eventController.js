@@ -1,4 +1,5 @@
 const Event = require("../models/Event.js");
+const Invitation = require("../models/Invitation.js");
 const { getNextEventId } = require("../utils/getNextEventId.js");
 
 // Get all events
@@ -66,7 +67,6 @@ exports.finishEvent = async (req, res) => {
     const { id } = req.params;
     const { isFinished } = req.body;
 
-
     try {
         const result = await Event.updateOne(
             { eventId: id }, // Matching by eventId
@@ -96,7 +96,7 @@ exports.createEvent = async (req, res) => {
     const userId = req.session.userId;
     try {
         const eventId = await getNextEventId();
-        // const organizerId = req.session.userId; 
+        // const organizerId = req.session.userId;
         let imageUrl = null;
 
         if (req.file) {
@@ -118,7 +118,6 @@ exports.createEvent = async (req, res) => {
             canBring,
             isPublic,
             notes,
-
         } = req.body;
 
         // Validate required fields
@@ -192,5 +191,158 @@ exports.getEventByEmail = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Server error" });
+    }
+};
+
+exports.addAttendeeToEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+    console.log("this is add attendee to event");
+    try {
+        const result = await Event.updateOne(
+            { eventId: eventId },
+            { $addToSet: { attendeesList: userId } } // prevents duplicates
+        );
+        console.log(result);
+
+        if (result?.modifiedCount === 0) {
+            return res
+                .status(404)
+                .json({ message: "Event not found or user already added" });
+        }
+
+        res.status(200).json({ message: "User added to attendees list" });
+    } catch (error) {
+        console.error("Error updating attendees list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.removeAttendeeFromEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const result = await Event.updateOne(
+            { eventId },
+            { $pull: { attendeesList: userId } }
+        );
+
+        const inviteResult = await Invitation.findOneAndUpdate(
+            { eventId: eventId, receiverId: userId },
+            { $set: { status: "declined" } } // Update the status to "declined"
+        );
+
+        if (result?.modifiedCount === 0 || inviteResult?.modifiedCount === 0) {
+            // If no documents were modified, it means the event was not found or the user was not in the list
+            return res
+                .status(404)
+                .json({ message: "Event not found or user not in list" });
+        }
+
+        res.status(200).json({
+            message:
+                "User removed from attendees list and Invitation status set to declined",
+        });
+    } catch (error) {
+        console.error("Error removing attendee:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+// Add this new route to save the updated attendees list
+exports.saveUpdatedAttendeesList = async (req, res) => {
+    const { eventId } = req.params;
+    const { attendeesList } = req.body;
+
+    console.log("Received eventId:", eventId); // Log the eventId
+    console.log("Received attendeesList:", attendeesList); // Log the attendees list
+
+    try {
+        const updatedEvent = await Event.findOne({ eventId });
+
+        if (!updatedEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const result = await Event.updateOne(
+            { eventId },
+            { $set: { attendeesList } }
+        );
+
+        res.status(200).json({ message: "Attendees list saved successfully" });
+    } catch (error) {
+        console.error("Error saving attendees list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.findAttendeeInEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.session.userId;
+
+    try {
+        const result = await Event.findOne ({
+            eventId: eventId,
+            attendeesList: userId,
+        });
+        if (result) {
+            return res.status(200).json({ found: true, event: result });
+        } else {
+            return res.status(404).json({ found: false, message: "User not found in this event." });
+        }
+    } catch (error) {
+        console.error("Error finding attendee:", error);
+        return res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.joinEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.session.userId;
+    try {
+        const result = await Event.updateOne(
+            { eventId: eventId },
+            { $addToSet: { attendeesList: userId } } // prevents duplicates
+        );
+        console.log(result);
+
+        if (result?.modifiedCount === 0) {
+            return res
+                .status(404)
+                .json({ message: "Event not found or user already added" });
+        }
+
+        res.status(200).json({ message: "User added to attendees list" });
+    } catch (error) {
+        console.error("Error updating attendees list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.unjoinEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.session.userId;
+
+    try {
+        const result = await Event.updateOne(
+            { eventId },
+            { $pull: { attendeesList: userId } }
+        );
+
+        if (result?.modifiedCount === 0) {
+            // If no documents were modified, it means the event was not found or the user was not in the list
+            return res
+                .status(404)
+                .json({ message: "Event not found or user not in list" });
+        }
+
+        res.status(200).json({
+            message:
+                "User removed from attendees list and Invitation status set to declined",
+        });
+    } catch (error) {
+        console.error("Error removing attendee:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };

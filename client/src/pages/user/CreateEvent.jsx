@@ -21,6 +21,7 @@ const CreateEvent = () => {
     const [notes, setNotes] = useState("");
     const [image, setImage] = useState(null);
     const navigate = useNavigate();
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
 
     const handleVisibilityChange = (e) => {
         setPublic(e.target.value === "Public");
@@ -47,7 +48,7 @@ const CreateEvent = () => {
         }
 
         try {
-            const res = await fetch("http://localhost:5000/api/events/create", {
+            const res = await fetch(`${baseURL}/events/create`, {
                 method: "POST",
                 body: formData,
                 credentials: "include"

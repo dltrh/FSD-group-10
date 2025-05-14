@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import NotificationDropdown from "./notification/NotificationDropdown";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { CgProfile } from "react-icons/cg";
 
 
 export default function Header() {
@@ -18,13 +19,13 @@ export default function Header() {
     const { user } = useAuth();
     const [notifications, setNotifications] = useState([]);
     const [loadingNotifications, setLoadingNotifications] = useState(false);
-
     const [loggedInUserId, setLoggedInUserId] = useState(null);
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
     
         useEffect(() => {
             const fetchUserId = async () => {
                 try {
-                    const response = await fetch("http://localhost:5000/api/getCurrentUserId", {
+                    const response = await fetch(`${baseURL}/getCurrentUserId`, {
                         method: "GET",
                         credentials: "include", // Include session cookies
                     });
@@ -47,7 +48,7 @@ export default function Header() {
         const fetchNotifications = async () => {
             setLoadingNotifications(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/notifications/${loggedInUserId}`, {
+                const response = await fetch(`${baseURL}/notifications/${loggedInUserId}`, {
                     credentials: "include",
                     method: "GET",
                     headers: {
@@ -77,7 +78,7 @@ export default function Header() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/logout", {
+            const response = await fetch(`${baseURL}/logout`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -169,11 +170,9 @@ export default function Header() {
                         <Link to="/contacts">Contacts</Link>
                     </li>
                     <li className="profile-container">
-                        <img
-                            src={profile}
-                            alt="Profile picture"
-                            className="profile-icon"
-                        />
+                        <div className="profile-icon">
+                            <CgProfile />
+                        </div>
                         <div className="profile-dropdown">
                             <Link to="/profile">
                                 <button>Account</button>

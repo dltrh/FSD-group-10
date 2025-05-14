@@ -17,7 +17,9 @@ export default function InviteCard({ invitation }) {
         PENDING: "Pending",
     };
 
-    const statusOptions = Object.values(Status); // This conversion is for mapping later
+    // This conversion is for mapping later, without pending
+    const statusOptions = Object.values(Status).filter(status => status !== Status.PENDING);
+    
 
     const handleInvitationResponse = async (status) => {
         try {
