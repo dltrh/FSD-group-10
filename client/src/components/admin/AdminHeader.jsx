@@ -71,7 +71,7 @@ const AdminHeader = ({ searchQuery, setSearchQuery }) => {
         <div className="header">
             <h1>{getTitle()}</h1>
             <form className="header-search-bar" onSubmit={handleSearch}>
-                <div className="search-wrapper">
+                <div className="admin-search-wrapper">
                     <input
                         type="text"
                         placeholder="Search..."

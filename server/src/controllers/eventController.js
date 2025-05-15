@@ -195,7 +195,7 @@ exports.getEventByEmail = async (req, res) => {
 exports.addAttendeeToEvent = async (req, res) => {
     const { eventId } = req.params;
     const { userId } = req.body;
-    
+
     try {
         const result = await Event.updateOne(
             { eventId: eventId },
@@ -277,7 +277,7 @@ exports.findAttendeeInEvent = async (req, res) => {
     const userId = req.session.userId;
 
     try {
-        const result = await Event.findOne ({
+        const result = await Event.findOne({
             eventId: eventId,
             attendeesList: userId,
         });
@@ -375,6 +375,22 @@ exports.notifyAttendeesOfUpdate = async (req, res) => {
     } catch (error) {
         console.error("Error notifying attendees:", error);
         res.status(500).json({ error: "Failed to send notifications" });
+    }
+};
+
+//Search Function
+exports.searchEvents = async (req, res) => {
+    const query = req.query.q;
+    if (!query) return res.json([]);
+
+    try {
+        const events = await Event.find({
+            title: { $regex: query, $options: "i" }
+        }).limit(5).select("_id eventId title");
+        res.json(events);
+    } catch (error) {
+        console.error("Search error:", error);
+        res.status(500).json({ message: "Search failed" });
     }
 };
 
