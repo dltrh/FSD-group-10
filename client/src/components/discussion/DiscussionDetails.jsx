@@ -19,12 +19,13 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         content: "",
     });
     const baseURL = import.meta.env.VITE_API_BASE_URL;
-    
+
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 const response = await fetch(
-                    `${baseURL}/questions/${discussion.discussionId}`, {
+                    `${baseURL}/questions/${discussion.discussionId}`,
+                    {
                         method: "GET",
                         credentials: "include", // Include session cookies
                     }
@@ -32,7 +33,6 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                 const data = await response.json();
                 data.forEach((q) => fetchReplies(q.questionId));
                 setQuestions(data);
-                
             } catch (error) {
                 console.error("Error fetching questions:", error);
             }
@@ -42,15 +42,12 @@ const DiscussionDetails = ({ discussion, onClose }) => {
 
     const fetchReplies = async (questionId) => {
         try {
-            const response = await fetch(
-                `${baseURL}/replies/${questionId}`, {
-                    method: "GET",
-                    credentials: "include", // Include session cookies
-                }
-            );
+            const response = await fetch(`${baseURL}/replies/${questionId}`, {
+                method: "GET",
+                credentials: "include", // Include session cookies
+            });
             const data = await response.json();
             setRepliesMap((prev) => ({ ...prev, [questionId]: data }));
-            
         } catch (error) {
             console.error("Error fetching replies:", error);
         }
@@ -86,7 +83,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
 
     const handleReplySubmit = async (e) => {
         e.preventDefault();
-        
+
         try {
             const response = await fetch(
                 `${baseURL}/replies/${selectedQuestion.questionId}`,
@@ -105,7 +102,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                 throw new Error("Failed to create new reply");
             }
             const data = await response.json();
-            
+
             setRepliesMap((prev) => ({
                 ...prev,
                 [selectedQuestion.questionId]: [
@@ -139,6 +136,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                     <h3 className="font-semibold text-xl mb-2">Questions</h3>
                     <button
                         className="btn-add-question"
+                        aria-label="Add Question"
                         onClick={() => setIsFormVisible(!isFormVisible)}
                     >
                         <IoIosAdd />
@@ -158,7 +156,9 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                                 }
                                 placeholder="Ask a question..."
                             />
-                            <button type="submit"><IoSend /></button>
+                            <button type="submit" aria-label="Send">
+                                <IoSend />
+                            </button>
                         </form>
                     </div>
                 )}
@@ -179,28 +179,39 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                                 >
                                     {question.content}
                                 </div>
-                                {selectedQuestion?.questionId === question.questionId && isReplyFormVisible &&  (
-                                    <div className="reply-form-container">
-                                        <form
-                                            className="reply-form"
-                                            onSubmit={handleReplySubmit}
-                                        >
-                                            <GoReply style={{ transform: "rotate(180deg)", fontSize:"25px" }}/>
-                                            <input
-                                                type="text"
-                                                value={newReply.content}
-                                                onChange={(e) =>
-                                                    setNewReply({
-                                                        ...newReply,
-                                                        content: e.target.value,
-                                                    })
-                                                }
-                                                placeholder="Reply..."
-                                            />
-                                            <button type="submit"><IoSend /></button>
-                                        </form>
-                                    </div>
-                                )}
+                                {selectedQuestion?.questionId ===
+                                    question.questionId &&
+                                    isReplyFormVisible && (
+                                        <div className="reply-form-container">
+                                            <form
+                                                className="reply-form"
+                                                onSubmit={handleReplySubmit}
+                                            >
+                                                <GoReply
+                                                    style={{
+                                                        transform:
+                                                            "rotate(180deg)",
+                                                        fontSize: "25px",
+                                                    }}
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={newReply.content}
+                                                    onChange={(e) =>
+                                                        setNewReply({
+                                                            ...newReply,
+                                                            content:
+                                                                e.target.value,
+                                                        })
+                                                    }
+                                                    placeholder="Reply..."
+                                                />
+                                                <button type="submit"  aria-label="Send">
+                                                    <IoSend />
+                                                </button>
+                                            </form>
+                                        </div>
+                                    )}
 
                                 <ul className="nested-reply-list">
                                     {(Array.isArray(

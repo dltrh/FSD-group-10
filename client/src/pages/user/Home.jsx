@@ -6,8 +6,6 @@ import Footer from "../../components/Footer";
 import HomeCover from "../../components/HomeCover";
 import WhyUs from "../../components/WhyUs";
 import EventList from "../../components/event/EventList";
-import dummyEvents from "../../components/event/Event.js";
-
 const Home = () => {
     const navigate = useNavigate();
 

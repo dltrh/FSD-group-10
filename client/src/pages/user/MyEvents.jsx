@@ -3,7 +3,6 @@ import EventList from "../../components/event/EventList";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../../css/event/my-events.css"
-import dummyEvents from "../../components/event/Event";
 
 export default function MyEvents() {
     return (
