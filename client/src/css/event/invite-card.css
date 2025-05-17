@@ -1,6 +1,6 @@
 .invitation-card-container {
     display: grid;
-    grid-template-rows: 155px 350px 100px;
+    grid-template-rows: 155px 350px 130px;
     background-color: #fff;
     border: solid 1px #e3e3e3;
     border-radius: 6px;

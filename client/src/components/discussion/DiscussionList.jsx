@@ -30,12 +30,16 @@ const DiscussionList = ({ eventId }) => {
                     );
                 }
                 const data = await response.json();
+                if (!Array.isArray(data)) {
+                    throw new Error("Invalid API response");
+                }
                 setDiscussions(data);
             } catch (error) {
                 console.error(
                     `Error fetching discussions for event ${eventId}:`,
                     error
                 );
+                setDiscussions([]);
             }
         };
         fetchDiscussions();
@@ -44,17 +48,14 @@ const DiscussionList = ({ eventId }) => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(
-                `${baseURL}/discussions/${eventId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(newDiscussion),
-                    credentials: "include",
-                }
-            );
+            const response = await fetch(`${baseURL}/discussions/${eventId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newDiscussion),
+                credentials: "include",
+            });
             if (!response.ok) {
                 throw new Error("Failed to create new discussion");
             }

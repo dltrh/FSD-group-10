@@ -123,7 +123,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         <div className="discussion-details-overlay">
             <div className="discussion-details">
                 <div className="discussion-details-close">
-                    <button onClick={onClose}>&times;</button>
+                    <button onClick={onClose} >&times;</button>
                 </div>
                 <h2 className="text-3xl font-bold text-[#ae312f] mb-2">
                     {discussion.content}

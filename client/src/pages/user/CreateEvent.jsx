@@ -110,13 +110,13 @@ const CreateEvent = () => {
                         )}
 
                         <button >Upload</button>
-                        <div
+                        {/* <div
                             className="heart"
                             onClick={() => setLiked(!liked)}
                             style={{ cursor: "pointer" }}
                         >
                             {liked ? "♥" : "♡"}
-                        </div>
+                        </div> */}
                     </div>
                     <div className="event-details">
                         <h2>{title}</h2>
@@ -248,7 +248,6 @@ const CreateEvent = () => {
                                         id="isPublic"
                                         value={isPublic ? "Public" : "Private"}
                                         onChange={handleVisibilityChange}
-                                        className="border rounded p-2"
                                     >
                                         <option>Public</option>
                                         <option>Private</option>

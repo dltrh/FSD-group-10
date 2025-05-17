@@ -23,19 +23,89 @@
 .image-placeholder {
     flex: 1;
     min-width: 300px;
-    height: 300px;
-    background: #f1f1f1;
+    min-height: 500px;
+    background: #f8f9fa;
+    border: 2px dashed #e3e3e3;
+    border-radius: 16px;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    margin-bottom: 1rem;
+}
+
+.image-placeholder:hover {
+    border-color: #ae312f;
+    box-shadow: 0 4px 16px rgba(174,49,47,0.08);
+}
+
+.image-placeholder label {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.image-placeholder input[type="file"] {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    max-width: 220px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.image-placeholder img {
+    max-width: 220px;
+    max-height: 160px;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    object-fit: cover;
+}
+
+.image-placeholder button {
+    margin-top: 0.7rem;
+    padding: 0.4rem 1.2rem;
+    background: #ae312f;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.image-placeholder button:hover {
+    background: #8a2320;
 }
 
 .heart {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 1.5rem;
+    top: 14px;
+    left: 14px;
+    font-size: 2rem;
+    color: #ae312f;
+    background: #fff;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(174,49,47,0.08);
+    transition: background 0.2s, transform 0.2s;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.heart:hover {
+    background: #ffeaea;
+    transform: scale(1.1);
 }
 
 .event-details {
@@ -63,11 +133,10 @@
 .input-group {
     display:block;
     margin: 1rem 0;
-    margin-left : 1rem;
 }
 
 .input-group input {
-    width: 90%;
+    width: 100%;
     padding: 0.5rem;
     margin-top: 0.25rem;
     border: 1px solid #ccc;
@@ -76,21 +145,52 @@
 
 .dropdowns {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     margin: 1rem 0;
-    padding:20px;
-    
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.dropdowns > div {
+    flex: 1 1 220px;
+    min-width: 275px;
+    max-width: 275px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 0;
 }
 
 .dropdowns label {
     display: block;
-    margin-bottom: 1rem;
-    /* You can increase this as needed */
+    margin-bottom: 0.5rem;
     font-weight: 500;
+    color: #333;
 }
+
 .dropdowns select {
-    flex: 1;
     padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.dropdowns p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.2rem 0 0 0;
+}
+
+@media (max-width: 900px) {
+    .dropdowns {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 10px;
+    }
+    .dropdowns > div {
+        max-width: 100%;
+    }
 }
  
 

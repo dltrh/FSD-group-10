@@ -839,7 +839,7 @@ const EventDetailsModal = () => {
                 <section className="details-grid">
                     {detailEvents.map((event, index) => (
                         <div key={index} className="detail-box">
-                            <div className="image-placeholder"></div>
+                            {/* <div className="image-placeholder"></div> */}
                             <div>
                                 <strong>{event.label}</strong>
                                 <p>{event.description}</p>
