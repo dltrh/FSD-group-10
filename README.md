@@ -6,7 +6,7 @@
 ## Authors
 
 - Quan Hung - s3980813
-- Le Trang Hanh Do - s3977994
+- Do Le Trang Hanh - s3977994
 - Le Phuong Ngan - s3978567
 
 
