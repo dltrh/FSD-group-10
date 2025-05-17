@@ -77,15 +77,6 @@ const EventDetailsModal = () => {
         fetchUserId();
     }, []);
 
-    useEffect(() => {
-        if (event) {
-            setFormData({
-                maxPpl: event.maxPpl || "",
-                timeStart: event.timeStart || "",
-                location: event.location || "",
-            });
-        }
-    }, [event]);
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -194,11 +185,19 @@ const EventDetailsModal = () => {
     ];
 
     const handleChangeClick = () => {
+        if (event) {
+            setFormData({
+                maxPpl: event.maxPpl || "",
+                timeStart: event.timeStart || "",
+                location: event.location || "",
+            });
+        }
         setShowForm(true);
         setTimeout(() => {
             formRef.current?.scrollIntoView({ behavior: "smooth" });
         }, 100);
     };
+
 
     const handleCancel = () => {
         setShowForm(false);
