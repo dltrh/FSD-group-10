@@ -14,6 +14,7 @@ import Invitations from "../pages/user/Invitations";
 import InvitationResponseStatus from "../pages/user/InvitationResponseStatus";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Profile from "../pages/user/Profile";
+import AboutUs from "../pages/shared/AboutUs";
 
 const baseRoutes = [
     { path: "/home", element: <Home /> },
@@ -30,6 +31,7 @@ const baseRoutes = [
     { path: "/saved-events", element: <SavedEvents /> },
     { path: "/invitations", element: <Invitations /> },
     { path: "/profile", element: <Profile /> },
+    { path: "/about", element: <AboutUs /> }
 ];
 
 export const UserRoutes = baseRoutes.map((route) => ({
