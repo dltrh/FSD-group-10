@@ -27,6 +27,7 @@ const EventDetailsModal = () => {
     const [joined, setJoined] = useState(false);
     const baseURL = import.meta.env.VITE_API_BASE_URL;
     const [invitations, setInvitations] = useState([]);
+    const [attendeeNames, setAttendeeNames] = useState({});
 
     useEffect(() => {
         const fetchInvitations = async () => {
@@ -145,6 +146,33 @@ const EventDetailsModal = () => {
         }, 2000); // Fetch every 5 seconds
         return () => clearInterval(interval);
     }, [eventId]);
+
+    useEffect(() => {
+        const fetchAllNames = async () => {
+            if (!event?.attendeesList) return;
+            const names = {};
+            await Promise.all(
+                event.attendeesList.map(async (attendeeId) => {
+                    try {
+                        const response = await fetch(
+                            `${baseURL}/users/${attendeeId}`
+                        );
+                        if (response.ok) {
+                            const data = await response.json();
+                            names[attendeeId] =
+                                data.fullname || data.name || attendeeId;
+                        } else {
+                            names[attendeeId] = attendeeId;
+                        }
+                    } catch {
+                        names[attendeeId] = attendeeId;
+                    }
+                })
+            );
+            setAttendeeNames(names);
+        };
+        fetchAllNames();
+    }, [event?.attendeesList]);
 
     if (loading || loggedInUserId === null) return <p>Loading...</p>;
     if (!event) return <p>Event not found.</p>;
@@ -634,7 +662,9 @@ const EventDetailsModal = () => {
                                                     key={index}
                                                     className="attendee-card"
                                                 >
-                                                    👤 {attendeeId}
+                                                    👤{" "}
+                                                    {attendeeNames[attendeeId] ||
+                                                        attendeeId} 
                                                     <span
                                                         className={`status ${status.toLowerCase()}`}
                                                     >
