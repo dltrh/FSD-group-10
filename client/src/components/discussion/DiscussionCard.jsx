@@ -12,6 +12,7 @@ export default function DiscussionCard({ discussion }) {
 
     const relativeTime = getRelativeTime(discussion.createdAt);
 
+    // Fetch the username of the discussion owner
     useEffect(() => {
         const fetchUsername = async () => {
             try {
@@ -31,6 +32,7 @@ export default function DiscussionCard({ discussion }) {
         fetchUsername();
     }, [discussion.userId]);
 
+    // Fetch the questions related to the discussion
     useEffect(() => {
         const fetchQuestions = async () => {
             try {

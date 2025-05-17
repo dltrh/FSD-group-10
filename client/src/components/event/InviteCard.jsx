@@ -11,16 +11,18 @@ export default function InviteCard({ invitation }) {
     const navigate = useNavigate();
     const baseURL = import.meta.env.VITE_API_BASE_URL;
 
+    // Status options for the invitation
     const Status = {
         ACCEPTED: "Accepted",
         DECLINED: "Declined",
         PENDING: "Pending",
     };
 
-    // This conversion is for mapping later, without pending
+    // This conversion is for mapping later, without pending because it is not a valid status for the user
+    // to select
     const statusOptions = Object.values(Status).filter(status => status !== Status.PENDING);
     
-
+    // Function to handle the invitation response
     const handleInvitationResponse = async (status) => {
         try {
             const response = await fetch(`${baseURL}/invitations`, {
@@ -46,6 +48,7 @@ export default function InviteCard({ invitation }) {
         }
     };
 
+    // Fetch event information based on the invitation
     useEffect(() => {
         const fetchEventInfo = async () => {
             try {
@@ -71,6 +74,7 @@ export default function InviteCard({ invitation }) {
         }
     }, [updatedInvitation]);
 
+    // Fetch user information based on the organizerId from the invitation
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -92,6 +96,7 @@ export default function InviteCard({ invitation }) {
         }
     }, [updatedInvitation]);
 
+    // Fetch updated invitation information
     useEffect(() => {
         const fetchInvitationInfo = async () => {
             try {

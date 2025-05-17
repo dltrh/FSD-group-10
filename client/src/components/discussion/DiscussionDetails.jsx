@@ -20,6 +20,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
     });
     const baseURL = import.meta.env.VITE_API_BASE_URL;
 
+    // Fetch the questions related to the discussion
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
@@ -30,7 +31,10 @@ const DiscussionDetails = ({ discussion, onClose }) => {
                         credentials: "include", // Include session cookies
                     }
                 );
-                const data = await response.json();
+                let data = await response.json();
+                if (!Array.isArray(data)) {
+                    data = data ? [data] : [];
+                }
                 data.forEach((q) => fetchReplies(q.questionId));
                 setQuestions(data);
             } catch (error) {
@@ -40,6 +44,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         fetchQuestions();
     }, [discussion.discussionId]);
 
+    // Fetch replies for a specific question
     const fetchReplies = async (questionId) => {
         try {
             const response = await fetch(`${baseURL}/replies/${questionId}`, {
@@ -53,6 +58,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         }
     };
 
+    // Handle new question submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -81,6 +87,7 @@ const DiscussionDetails = ({ discussion, onClose }) => {
         }
     };
 
+    // Handle new reply submission
     const handleReplySubmit = async (e) => {
         e.preventDefault();
 

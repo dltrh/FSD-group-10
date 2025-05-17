@@ -14,6 +14,7 @@ const DiscussionList = ({ eventId }) => {
     });
     const baseURL = import.meta.env.VITE_API_BASE_URL;
 
+    // Fetch discussions when the component mounts or when eventId changes
     useEffect(() => {
         const fetchDiscussions = async () => {
             try {
@@ -45,6 +46,7 @@ const DiscussionList = ({ eventId }) => {
         fetchDiscussions();
     }, [eventId]);
 
+    // Handle form submission to create a new discussion
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {

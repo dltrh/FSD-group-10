@@ -47,6 +47,7 @@ export default function InviteList() {
         setAvailableThemes(Array.from(themeSet).sort());
     };
 
+    // Fetch event details by ID
     const fetchEventById = async (eventId) => {
         try {
             const response = await fetch(
@@ -108,6 +109,7 @@ export default function InviteList() {
         }
     }, [invitations]);
 
+    // Filter invitations based on search, sort, and other criteria
     useEffect(() => {
         const filterAndFetchFromInvitations = async () => {
             const enrichedInvitations = await Promise.all(
@@ -220,6 +222,7 @@ export default function InviteList() {
         setSearch(e.target.value);
     };
 
+    // Handle status option changes
     const toggleStatus = (status) => {
         setSelectedStatuses((prev) =>
             prev.includes(status)
@@ -228,6 +231,7 @@ export default function InviteList() {
         );
     };
 
+    // Handle location option changes
     const toggleLocation = (location) => {
         setSelectedLocations((prev) =>
             prev.includes(location)
