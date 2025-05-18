@@ -30,3 +30,15 @@ cd server
 npm i
 node server.js
 ```
+
+## How to run tests
+
+In this project, we have only implemented tests for the web's client side. React Testing Library and Vitest were used for writing and executing the tests.
+- Open a terminal
+- Run tests:
+```
+cd client
+npm i
+npm run test
+```
+
