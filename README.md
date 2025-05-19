@@ -84,7 +84,7 @@ npm run test
 
 ## Sample Accounts
 User:
- - Email: JohnDoe@@example.com
+ - Email: JohnDoe@example.com
  - Password: 123456
 
 Admin:
