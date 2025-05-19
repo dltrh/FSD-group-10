@@ -83,11 +83,11 @@ npm run test
 ```
 
 ## Sample Accounts
-- User:
+User:
  - Email: JohnDoe@@example.com
  - Password: 123456
 
-- Admin:
+Admin:
  - Email: admin@example.com
  - Password: securePassword123
 
