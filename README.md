@@ -83,13 +83,13 @@ npm run test
 ```
 
 ## Sample Accounts
-User:
-  Email: JohnDoe@@example.com
-  Password: 123456
+- User:
+ - Email: JohnDoe@@example.com
+ - Password: 123456
 
-Admin:
-  Email: admin@example.com
-  Password: securePassword123
+- Admin:
+ - Email: admin@example.com
+ - Password: securePassword123
 
 Note: Please select right button for login section. For admin login, there is a button that states "Login as admin."
 
