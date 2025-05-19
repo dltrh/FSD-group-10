@@ -4,25 +4,26 @@ import placeholder from "../../assets/home/placeholder.jpg";
 import { formatDate, calculateEventStatus } from "../../utils/timeUtils";
 import { useNavigate } from "react-router-dom";
 
+// Card for displaying an invitation and its event details
 export default function InviteCard({ invitation }) {
+    // State for event, organizer user, and invitation info
     const [event, setEvent] = useState(null);
     const [user, setUser] = useState(null);
     const [updatedInvitation, setUpdatedInvitation] = useState(invitation);
     const navigate = useNavigate();
     const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-    // Status options for the invitation
+    // Invitation status options
     const Status = {
         ACCEPTED: "Accepted",
         DECLINED: "Declined",
         PENDING: "Pending",
     };
 
-    // This conversion is for mapping later, without pending because it is not a valid status for the user
-    // to select
+    // Only allow user to select Accepted or Declined
     const statusOptions = Object.values(Status).filter(status => status !== Status.PENDING);
     
-    // Function to handle the invitation response
+    // Handle Accept/Decline invitation
     const handleInvitationResponse = async (status) => {
         try {
             const response = await fetch(`${baseURL}/invitations`, {
@@ -48,7 +49,7 @@ export default function InviteCard({ invitation }) {
         }
     };
 
-    // Fetch event information based on the invitation
+    // Fetch event info when invitation changes
     useEffect(() => {
         const fetchEventInfo = async () => {
             try {
@@ -74,7 +75,7 @@ export default function InviteCard({ invitation }) {
         }
     }, [updatedInvitation]);
 
-    // Fetch user information based on the organizerId from the invitation
+    // Fetch organizer user info when invitation changes
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -96,7 +97,7 @@ export default function InviteCard({ invitation }) {
         }
     }, [updatedInvitation]);
 
-    // Fetch updated invitation information
+    // Fetch latest invitation info when invitation changes
     useEffect(() => {
         const fetchInvitationInfo = async () => {
             try {
@@ -120,6 +121,8 @@ export default function InviteCard({ invitation }) {
             fetchInvitationInfo();
         }
     }, [updatedInvitation]);
+
+    // Navigate to event details page on card click
     const handleCardClick = () => {
         navigate(`/manage/details/${event.eventId}`);
     };
@@ -143,6 +146,7 @@ export default function InviteCard({ invitation }) {
                                     <div
                                         className={`invitation-card-status ${updatedInvitation.status}`}
                                     >
+                                        {/* Show current invitation status */}
                                         {updatedInvitation.status
                                             .charAt(0)
                                             .toUpperCase() +
@@ -151,11 +155,12 @@ export default function InviteCard({ invitation }) {
                                             )}{" "}
                                     </div>
                                     <div className="status-dropdown">
+                                        {/* Accept/Decline buttons */}
                                         {statusOptions.map((status) => (
                                             <button
                                                 key={status}
                                                 onClick={(e) => {
-                                                    e.stopPropagation(); // prevent bubbling to the card
+                                                    e.stopPropagation(); // Don't trigger card click
                                                     handleInvitationResponse(
                                                         status.toLowerCase()
                                                     );
@@ -172,6 +177,7 @@ export default function InviteCard({ invitation }) {
                             </div>
                             <div>
                                 <p className="event-time">
+                                    {/* Show event times and status */}
                                     🕒 Time Start: {formatDate(event.timeStart)}{" "}
                                     <br />
                                     🕒 Time End: {formatDate(
@@ -207,6 +213,7 @@ export default function InviteCard({ invitation }) {
                         </div>
                     </>
                 ) : (
+                    // Show loading if event data is not ready
                     <p>Loading event details...</p>
                 )}
             </div>
