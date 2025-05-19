@@ -1,0 +1,18 @@
+.placeholder-page {
+    display: flex;
+    padding: 50px;
+    align-items: center;
+}
+
+.placeholder-page-message {
+    text-align: left;
+    padding-left: 40px;
+}
+
+.bored-cat {
+    height: 400px;
+    width: 400px;
+}
+
+
+

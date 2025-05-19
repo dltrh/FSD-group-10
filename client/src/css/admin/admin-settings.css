@@ -1,0 +1,72 @@
+/* Admin Setting Styling */
+.admin-settings {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-settings h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+    color: #2c2c2c;
+}
+
+.setting-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-item label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+}
+
+.setting-item input,
+.setting-item select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border 0.3s ease;
+}
+
+.setting-item input:focus,
+.setting-item select:focus {
+    outline: none;
+    border-color: #2c2c2c;
+}
+
+.admin-settings button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #2c2c2c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-settings button:hover {
+    background-color: #ae312f;
+}
+
+.saved-message {
+    margin-top: 12px;
+    color: green;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1rem;
+}
