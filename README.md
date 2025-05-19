@@ -91,6 +91,8 @@ Admin:
   Email: admin@example.com
   Password: securePassword123
 
+Note: Please select right button for login section. For admin login, there is a button that states "Login as admin."
+
 ## Additional details
 Presentation and demonstration video of the project: https://rmiteduau-my.sharepoint.com/:v:/g/personal/s3978567_rmit_edu_vn/EeAB2ebKS3FKhooB1t01EmMBsQHnqfev5LSoLrkcVOtdGA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=PdDGIx
 
