@@ -97,3 +97,4 @@ Note: Please select right button for login section. For admin login, there is a 
 Presentation and demonstration video of the project: https://rmiteduau-my.sharepoint.com/:v:/g/personal/s3978567_rmit_edu_vn/EeAB2ebKS3FKhooB1t01EmMBsQHnqfev5LSoLrkcVOtdGA?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=PdDGIx
 
 Contribution: The contribution score of all members is attached in the report in section V in the group report
+Sample data: the web application is already connected to MongoDB database and ready to access and view via MONGO_URI attached in file .env in server folder.
